@@ -1,26 +1,43 @@
-from db_connect import db
+from app import db
 
 class User(db.Model):
-    _id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
-    user_id = db.Column(db.String(20), nullable=False, unique=True)
-    # pw = 
+    id = db.Column(db.String(20), primary_key=True, nullable=False, unique=True)
+    pw = db.Column(db.String(20), nullable=False)
+    mbti = db.Column(db.String(10))
 
-class UserAnswer(db.Model):
-    _id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
-    user_id = db.relationship("User", backref='useranswer')
-    ans1 = db.Column(db.Boolean, nullable=False, unique=True)
-    # ans2
-    # ans3
-    # ans4
-    # ans5
-    # ans6
-    # ans7
-    # ans8
-    # ans9
-    # ans10
-    # ans11
-    # ans12
+    def __init__(self, id, pw):
+        self.id = id
+        self.pw = pw
+    
 
-    def __repr__(self):
-        return '<user_answer %r>' % self.username
+class Answer(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
+    user_id = db.Column(db.String(20), db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('answer_set'))
+    ans1 = db.Column(db.Boolean)
+    ans2 = db.Column(db.Boolean)
+    ans3 = db.Column(db.Boolean)
+    ans4 = db.Column(db.Boolean)
+    ans5 = db.Column(db.Boolean)
+    ans6 = db.Column(db.Boolean)
+    ans7 = db.Column(db.Boolean)
+    ans8 = db.Column(db.Boolean)
+    ans9 = db.Column(db.Boolean)
+    ans10 = db.Column(db.Boolean)
+    ans11 = db.Column(db.Boolean)
+    ans12 = db.Column(db.Boolean)
 
+# 컬럼 추가해야 함.
+class Movie(db.Model):
+    id =  db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
+
+class Satisfaction(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
+    user_id = db.Column(db.String(20), db.ForeignKey('user.id'))
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
+    user_rating = db.Column(db.Integer, nullable=False)
+
+class Soulmate(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
+    user_mbti = db.Column(db.String(10), nullable=False)
+    soulmate_mbti = db.Column(db.String(10), nullable=False)
