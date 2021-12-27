@@ -1,6 +1,6 @@
 import React, {} from "react";
 
-const TestPage = ({ history }) => {
+const MainPage = ({ history }) => {
 
     return (
         <div>
@@ -18,14 +18,14 @@ const TestPage = ({ history }) => {
             </div>
             
             <div>
-                <button type="submit">인생캐 알아보기</button>
+                <button onClick={ () => { history.push("/TestPage") }}>인생캐 알아보기</button>
             </div>
 
             <div>
-                <button type="submit">바로 결과 보기</button>
+                <button>바로 결과 보기</button>
             </div>
         </div>
     )
 }
 
-export default TestPage;
+export default MainPage;
