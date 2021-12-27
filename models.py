@@ -1,3 +1,4 @@
+from werkzeug.datastructures import ContentRange
 from app import db
 
 class User(db.Model):
@@ -9,6 +10,14 @@ class User(db.Model):
         self.id = id
         self.pw = pw
     
+
+class Question(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
+    content = db.Column(db.Text, nullable=False)
+    option_1 = db.Column(db.Text, nullable=False)
+    option_2 = db.Column(db.Text, nullable=False)
+    mbti_indicator = db.Column(db.String(5), nullable=False) # mbti 유형 지표 E/I, N/S, F/T, P/J
+
 
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
