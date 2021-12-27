@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import MainPage from './components/MainPage';
 import TestPage from './components/TestPage';
+import TestCompletedPage from './components/TestCompletedPage'
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={ MainPage } />
         <Route path="/TestPage" component={ TestPage } />
+        <Route path="/TestCompletedPage" component={ TestCompletedPage } />
       </Switch>
     </div>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 
-const TestPage = ({ history }) => {
+const TestCompletedPage = ({ history }) => {
 
     return (
         <div>
@@ -13,26 +13,22 @@ const TestPage = ({ history }) => {
             </div>
 
             <div>
-                <div>1 / 12</div>
-            </div>
-
-            <div>
-                <div>이미지</div>
-            </div>
-
-            <div>
-                <p>Q1. 질문?</p>
+                <div>테스타가 완료되었습니다</div>
             </div>
             
             <div>
-                <button onClick={ () => { history.push("/TestCompletedPage") }}>답변 1</button>
+                <button>나와 같은 유형인 캐릭터 확인하기</button>
             </div>
 
             <div>
-                <button onClick={ () => { history.push("/TestCompletedPage") }}>답변 2</button>
+                <button>나와 궁합이 잘 맞는 캐릭터 확인하기</button>
+            </div>
+
+            <div>
+                <button>같은 유형에게 인기있는 영화 확인하기</button>
             </div>
         </div>
     )
 }
 
-export default TestPage;
+export default TestCompletedPage;
