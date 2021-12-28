@@ -43,7 +43,7 @@ def result():
             option = db.session.query(Option.mbti_indicator).filter(Option.question_id == i+1, Option.content.like(answers[i]+'%')).first()
             option = str(getattr(option, Option.mbti_indicator.name))
             # TODO: mbti 계산
-
+            
         # 리스트를 문자열로 변환
         # answers = "".join(str(_) for _ in answers)
 
