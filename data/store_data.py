@@ -2,7 +2,7 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-from models import Question, Option
+from models import *
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from app import db
 
@@ -28,3 +28,23 @@ def store_options():
         db.session.add(option_1)
         db.session.add(option_2)
         db.session.commit()
+
+
+def store_user_for_test():
+    user_id = "test"
+    user_pw = "1234"
+    db.session.add(User(user_id, user_pw))
+    db.session.commit()
+
+
+def store_answers_for_test():
+    answers = "abababababab"
+    db.session.add(Answer("test", answers))
+    db.session.commit()
+
+
+def store_init_data():
+    store_user_for_test()
+    store_questions()
+    store_options()
+    store_answers_for_test()
