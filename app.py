@@ -22,4 +22,14 @@ def create_app():
     app.register_blueprint(main_views.bp)
     import models
 
+    # 초기 데이터 저장. 현재는 한 번 실행하여 데이터 적재되어 있음. 필요한 경우 실행.
+    # with app.app_context(): 
+    #     store_questions_N_options()
+
     return app
+
+
+def store_questions_N_options():
+    from data.store_data import store_options, store_questions
+    store_questions()
+    store_options()

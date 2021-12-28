@@ -1,5 +1,7 @@
 from werkzeug.datastructures import ContentRange
 from app import db
+from datetime import datetime
+from pytz import timezone
 
 class User(db.Model):
     id = db.Column(db.String(20), primary_key=True, nullable=False, unique=True)
@@ -14,42 +16,34 @@ class User(db.Model):
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     content = db.Column(db.Text, nullable=False)
-    option_1 = db.Column(db.Text, nullable=False)
-    option_2 = db.Column(db.Text, nullable=False)
-    mbti_indicator = db.Column(db.String(5), nullable=False) # mbti 유형 지표 E/I, N/S, F/T, P/J
 
+    def __init__(self, content):
+        self.content = content
+
+
+class Option(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    question = db.relationship('Question', backref=db.backref('option'))
+    content = db.Column(db.Text, nullable=False)
+    mbti_indicator = db.Column(db.String(5), nullable=False) # mbti 유형 지표 예) I, E, N, S, T, F, J, P
+    
+    def __init__(self, question_id, content, mbti_indicator):
+        self.content = content
+        self.question_id = question_id
+        self.mbti_indicator = mbti_indicator
+        
 
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     user_id = db.Column(db.String(20), db.ForeignKey('user.id'))
-    user = db.relationship('User', backref=db.backref('answer_set'))
-    ans1 = db.Column(db.Boolean)
-    ans2 = db.Column(db.Boolean)
-    ans3 = db.Column(db.Boolean)
-    ans4 = db.Column(db.Boolean)
-    ans5 = db.Column(db.Boolean)
-    ans6 = db.Column(db.Boolean)
-    ans7 = db.Column(db.Boolean)
-    ans8 = db.Column(db.Boolean)
-    ans9 = db.Column(db.Boolean)
-    ans10 = db.Column(db.Boolean)
-    ans11 = db.Column(db.Boolean)
-    ans12 = db.Column(db.Boolean)
+    user = db.relationship('User', backref=db.backref('answer'))
+    answers = db.Column(db.String(20), nullable=False)
+    submitted_at = db.Column(db.DateTime, default=datetime.now(timezone('Asia/Seoul')))
 
     def __init__(self, user_id, answers):
         self.user_id = user_id
-        self.ans1 = answers[0]
-        self.ans2 = answers[1]
-        self.ans3 = answers[2]
-        self.ans4 = answers[3]
-        self.ans5 = answers[4]
-        self.ans6 = answers[5]
-        self.ans7 = answers[6]
-        self.ans8 = answers[7]
-        self.ans9 = answers[8]
-        self.ans10 = answers[9]
-        self.ans11 = answers[10]
-        self.ans12 = answers[11]
+        self.answers = answers
 
 
 # 컬럼 추가해야 함.
