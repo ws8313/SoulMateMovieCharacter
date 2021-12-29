@@ -1,9 +1,17 @@
 from flask import Blueprint
-from flask import request, jsonify, g, session, render_template
+from flask import request, jsonify, g, session, render_template, redirect, url_for
+from flask_login import login_required, login_user, current_user, logout_user
+from flask_bcrypt import Bcrypt
 from models import *
+from app import login_manager
 
 bp = Blueprint('main', __name__, url_prefix='/')
+bcrypt = Bcrypt()
 
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.filter_by(id=user_id).first()
 
 # @bp.before_app_request
 # def load_logged_in_user():
@@ -14,15 +22,59 @@ bp = Blueprint('main', __name__, url_prefix='/')
 #         g.user = db.session.query(User).filter(User.email == user_email).first()
 
 
-@bp.route('/hello')
-def hello():
-    return 'Hello!'
-
-
-@bp.route('/')
+@bp.route('/index')
 def index():
     g.user = 'test'
     return render_template("test.html")
+
+@bp.route('/')
+def home():
+    return render_template("main.html")
+    
+@bp.route('/register', methods=['POST', 'GET'])
+def register():
+    if request.method == 'POST':
+        user_data = User.query.filter_by(id=request.form['user_id']).first()
+        if not user_data:
+            if not request.form['user_pw']==request.form['user_pw2']:
+                #비밀번호 불일치
+                return redirect(url_for("main.register"))
+            user_id = request.form["user_id"]
+            pw_hash = bcrypt.generate_password_hash(request.form["user_pw"])
+            user = User(id=user_id, pw=pw_hash)
+            db.session.add(user)
+            db.session.commit()
+            #회원가입 성공
+            return redirect(url_for("main.home"))
+        else:
+            return redirect(url_for("main.register"))
+    else:
+        return render_template("register.html")
+
+@bp.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        user_id = request.form['user_id']
+        user_pw = request.form['user_pw']
+        user_data = User.query.filter(User.id==user_id).first()
+        if not user_data:
+            # 아이디 틀림
+            return redirect(url_for('main.login'))
+        elif not bcrypt.check_password_hash(user_data.pw, user_pw):
+            # 비밀번호 틀림
+            return redirect(url_for('main.login'))
+        else:
+            login_user(user_data)
+            # 로그인 진행
+            return redirect(url_for('main.home'))        
+    else:
+        return render_template("login.html")
+
+@bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('main.home'))
 
 
 @bp.route('/result', methods=["GET", "POST"])
