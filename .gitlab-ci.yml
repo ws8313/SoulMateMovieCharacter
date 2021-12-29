@@ -1,0 +1,17 @@
+image: python:3.9
+
+variables:
+  WORK_DIR: .
+cache:
+  key: '$CI_COMMIT_REF_SLUG'
+stages:
+  - deploy
+Deploy:
+  stage: deploy
+  only:
+    - deploy
+  tags:
+    - team-12-runner
+  script:
+    - docker stop $(docker ps -aq) || true
+    - echo "test team 12"
