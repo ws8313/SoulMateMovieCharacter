@@ -23,17 +23,41 @@ def hello():
 @bp.route('/')
 def index():
     g.user = 'test'
-    return render_template("test.html")
+    return render_template("test_result_page.html")
 
+
+@bp.route('/test/<int:question_number>', methods=["GET"])
+def test(question_number):
+    # question_number 에 해당하는 문제 데이터 전달하기
+    question = db.session.query(Question).filter(Question.id == question_number).first()
+    options = db.session.query(Option).filter(Option.question_id == question_number).all()
+    
+    question = str(getattr(question, Question.content.name))
+    options = [str(getattr(o, Option.content.name)) for o in options]
+    
+    return jsonify({
+        "message": "success",
+        "result": {
+            "data": {
+                'question': question,
+                'options': options
+            }
+        }
+    })
 
 @bp.route('/result', methods=["GET", "POST"])
 def result():
     method = request.method
     
     if method == "GET":
-        # 테스트 결과 보여주기
-        # answers = Answer.query.filter(Answer.user_id == g.user).order_by(Answer.submitted_at.desc()).first()
-        return render_template("test.html")
+        # 테스트 결과 -> 사용자 mbti 전달
+        user = User.query.filter(User.id == g.user).first()
+        return jsonify({
+            "message": "success",
+            "result": {
+                "data": user.mbti
+            }
+        })
 
     # 테스트 진행 후 결과 데이터 저장
     # answers가 ["a", "b", ..."] 형태 리스트 형태로 전달된다고 가정.
@@ -56,7 +80,7 @@ def result():
                 result[3].append(mbti_indicator)
             else:
                 print('잘못된 데이터입니다.')
-                return
+                return jsonify({"result": "wrong data"})
         
         # mbti 계산            
         user_mbti = ""
