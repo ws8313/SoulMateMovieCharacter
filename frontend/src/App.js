@@ -1,10 +1,13 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import './App.css';
-import MainPage from './components/MainPage';
-import TestPage from './components/TestPage';
-import TestCompletedPage from './components/TestCompletedPage'
+import MainPage from './pages/MainPage';
+import TestPage from './pages/TestPage';
+import TestExPage from './pages/TestExPage';
+import TestCompletedPage from './pages/TestCompletedPage'
+
+
+
 
 
 function App() {
@@ -13,6 +16,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={ MainPage } />
         <Route path="/TestPage" component={ TestPage } />
+        <Route path="/TestExPage" component={ TestExPage } />
         <Route path="/TestCompletedPage" component={ TestCompletedPage } />
       </Switch>
     </div>

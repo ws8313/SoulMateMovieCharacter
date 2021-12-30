@@ -1,6 +1,14 @@
 import React from "react";
 
 const TestCompletedPage = ({ history }) => {
+    const ans = []
+            for (let i = 0; i <= localStorage.length - 1; i++) {
+                ans[i] = localStorage.getItem(i);
+                console.log(ans)
+            }
+            if(ans && ans.length > 0) {
+                console.log(ans)
+            }
 
     return (
         <div>
@@ -13,7 +21,7 @@ const TestCompletedPage = ({ history }) => {
             </div>
 
             <div>
-                <div>테스타가 완료되었습니다</div>
+                <div>테스트가 완료되었습니다</div>
             </div>
             
             <div>
