@@ -1,11 +1,17 @@
 from flask import Blueprint
-<<<<<<< HEAD
-from flask import request, jsonify, g, session, render_template
+from flask import request, jsonify, g, session, render_template, redirect, url_for
+from flask_login import login_required, login_user, current_user, logout_user
+from flask_bcrypt import Bcrypt
 from models import *
 from collections import Counter
+from app import login_manager
 
 bp = Blueprint('main', __name__, url_prefix='/')
+bcrypt = Bcrypt()
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.filter_by(id=user_id).first()
 
 @bp.before_app_request
 def load_logged_in_user():
@@ -15,64 +21,6 @@ def load_logged_in_user():
     # else:
     #     g.user = db.session.query(User).filter(User.email == user_email).first()
     g.user = "test"
-
-@bp.route('/hello')
-def hello():
-    return 'Hello!'
-
-
-@bp.route('/')
-def index():
-    g.user = 'test'
-    return render_template("test_result_page.html")
-
-
-@bp.route('/test/<int:question_number>', methods=["GET"])
-def test(question_number):
-    # question_number 에 해당하는 문제 데이터 전달하기
-    question = db.session.query(Question).filter(Question.id == question_number).first()
-    options = db.session.query(Option).filter(Option.question_id == question_number).all()
-    
-    question = str(getattr(question, Question.content.name))
-    options = [str(getattr(o, Option.content.name)) for o in options]
-    
-    return jsonify({
-        "message": "success",
-        "result": {
-            "data": {
-                'question': question,
-                'options': options
-            }
-        }
-    })
-=======
-from flask import request, jsonify, g, session, render_template, redirect, url_for
-from flask_login import login_required, login_user, current_user, logout_user
-from flask_bcrypt import Bcrypt
-from models import *
-from app import login_manager
-
-bp = Blueprint('main', __name__, url_prefix='/')
-bcrypt = Bcrypt()
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.filter_by(id=user_id).first()
-
-# @bp.before_app_request
-# def load_logged_in_user():
-#     user_email = session.get('login')
-#     if login is None:
-#         g.user = None
-#     else:
-#         g.user = db.session.query(User).filter(User.email == user_email).first()
-
-
-@bp.route('/index')
-def index():
-    g.user = 'test'
-    return render_template("test.html")
 
 @bp.route('/')
 def home():
@@ -123,14 +71,30 @@ def logout():
     logout_user()
     return redirect(url_for('main.home'))
 
->>>>>>> feature/login
+@bp.route('/test/<int:question_number>', methods=["GET"])
+def test(question_number):
+    # question_number 에 해당하는 문제 데이터 전달하기
+    question = db.session.query(Question).filter(Question.id == question_number).first()
+    options = db.session.query(Option).filter(Option.question_id == question_number).all()
+    
+    question = str(getattr(question, Question.content.name))
+    options = [str(getattr(o, Option.content.name)) for o in options]
+    
+    return jsonify({
+        "message": "success",
+        "result": {
+            "data": {
+                'question': question,
+                'options': options
+            }
+        }
+    })
 
 @bp.route('/result', methods=["GET", "POST"])
 def result():
     method = request.method
     
     if method == "GET":
-<<<<<<< HEAD
         # 테스트 결과 -> 사용자 mbti 전달
         user = User.query.filter(User.id == g.user).first()
         return jsonify({
@@ -139,17 +103,11 @@ def result():
                 "data": user.mbti
             }
         })
-=======
-        # 테스트 결과 보여주기
-        # answers = Answer.query.filter(Answer.user_id == g.user).order_by(Answer.submitted_at.desc()).first()
-        return render_template("test.html")
->>>>>>> feature/login
 
     # 테스트 진행 후 결과 데이터 저장
     # answers가 ["a", "b", ..."] 형태 리스트 형태로 전달된다고 가정.
     else:
         answers = request.form.getlist('answers')
-<<<<<<< HEAD
         # print(answers)
 
         result = [[], [], [], []]
@@ -185,18 +143,4 @@ def result():
         answer = Answer(g.user, answers)
         db.session.add(answer)
         db.session.commit()
-=======
-        print(answers)
-        for i in range(len(answers)):
-            option = db.session.query(Option.mbti_indicator).filter(Option.question_id == i+1, Option.content.like(answers[i]+'%')).first()
-            option = str(getattr(option, Option.mbti_indicator.name))
-            # TODO: mbti 계산
-
-        # 리스트를 문자열로 변환
-        # answers = "".join(str(_) for _ in answers)
-
-        # answer = Answer(g.user, answers)
-        # db.session.add(answer)
-        # db.session.commit()
->>>>>>> feature/login
         return jsonify({"result": "success"})
