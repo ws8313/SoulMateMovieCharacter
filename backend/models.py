@@ -8,6 +8,13 @@ class User(db.Model):
     pw = db.Column(db.String(20), nullable=False)
     mbti = db.Column(db.String(10))
 
+    is_authenticated = True
+    is_active = True
+
+    def get_id(self):
+        return self.id
+
+
     def __init__(self, id, pw):
         self.id = id
         self.pw = pw
