@@ -55,8 +55,8 @@ class Answer(db.Model):
 
 
 # # 컬럼 추가해야 함.
-# class Movie(db.Model):
-#     id =  db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
+class Movie(db.Model):
+    id =  db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
 #     title
 #     year
 #     director
