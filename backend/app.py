@@ -30,6 +30,7 @@ def create_app():
     # 초기 데이터 저장. 현재는 한 번 실행하여 데이터 적재되어 있음. 필요한 경우 실행.
     # from data.store_data import store_init_data
     # with app.app_context(): 
+    #     db.create_all()
     #     store_init_data()
 
     return app
