@@ -4,7 +4,7 @@ from models import *
 Test = Namespace('Test')
 
 @Test.route('/<int:page>')
-class Test(Resource):
+class TestPage(Resource):
     def get(self, page):
         # page 에 해당하는 문제 데이터 전달하기
         # 1페이지에서는 question만 데이터 있고 options는 null임.

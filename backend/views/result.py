@@ -6,14 +6,15 @@ from collections import Counter
 Result = Namespace('Result')
 
 @Result.route('/')
-class Result(Resource):
+class ShowResult(Resource):
     def get(self):
         # 테스트 결과 -> 사용자 mbti 전달
         user = User.query.filter(User.id == g.user).first()
         return {
             "message": "success",
             "result": {
-                "data": user.mbti
+                "data": 
+                    {'mbti': user.mbti}
             }
         }
 
