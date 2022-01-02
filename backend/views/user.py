@@ -6,7 +6,10 @@ from models import *
 from flask_bcrypt import Bcrypt
 
 
-User = Namespace('User')
+User = Namespace(
+    name='User',
+    description="사용자 관련한 로그인, 회원 가입 등 API",
+)
 bcrypt = Bcrypt()
 
 @login_manager.user_loader
@@ -16,6 +19,7 @@ def load_user(user_id):
 @User.route('/login')
 class Login(Resource):
     def post(self):
+        """로그인 시도 결과 POST"""
         user_id = request.form['user_id']
         user_pw = request.form['user_pw']
         user_data = User.query.filter(User.id==user_id).first()
@@ -31,6 +35,7 @@ class Login(Resource):
             return redirect(url_for('main.home'))  
     
     def get(self):
+        """로그인 페이지 전달"""
         return render_template("login.html")
 
 
@@ -38,6 +43,7 @@ class Login(Resource):
 class Logout(Resource):
     @login_required
     def get(self):
+        """로그인 되어있는 경우에 로그아웃하고 메인 페이지로 돌아가기"""
         logout_user()
         return redirect(url_for('main.home'))
 
@@ -45,9 +51,11 @@ class Logout(Resource):
 @User.route('/register')
 class Register(Resource):
     def get(self):
+        """회원가입 페이지 전달"""
         return render_template("register.html")
 
     def post(self):
+        """회원가입 폼 내용 전달하여 데이터베이스에 저장"""
         user_data = User.query.filter_by(id=request.form['user_id']).first()
         if not user_data:
             if not request.form['user_pw']==request.form['user_pw2']:

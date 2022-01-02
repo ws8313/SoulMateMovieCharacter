@@ -3,11 +3,15 @@ from flask_restx import Resource, Namespace
 from models import *
 from collections import Counter
 
-Result = Namespace('Result')
+Result = Namespace(
+    name='Result',
+    description="결과 페이지에서 사용하는 API"
+)
 
 @Result.route('/')
 class ShowResult(Resource):
     def get(self):
+        """사용자 mbti 전달"""
         # 테스트 결과 -> 사용자 mbti 전달
         user = User.query.filter(User.id == g.user).first()
         return {
@@ -19,8 +23,8 @@ class ShowResult(Resource):
         }
 
     def post(self):
-        # 테스트 진행 후 결과 데이터 저장
-        # answers가 ["a", "b", ..."] 형태 리스트 형태로 전달된다고 가정.
+        """테스트 진행 후 결과 데이터 저장. 
+        answers가 ["a", "b", ..."] 형태 리스트 형태로 전달된다고 가정."""
         answers = request.json.get('answers')
         user_mbti = request.json.get('user_mbti')
 
