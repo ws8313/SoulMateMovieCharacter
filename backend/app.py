@@ -2,6 +2,7 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_restx import Api, Resource
 
 import config
 
@@ -15,17 +16,19 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(config)
     login_manager.init_app(app)
-
+    api = Api(app)
 
     # ORM
     db.init_app(app)
     migrate.init_app(app, db)
 
-
-        # 블루프린트
-    from views import main_views
-    app.register_blueprint(main_views.bp)
-    import models
+    # api add
+    from views.user import User
+    api.add_namespace(User, '/user')
+    from views.test import Test
+    api.add_namespace(Test, '/test')
+    from views.result import Result
+    api.add_namespace(Result, '/result')
 
     # 초기 데이터 저장. 현재는 한 번 실행하여 데이터 적재되어 있음. 필요한 경우 실행.
     # from data.store_data import store_init_data
