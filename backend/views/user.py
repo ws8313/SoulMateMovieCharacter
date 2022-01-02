@@ -5,7 +5,6 @@ from app import login_manager
 from models import *
 from flask_bcrypt import Bcrypt
 
-
 User = Namespace(
     name='User',
     description="사용자 관련한 로그인, 회원 가입 등 API",
