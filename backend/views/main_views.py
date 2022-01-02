@@ -71,11 +71,12 @@ def logout():
     logout_user()
     return redirect(url_for('main.home'))
 
-@bp.route('/test/<int:question_number>', methods=["GET"])
-def test(question_number):
-    # question_number 에 해당하는 문제 데이터 전달하기
-    question = db.session.query(Question).filter(Question.id == question_number).first()
-    options = db.session.query(Option).filter(Option.question_id == question_number).all()
+@bp.route('/test/<int:page>', methods=["GET"])
+def test(page):
+    # page 에 해당하는 문제 데이터 전달하기
+    # 1페이지에서는 question만 데이터 있고 options는 null임.
+    question = db.session.query(Question).filter(Question.id == page).first()
+    options = db.session.query(Option).filter(Option.question_id == page).all()
     
     question = str(getattr(question, Question.content.name))
     options = [str(getattr(o, Option.content.name)) for o in options]

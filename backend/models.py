@@ -23,6 +23,7 @@ class User(db.Model):
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     content = db.Column(db.Text, nullable=False)
+    img_url = db.Column(db.String(300))
 
     def __init__(self, content):
         self.content = content
