@@ -1,5 +1,5 @@
 from flask import request, g
-from flask_restx import Resource, Namespace
+from flask_restx import Resource, Namespace, fields
 from models import *
 from collections import Counter
 
@@ -8,23 +8,32 @@ Result = Namespace(
     description="결과 페이지에서 사용하는 API"
 )
 
+mbti_fields = Result.model('User MBTI', {
+    'user_mbti': fields.String(description="사용자 MBTI", example="ENTP")
+})
+
+answers_fields = Result.inherit('User Answers or direct input mbti', mbti_fields, {
+    'answers': fields.List(fields.String)
+})
+
 @Result.route('/')
 class ShowResult(Resource):
+    @Result.response(200, 'Success', mbti_fields)
     def get(self):
         """사용자 mbti 전달"""
         # 테스트 결과 -> 사용자 mbti 전달
         user = User.query.filter(User.id == g.user).first()
         return {
-            "message": "success",
-            "result": {
-                "data": 
-                    {'mbti': user.mbti}
-            }
-        }
+            'user_mbti': user.mbti
+        }, 200
 
+
+    @Result.expect(answers_fields)
+    @Result.response(200, 'success')
+    @Result.response(500, 'fail')
     def post(self):
         """테스트 진행 후 결과 데이터 저장. 
-        answers가 ["a", "b", ..."] 형태 리스트 형태로 전달된다고 가정."""
+        answers가 ["a", "b", ..."] 형태 리스트 형태로 전달된다고 가정. answers 또는 user_mbti 둘 중 하나는 null값이 아니어야 함. 바로 결과보기의 경우 user_mbti 값만, 테스트 진행한 경우 answers 값만 post 요청하면 됨."""
         answers = request.json.get('answers')
         user_mbti = request.json.get('user_mbti')
 
@@ -45,7 +54,7 @@ class ShowResult(Resource):
                     result[3].append(mbti_indicator)
                 else:
                     print('잘못된 데이터입니다.')
-                    return {"result": "wrong data"}
+                    return {"post": "wrong data"}, 500
             
             # mbti 계산            
             user_mbti = ""
@@ -65,4 +74,4 @@ class ShowResult(Resource):
         user.mbti = user_mbti
 
         db.session.commit()
-        return {"message": "success"}
+        return {"post": "success"}
