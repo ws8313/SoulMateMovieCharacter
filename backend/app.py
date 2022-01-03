@@ -35,6 +35,8 @@ def create_app():
     api.add_namespace(Test, '/test')
     from views.result import Result
     api.add_namespace(Result, '/result')
+    from views.movie import Movie
+    api.add_namespace(Movie, '/movie')
 
     # 초기 데이터 저장. 현재는 한 번 실행하여 데이터 적재되어 있음. 필요한 경우 실행.
     # from data.store_data import store_init_data

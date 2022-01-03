@@ -4,6 +4,7 @@ from models import *
 from flask_login import current_user
 from collections import Counter
 from app import login_manager
+from sqlalchemy import func
 
 Result = Namespace(
     name='Result',
@@ -70,14 +71,31 @@ class ShowResult(Resource):
             # 리스트를 문자열로 변환
             answers = "".join(str(_) for _ in answers)
             print(answers)
-            # TODO: current_user.id 바꿔야 함.
             answer = Answer(current_user.id, answers)
             db.session.add(answer)
 
         # 테스트를 진행했든, 바로 user_mbti를 입력 받았든 알게 된 user_mbti를 db에 저장
-        # TODO: current_user.id 바꿔야 함.
         user = User.query.filter(User.id == current_user.id).first()
         user.mbti = user_mbti
 
         db.session.commit()
         return {"post": "success"}
+
+
+@Result.route('/same/top10')
+class Top10Movies(Resource):
+    def get(self):
+        # 같은 유형에게 인기있는 영화 top10 보여주기
+        # 영화 정보 : 이름, 이미지, 개봉일, 감독, 평점, 런타임, 배우, 장르
+        # 워드 클라우드 보여주기
+
+        print(current_user.mbti)
+        top10 = db.session.query(Satisfaction.movie_id, func.avg(Satisfaction.user_rating)).filter(Satisfaction.user_id in (db.session.query(User.id).filter(User.mbti == "ISFJ").all())).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc).limit(10)
+
+        print(top10)
+        # top10 = ['Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1']
+        word_cloud = "imgurl"
+        return {
+            'top10': top10,
+            'word_cloud': word_cloud
+        }
