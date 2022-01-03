@@ -12,8 +12,8 @@ const LoginPage = () => {
     const onSubmit = () => {
         axios
             .post("/user/login", {
-                "id": userId,
-                "pw": password,
+                "login_id": userId,
+                "login_pw": password,
             },)
             .then((res) => {
                 console.log(res)
