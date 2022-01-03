@@ -2,7 +2,8 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_restx import Api, Resource
+from flask_restx import Api
+from flask_cors import CORS
 
 import config
 
@@ -16,6 +17,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(config)
     login_manager.init_app(app)
+    cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000/"}})
     api = Api(
         app,
         version='0.1',
