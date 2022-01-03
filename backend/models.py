@@ -86,9 +86,10 @@ class Actor(db.Model):
 
 class Character(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
-    name = db.Column(db.String(30), nullable=False)
     mbti = db.Column(db.String(10), nullable=False)
+    name = db.Column(db.String(30), nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
+    image_link = db.Column(db.Text)
     
 
 
