@@ -1,5 +1,6 @@
 import React, {} from "react";
 import { useHistory } from "react-router-dom";
+import prevbtn from "../img/prevbtn.png";
 
 const MainPage = () => {
     const history = useHistory();
@@ -8,6 +9,10 @@ const MainPage = () => {
         <div id="container">
             <div className="title">
                 <div>일리스</div>
+            </div>
+
+            <div id="btnbox" onClick={ () => { history.goBack() }}>
+                <img className="prevbtn" src={prevbtn} alt="prevbtn" />
             </div>
 
             <div id="divider"></div>
