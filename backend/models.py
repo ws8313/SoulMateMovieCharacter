@@ -75,7 +75,7 @@ class Movie(db.Model):
 class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     genre = db.Column(db.String(20), nullable=False)
-    movie_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
 
 
 class Actor(db.Model):

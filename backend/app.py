@@ -18,6 +18,7 @@ def create_app():
     app.config.from_object(config)
     login_manager.init_app(app)
     cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000/"}})
+
     api = Api(
         app,
         version='0.1',
@@ -31,8 +32,8 @@ def create_app():
     migrate.init_app(app, db)
 
     # api add
-    from views.user import User
-    api.add_namespace(User, '/user')
+    from views.user import UserManagement
+    api.add_namespace(UserManagement, '/user')
     from views.test import Test
     api.add_namespace(Test, '/test')
     from views.result import Result

@@ -5,16 +5,16 @@ from app import login_manager
 from models import *
 from flask_bcrypt import Bcrypt
 
-User = Namespace(
+UserManagement = Namespace(
     name='User',
     description="사용자 관련한 로그인, 회원 가입 등 API",
 )
 bcrypt = Bcrypt()
-login_fields = User.model('Login', {
+login_fields = UserManagement.model('Login', {
     'login_id': fields.String(description="id", example="tester"),
     'login_pw': fields.String(description="pw", example="123")
 })
-register_fields = User.model('Register', {
+register_fields = UserManagement.model('Register', {
     'id': fields.String(description="id", example="tester"),
     'pw': fields.String(description="pw", example="123"),
     'pw2': fields.String(description="pw2", example="123")
@@ -24,11 +24,11 @@ register_fields = User.model('Register', {
 def load_user(user_id):
     return User.query.filter_by(id=user_id).first()
 
-@User.route('/login')
+@UserManagement.route('/login')
 class Login(Resource):
-    @User.expect(login_fields)
-    @User.response(200, 'success')
-    @User.response(500, 'fail')
+    @UserManagement.expect(login_fields)
+    @UserManagement.response(200, 'success')
+    @UserManagement.response(500, 'fail')
     def post(self):
         user_id = request.json.get('login_id')
         user_pw = request.json.get('login_pw')
@@ -48,7 +48,7 @@ class Login(Resource):
     #     return render_template("login.html")
 
 
-@User.route('/logout')
+@UserManagement.route('/logout')
 class Logout(Resource):
     @login_required
     def get(self):
@@ -57,13 +57,13 @@ class Logout(Resource):
         return {'result': 'success'}, 200
 
 
-@User.route('/register')
+@UserManagement.route('/register')
 class Register(Resource):
     # def get(self):
     #     return render_template("register.html")
-    @User.expect(register_fields)
-    @User.response(200, 'success')
-    @User.response(500, 'fail')
+    @UserManagement.expect(register_fields)
+    @UserManagement.response(200, 'success')
+    @UserManagement.response(500, 'fail')
 
     def post(self):
         user_data = User.query.filter_by(id=request.json.get('id')).first()
