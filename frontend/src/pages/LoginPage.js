@@ -10,12 +10,24 @@ const LoginPage = () => {
     const history = useHistory();
 
     const onSubmit = () => {
-        // axios.post("http://localhost:5000/re")
-    }
+        axios
+            .post("/user/login", {
+                "id": userId,
+                "pw": password,
+            },)
+            .then((res) => {
+                console.log(res)
+                history.push("/MainPage");
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        }
 
     const signUp = () => {
         history.push("/RegisterPage")
-    }
+        }
+    console.log(userId, password)
 
     return (
         <div>
