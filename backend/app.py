@@ -16,7 +16,13 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(config)
     login_manager.init_app(app)
-    api = Api(app)
+    api = Api(
+        app,
+        version='0.1',
+        title="일리스 API Server",
+        description="일리스 API Server",
+        terms_url="/",
+    )
 
     # ORM
     db.init_app(app)

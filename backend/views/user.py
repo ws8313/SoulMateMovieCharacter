@@ -5,8 +5,10 @@ from app import login_manager
 from models import *
 from flask_bcrypt import Bcrypt
 
-
-User = Namespace('User')
+User = Namespace(
+    name='User',
+    description="사용자 관련한 로그인, 회원 가입 등 API",
+)
 bcrypt = Bcrypt()
 login_fields = User.model('Login', {
     'login_id': fields.String(description="id", example="tester"),
@@ -50,6 +52,7 @@ class Login(Resource):
 class Logout(Resource):
     @login_required
     def get(self):
+        """로그인 되어있는 경우에 로그아웃하고 메인 페이지로 돌아가기"""
         logout_user()
         return {'result': 'success'}, 200
 
