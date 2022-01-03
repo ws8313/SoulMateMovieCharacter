@@ -1,6 +1,6 @@
-from flask import request, g, redirect, url_for, render_template
-from flask_restx import Resource, Namespace
-from flask_login import login_required, login_user, current_user, logout_user
+from flask import request, redirect, url_for, render_template
+from flask_restx import Resource, Namespace, fields
+from flask_login import login_required, login_user, logout_user
 from app import login_manager
 from models import *
 from flask_bcrypt import Bcrypt
@@ -8,6 +8,15 @@ from flask_bcrypt import Bcrypt
 
 User = Namespace('User')
 bcrypt = Bcrypt()
+login_fields = User.model('Login', {
+    'login_id': fields.String(description="id", example="tester"),
+    'login_pw': fields.String(description="pw", example="123")
+})
+register_fields = User.model('Register', {
+    'id': fields.String(description="id", example="tester"),
+    'pw': fields.String(description="pw", example="123"),
+    'pw2': fields.String(description="pw2", example="123")
+})
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -15,23 +24,26 @@ def load_user(user_id):
 
 @User.route('/login')
 class Login(Resource):
+    @User.expect(login_fields)
+    @User.response(200, 'success')
+    @User.response(500, 'fail')
     def post(self):
-        user_id = request.form['user_id']
-        user_pw = request.form['user_pw']
+        user_id = request.json.get('login_id')
+        user_pw = request.json.get('login_pw')
         user_data = User.query.filter(User.id==user_id).first()
         if not user_data:
             # 아이디 틀림
-            return redirect(url_for('main.login'))
+            return {'result': 'login_error'}, 500
         elif not bcrypt.check_password_hash(user_data.pw, user_pw):
             # 비밀번호 틀림
-            return redirect(url_for('main.login'))
+            return {'result': 'login_error'}, 500
         else:
             login_user(user_data)
             # 로그인 진행
-            return redirect(url_for('main.home'))  
+            return {'result': 'success'}, 500  
     
-    def get(self):
-        return render_template("login.html")
+    # def get(self):
+    #     return render_template("login.html")
 
 
 @User.route('/logout')
@@ -39,26 +51,29 @@ class Logout(Resource):
     @login_required
     def get(self):
         logout_user()
-        return redirect(url_for('main.home'))
+        return {'result': 'success'}, 200
 
 
 @User.route('/register')
 class Register(Resource):
-    def get(self):
-        return render_template("register.html")
+    # def get(self):
+    #     return render_template("register.html")
+    @User.expect(register_fields)
+    @User.response(200, 'success')
+    @User.response(500, 'fail')
 
     def post(self):
-        user_data = User.query.filter_by(id=request.form['user_id']).first()
+        user_data = User.query.filter_by(id=request.json.get('id')).first()
         if not user_data:
-            if not request.form['user_pw']==request.form['user_pw2']:
+            if not request.json.get('pw')==request.json.get('pw2'):
                 #비밀번호 불일치
-                return redirect(url_for("main.register"))
-            user_id = request.form["user_id"]
-            pw_hash = bcrypt.generate_password_hash(request.form["user_pw"])
+                return {'result': 'unmatched_pw'}, 500
+            user_id = request.json.get('id')
+            pw_hash = bcrypt.generate_password_hash(request.json.get('pw'))
             user = User(id=user_id, pw=pw_hash)
             db.session.add(user)
             db.session.commit()
             #회원가입 성공
-            return redirect(url_for("main.home"))
+            return {'result': 'success'}, 200
         else:
-            return redirect(url_for("main.register"))
+            return {'result': 'existed_id'}, 500

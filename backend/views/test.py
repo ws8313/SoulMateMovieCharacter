@@ -15,11 +15,6 @@ class TestPage(Resource):
         options = [str(getattr(o, Option.content.name)) for o in options]
         
         return {
-            "message": "success",
-            "result": {
-                "data": {
-                    'question': question,
-                    'options': options
-                }
-            }
-        }
+            'question': question,
+            'options': options
+        }, 200

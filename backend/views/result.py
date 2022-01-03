@@ -1,22 +1,22 @@
-from flask import request, g
+from flask import request
 from flask_restx import Resource, Namespace
 from models import *
+from flask_login import current_user
 from collections import Counter
+from app import login_manager
 
 Result = Namespace('Result')
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.filter_by(id=user_id).first()
 
 @Result.route('/')
 class ShowResult(Resource):
     def get(self):
         # 테스트 결과 -> 사용자 mbti 전달
-        user = User.query.filter(User.id == g.user).first()
-        return {
-            "message": "success",
-            "result": {
-                "data": 
-                    {'mbti': user.mbti}
-            }
-        }
+        user = User.query.filter(User.id == current_user.id).first()
+        return {'mbti': user.mbti}, 200
 
     def post(self):
         # 테스트 진행 후 결과 데이터 저장
@@ -39,7 +39,7 @@ class ShowResult(Resource):
                 result[3].append(mbti_indicator)
             else:
                 print('잘못된 데이터입니다.')
-                return {"result": "wrong data"}
+                return {"result": "wrong data"}, 200
         
         # mbti 계산            
         user_mbti = ""
@@ -48,13 +48,13 @@ class ShowResult(Resource):
         # print(user_mbti)
         
         # mbti 저장
-        user = User.query.filter(User.id == g.user).first()
+        user = User.query.filter(User.id == current_user.id).first()
         user.mbti = user_mbti
 
         # 리스트를 문자열로 변환
         answers = "".join(str(_) for _ in answers)
 
-        answer = Answer(g.user, answers)
+        answer = Answer(current_user.id, answers)
         db.session.add(answer)
         db.session.commit()
-        return {"result": "success"}
+        return {"result": "success"}, 200
