@@ -73,7 +73,7 @@ class Register(Resource):
                 return {'result': 'unmatched_pw'}, 500
             user_id = request.json.get('id')
             pw_hash = bcrypt.generate_password_hash(request.json.get('pw'))
-            user = User(id=user_id, pw=pw_hash)
+            user = User(user_id, pw_hash)
             db.session.add(user)
             db.session.commit()
             #회원가입 성공

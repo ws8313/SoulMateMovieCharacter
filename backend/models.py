@@ -1,3 +1,4 @@
+from sqlalchemy.orm import backref
 from app import db
 from datetime import datetime
 from pytz import timezone
@@ -57,40 +58,69 @@ class Answer(db.Model):
 
 # # 컬럼 추가해야 함.
 class Movie(db.Model):
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    title = db.Column(db.String(50), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+    kor_title = db.Column(db.String(50), nullable=False)
+    eng_title = db.Column(db.String(70), nullable=False)
     image_link = db.Column(db.Text)
     pub_year = db.Column(db.Integer)
     director = db.Column(db.String(30))
-    rating = db.Column(db.Integer)
+    rating = db.Column(db.Float)
     story = db.Column(db.Text)
     run_time = db.Column(db.Integer)
 
-    actor = db.relationship('Actor', backref=db.backref('movie'))
-    genre = db.relationship('Genre', backref=db.backref('movie'))
-    character = db.relationship('Character', backref=db.backref('movie'))
+    actor_in_movie = db.relationship('ActorInMovie', backref=db.backref('movie'))
+    character_in_movie = db.relationship('CharacterInMovie', backref=db.backref('movie'))
+    movie_genre = db.relationship('MovieGenre', backref=db.backref('movie'))
     satisfaction = db.relationship('Satisfaction', backref=db.backref('movie'))
 
+    def __init__(self, title, image_link, pub_year, director, rating, story, run_time):
+        self.title = title
+        self. image_link = image_link
+        self. pub_year = pub_year
+        self.director = director
+        self.rating = rating
+        self. story = story
+        self.run_time = run_time
 
-class Genre(db.Model):
+
+class MovieGenre(db.Model):
+    genre = db.Column(db.String(20), primary_key=True)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), primary_key=True)
+
+    def __init__(self, genre, movie_id):
+        self.genre = genre
+        self.movie_id = movie_id
+
+
+class ActorInMovie(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
-    genre = db.Column(db.String(20), nullable=False)
+    actor_name = db.Column(db.String(20), nullable=False, unique=True)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
 
-
-class Actor(db.Model):
-    id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
-    actor_name = db.Column(db.String(20), nullable=False)
-    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
+    def __init__(self, actor_name, movie_id):
+        self.actor_name = actor_name
+        self.movie_id = movie_id
 
 
 class Character(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     mbti = db.Column(db.String(10), nullable=False)
     name = db.Column(db.String(30), nullable=False)
-    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
     image_link = db.Column(db.Text)
     
+    def __init__(self, mbti, name, image_link):
+        self.mbti = mbti
+        self.name = name
+        self.image_link = image_link
+
+
+class CharacterInMovie(db.Model):
+    character_id = db.Column(db.Integer, db.ForeignKey('character.id'), primary_key=True, nullable=False)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), primary_key=True)
+
+    def __init__(self, character_id, movie_id):
+        self.character_id = character_id
+        self.movie_id = movie_id 
 
 
 class Satisfaction(db.Model):
@@ -99,8 +129,17 @@ class Satisfaction(db.Model):
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
     user_rating = db.Column(db.Integer, nullable=False)
 
+    def __init__(self, user_id, movie_id, user_rating):
+        self.user_id = user_id
+        self.movie_id = movie_id
+        self.user_rating = user_rating
 
-class Soulmate(db.Model):
+
+class Compatibility(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     user_mbti = db.Column(db.String(10), nullable=False)
-    soulmate_mbti = db.Column(db.String(10), nullable=False)
+    compatible_mbti = db.Column(db.String(10), nullable=False)
+
+    def __init__(self, user_mbti, compatible_mbti):
+        self.user_mbti = user_mbti
+        self.compatible_mbti = compatible_mbti
