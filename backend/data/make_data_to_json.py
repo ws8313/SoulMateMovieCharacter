@@ -28,7 +28,7 @@ def _store_movie_for_test():
 
 def _store_actor_in_movie_for_test():
     # actor name, movie id
-    actor_infos = [["다니엘 래드클리프", 1], ["다니엘 래드클리프", 2], ["다니엘 래드클리프", 3], ["다니엘 래드클리프", 4], ["다니엘 래드클리프", 5], ["다니엘 래드클리프", 6], ["다니엘 래드클리프", 7], ["다니엘 래드클리프", 8], ["엠마 왓슨", 1], ["엠마 왓슨", 2], ["엠마 왓슨", 3], ["엠마 왓슨", 4], ["엠마 왓슨", 5], ["엠마 왓슨", 6], ["엠마 왓슨", 7], ["엠마 왓슨", 8], ["루퍼트 그린트", 1], ["루퍼트 그린트", 2], ["루퍼트 그린트", 3], ["루퍼트 그린트", 4], ["루퍼트 그린트", 5], ["루퍼트 그린트", 6], ["루퍼트 그린트", 7], ["루퍼트 그린트", 8], ["헬레나 본햄 카터", 5], ["헬레나 본햄 카터", 6], ["헬레나 본햄 카터", 7], ["헬레나 본햄 카터", 8], ["케네스 브래너", 2], ["해리 멜링", 1],  ["해리 멜링", 2],  ["해리 멜링", 3],  ["해리 멜링", 5],  ["해리 멜링", 7], ["로버트 패틴슨", 4], ["톰 펠튼", 1], ["톰 펠튼", 2], ["톰 펠튼", 3], ["톰 펠튼", 4], ["톰 펠튼", 5], ["톰 펠튼", 6], ["톰 펠튼", 7], ["톰 펠튼", 8], ["이멜다 스턴톤", 5], ["이멜다 스턴톤", 7], ["제임스 펠프스", 1], ["제임스 펠프스", 2], ["제임스 펠프스", 3], ["제임스 펠프스", 4], ["제임스 펠프스", 5], ["제임스 펠프스", 6], ["제임스 펠프스", 7], ["제임스 펠프스", 8], ["올리버 펠프스", 1], ["올리버 펠프스", 2], ["올리버 펠프스", 3], ["올리버 펠프스", 4], ["올리버 펠프스", 5], ["올리버 펠프스", 6], ["올리버 펠프스", 7], ["올리버 펠프스", 8], ["셜리 헨더슨", 2], ["셜리 헨더슨", 4], ["보니 라이트", 1], ["보니 라이트", 2], ["보니 라이트", 3], ["보니 라이트", 4], ["보니 라이트", 5], ["보니 라이트", 6], ["보니 라이트", 7], ["보니 라이트", 8], ["매튜 루이스", 1], ["매튜 루이스", 2], ["매튜 루이스", 3], ["매튜 루이스", 4], ["매튜 루이스", 5], ["매튜 루이스", 6], ["매튜 루이스", 7], ["매튜 루이스", 8], ["케이티 렁", 4], ["케이티 렁", 5], ["케이티 렁", 6], ["케이티 렁", 7], ["스타니슬라브 이아네브스키", 4], ["매기 스미스", 1], ["매기 스미스", 2], ["매기 스미스", 3], ["매기 스미스", 4], ["매기 스미스", 5], ["매기 스미스", 6], ["매기 스미스", 8], ["이반나 린치", 5], ["이반나 린치", 6], ["이반나 린치", 7], ["이반나 린치", 8], ["토비 존스", 2], ["토비 존스", 7], ["토비 존스", 8], ["리처드 해리스", 1], ["리처드 해리스", 2], ["마이클 갬본", 3], ["마이클 갬본", 4], ["마이클 갬본", 5], ["마이클 갬본", 6], ["마이클 갬본", 7], ["마이클 갬본", 8], ["알란 릭맨", 1], ["알란 릭맨", 2], ["알란 릭맨", 3], ["알란 릭맨", 4], ["알란 릭맨", 5], ["알란 릭맨", 6], ["알란 릭맨", 7], ["알란 릭맨", 8] ]
+    actor_infos = [["다니엘 래드클리프", 1], ["다니엘 래드클리프", 2], ["다니엘 래드클리프", 3], ["다니엘 래드클리프", 4], ["다니엘 래드클리프", 5], ["다니엘 래드클리프", 6], ["다니엘 래드클리프", 7], ["다니엘 래드클리프", 8], ["엠마 왓슨", 1], ["엠마 왓슨", 2], ["엠마 왓슨", 3], ["엠마 왓슨", 4], ["엠마 왓슨", 5], ["엠마 왓슨", 6], ["엠마 왓슨", 7], ["엠마 왓슨", 8], ["루퍼트 그린트", 1], ["루퍼트 그린트", 2], ["루퍼트 그린트", 3], ["루퍼트 그린트", 4], ["루퍼트 그린트", 5], ["루퍼트 그린트", 6], ["루퍼트 그린트", 7], ["루퍼트 그린트", 8], ["헬레나 본햄 카터", 5], ["헬레나 본햄 카터", 6], ["헬레나 본햄 카터", 7], ["헬레나 본햄 카터", 8], ["케네스 브래너", 2], ["해리 멜링", 1],  ["해리 멜링", 2],  ["해리 멜링", 3],  ["해리 멜링", 5],  ["해리 멜링", 7], ["로버트 패틴슨", 4], ["톰 펠튼", 1], ["톰 펠튼", 2], ["톰 펠튼", 3], ["톰 펠튼", 4], ["톰 펠튼", 5], ["톰 펠튼", 6], ["톰 펠튼", 7], ["톰 펠튼", 8], ["이멜다 스턴톤", 5], ["이멜다 스턴톤", 7], ["제임스 펠프스", 1], ["제임스 펠프스", 2], ["제임스 펠프스", 3], ["제임스 펠프스", 4], ["제임스 펠프스", 5], ["제임스 펠프스", 6], ["제임스 펠프스", 7], ["제임스 펠프스", 8], ["올리버 펠프스", 1], ["올리버 펠프스", 2], ["올리버 펠프스", 3], ["올리버 펠프스", 4], ["올리버 펠프스", 5], ["올리버 펠프스", 6], ["올리버 펠프스", 7], ["올리버 펠프스", 8], ["셜리 헨더슨", 2], ["셜리 헨더슨", 4], ["보니 라이트", 1], ["보니 라이트", 2], ["보니 라이트", 3], ["보니 라이트", 4], ["보니 라이트", 5], ["보니 라이트", 6], ["보니 라이트", 7], ["보니 라이트", 8], ["매튜 루이스", 1], ["매튜 루이스", 2], ["매튜 루이스", 3], ["매튜 루이스", 4], ["매튜 루이스", 5], ["매튜 루이스", 6], ["매튜 루이스", 7], ["매튜 루이스", 8], ["케이티 렁", 4], ["케이티 렁", 5], ["케이티 렁", 6], ["케이티 렁", 7], ["스타니슬라브 이아네브스키", 4], ["매기 스미스", 1], ["매기 스미스", 2], ["매기 스미스", 3], ["매기 스미스", 4], ["매기 스미스", 5], ["매기 스미스", 6], ["매기 스미스", 8], ["이반나 린치", 5], ["이반나 린치", 6], ["이반나 린치", 7], ["이반나 린치", 8], ["토비 존스", 2], ["토비 존스", 7], ["토비 존스", 8], ["리처드 해리스", 1], ["리처드 해리스", 2], ["마이클 갬본", 3], ["마이클 갬본", 4], ["마이클 갬본", 5], ["마이클 갬본", 6], ["마이클 갬본", 7], ["마이클 갬본", 8], ["알란 릭맨", 1], ["알란 릭맨", 2], ["알란 릭맨", 3], ["알란 릭맨", 4], ["알란 릭맨", 5], ["알란 릭맨", 6], ["알란 릭맨", 7], ["알란 릭맨", 8]]
 
     actors = []
     for i in range(len(actor_infos)):
@@ -60,6 +60,46 @@ def _store_movie_genre():
         json.dump(genres_data, make_file, ensure_ascii=False, indent="\t")
 
 
+def _store_character():
+    # mbti, name, image_link
+    char_infos = [["ISFP", "Harry Potter", "https://www.personality-database.com/profile_images/708.png?=undefined"], ["ESTJ", "Hermione Granger", "https://www.personality-database.com/profile_images/710.png?=undefined"], ["ESFP", "Ron Weasley", "https://www.personality-database.com/profile_images/709.png?=undefined"], ["ESFP", "Bellatrix Lestrange", "https://www.personality-database.com/profile_images/4045.png?=undefined"], ["ESFP", "Gilderoy Lockhart", "https://www.personality-database.com/profile_images/3546.png?=undefined"], ["ESFP", "Dudley Dursley", "https://www.personality-database.com/profile_images/13735.png?=undefined"], ["ESFJ", "Cedric Diggory", "https://www.personality-database.com/profile_images/3822.png?=undefined"], ["ESTJ", "Draco Malfoy", "https://www.personality-database.com/profile_images/713.png?=undefined"], ["ESTJ", "Dolores Umbridge", "https://www.personality-database.com/profile_images/2946.png?=undefined"], ["ENTP", "Fred Weasley", "https://www.personality-database.com/profile_images/718.png?=undefined"], ["ENTP", "George Weasley", "https://www.personality-database.com/profile_images/719.png?=undefined"], ["ISFP", "Moaning Myrtle", "https://www.personality-database.com/profile_images/45174.png?=undefined"], ["ISFJ", "Ginny Weasley", "https://www.personality-database.com/profile_images/2683.png?=undefined"], ["ISFJ", "Neville Longbottom", "https://www.personality-database.com/profile_images/714.png?=undefined"], ["ISFJ", "Cho Chang", "https://www.personality-database.com/profile_images/54494.png?=undefined"], ["ISTP", "Viktor Krum", "https://www.personality-database.com/profile_images/22134.png?=undefined"], ["ISTJ", "Minerva McGonagall", "https://www.personality-database.com/profile_images/2936.png?=undefined"], ["INFP", "Luna Lovegood", "https://www.personality-database.com/profile_images/717.png?=undefined"], ["INFP", "Dobby", "https://www.personality-database.com/profile_images/715.png?=undefined"], ["INFJ", "Albus Dumbledore", "https://www.personality-database.com/profile_images/712.png?=undefined"], ["INTJ", "Severus Snape", "https://www.personality-database.com/profile_images/716.png?=undefined"]]
+
+    print(len(char_infos))
+
+    chars = []
+    for i in range(len(char_infos)):
+        character = {}
+        character['mbti'] = char_infos[i][0]
+        character['name'] = char_infos[i][1]
+        character['image_link'] = char_infos[i][2]
+        chars.append(character)
+    
+    chars_data = OrderedDict()
+    chars_data['test_character'] = chars
+    with open('temp_characters.json', 'w', encoding="utf-8") as make_file:
+        json.dump(chars_data, make_file, ensure_ascii=False, indent="\t")
+
+
+def _store_character_in_movie():
+    # character_id, movie_id
+    char_infos = [[1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7], [2, 8], [3, 1], [3, 2], [3, 3], [3, 4], [3, 5], [3, 6], [3, 7], [3, 8], [4, 5], [4, 6], [4, 7], [4, 8], [5, 2], [6, 1],  [6, 2],  [6, 3],  [6, 5],  [6, 7], [7, 4], [8, 1], [8, 2], [8, 3], [8, 4], [8, 5], [8, 6], [8, 7], [8, 8], [9, 5], [9, 7], [10, 1], [10, 2], [10, 3], [10, 4], [10, 5], [10, 6], [10, 7], [10, 8], [11, 1], [11, 2], [11, 3], [11, 4], [11, 5], [11, 6], [11, 7], [11, 8], [12, 2], [12, 4], [13, 1], [13, 2], [13, 3], [13, 4], [13, 5], [13, 6], [13, 7], [13, 8], [14, 1], [14, 2], [14, 3], [14, 4], [14, 5], [14, 6], [14, 7], [14, 8], [15, 4], [15, 5], [15, 6], [15, 7], [16, 4], [17, 1], [17, 2], [17, 3], [17, 4], [17, 5], [17, 6], [17, 8], [18, 5], [18, 6], [18, 7], [18, 8], [19, 2], [19, 7], [19, 8], [20, 1], [20, 2], [20, 3], [20, 4], [20, 5], [20, 6], [20, 7], [20, 8], [21, 1], [21, 2], [21, 3], [21, 4], [21, 5], [21, 6], [21, 7], [21, 8]]
+    chars = []
+    for i in range(len(char_infos)):
+        character = {}
+        character['character_id'] = char_infos[i][0]
+        character['movie_id'] = char_infos[i][1]
+        chars.append(character)
+    
+    chars_data = OrderedDict()
+    chars_data['test_movie_character'] = chars
+    with open('temp_movie_characters.json', 'w', encoding="utf-8") as make_file:
+        json.dump(chars_data, make_file, ensure_ascii=False, indent="\t")
+
+
+
+
 # _store_movie_for_test()
 # _store_actor_in_movie_for_test()
-_store_movie_genre()
+# _store_movie_genre()
+# _store_character()
+# _store_character_in_movie()
