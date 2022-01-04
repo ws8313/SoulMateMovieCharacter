@@ -17,9 +17,10 @@ class User(db.Model):
     def get_id(self):
         return self.id
 
-    def __init__(self, id, pw):
+    def __init__(self, id, pw, mbti):
         self.id = id
         self.pw = pw
+        self.mbti = mbti
 
 
 class Question(db.Model):
@@ -73,8 +74,9 @@ class Movie(db.Model):
     movie_genre = db.relationship('MovieGenre', backref=db.backref('movie'))
     satisfaction = db.relationship('Satisfaction', backref=db.backref('movie'))
 
-    def __init__(self, title, image_link, pub_year, director, rating, story, run_time):
-        self.title = title
+    def __init__(self, kor_title, eng_title, image_link, pub_year, director, rating, story, run_time):
+        self.kor_title = kor_title
+        self.eng_title = eng_title
         self. image_link = image_link
         self. pub_year = pub_year
         self.director = director
@@ -94,7 +96,7 @@ class MovieGenre(db.Model):
 
 class ActorInMovie(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
-    actor_name = db.Column(db.String(20), nullable=False, unique=True)
+    actor_name = db.Column(db.String(20), nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
 
     def __init__(self, actor_name, movie_id):

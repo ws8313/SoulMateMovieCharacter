@@ -96,6 +96,21 @@ def _store_character_in_movie():
         json.dump(chars_data, make_file, ensure_ascii=False, indent="\t")
 
 
+def _store_satisfaction():
+    # user_id, movie_id, user_rating
+    satis_infos = [[1, 1, 10], [1, 2, 9.8], [1, 3, 5.7], [1, 4, 8.9], [1, 5, 7.6], [1, 6, 8.5], [1, 7, 10], [1, 8, 8.6], [2, 1, 2.7], [2, 2, 9.2], [2, 3, 9.7], [2, 4, 5.7], [2, 5, 7.7], [2, 6, 7.5], [2, 7, 9], [2, 8, 5.8] , [3, 1, 6.1], [3, 2, 5.8], [3, 3, 5.7], [4, 4, 3.9], [5, 5, 4.6], [6, 6, 7.5], [7, 7, 1.5], [8, 8, 5.6]]
+    satiss = []
+    for i in range(len(satis_infos)):
+        satis = {}
+        satis['user_id'] = satis_infos[i][0]
+        satis['movie_id'] = satis_infos[i][1]
+        satis['user_rating'] = satis_infos[i][2]
+        satiss.append(satis)
+    
+    satis_data = OrderedDict()
+    satis_data['test_satisfaction'] = satiss
+    with open('temp_satisfaction.json', 'w', encoding="utf-8") as make_file:
+        json.dump(satis_data, make_file, ensure_ascii=False, indent="\t")
 
 
 # _store_movie_for_test()
@@ -103,3 +118,4 @@ def _store_character_in_movie():
 # _store_movie_genre()
 # _store_character()
 # _store_character_in_movie()
+# _store_satisfaction()

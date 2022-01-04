@@ -5,6 +5,7 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from models import *
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from app import db
+import json
 
 
 def store_questions():
@@ -32,9 +33,10 @@ def store_options():
 
 
 def _store_user_for_test():
-    user_id = "test"
-    user_pw = "1234"
-    db.session.add(User(user_id, user_pw))
+
+    users = [["test1", "1234", "ISFP"], ["test2", "1234", "ESTJ"], ["test3", "1234", "ESFP"], ["test4", "1234", "ENTP"], ["test5", "1234", "ISFJ"], ["test6", "1234", "INFP"], ["test7", "1234", "ISTJ"], ["test8", "1234", "INTJ"]]
+    for user in users:
+        db.session.add(User(user[0], user[1], user[2]))
     db.session.commit()
 
 
@@ -44,10 +46,44 @@ def _store_answers_for_test():
     db.session.commit()
 
 
+def _store_test_data():
+    # 영화, 배우, 장르, 캐릭터, 영화-캐릭터 json 파일 이용한 테스트 데이터 적재
+    # temp_movies.json
+    # temp_actors.json
+    # temp_genres.json
+    # temp_characters.json
+    # temp_movie_characters.json
+    with open('./data/temp_movies.json', 'r', encoding="utf-8") as f:
+        movies = json.load(f)
+        for m in movies['test_movies']:
+            db.session.add(Movie(m['kor_title'], m['eng_title'], m['image_link'], m['pub_year'], m['director'], m['rating'], m['story'], m['run_time']))
+    
+    with open('./data/temp_actors.json', 'r', encoding="utf-8") as f:
+        actors = json.load(f)
+        for actor in actors['test_actor_in_movie']:
+            db.session.add(ActorInMovie(actor['actor_name'], actor['movie_id']))
+
+    with open('./data/temp_genres.json', 'r', encoding="utf-8") as f:
+        genres = json.load(f)
+        for genre in genres['test_movie_genre']:
+            db.session.add(MovieGenre(genre['genre'], genre['movie_id']))
+    
+    with open('./data/temp_characters.json', 'r', encoding="utf-8") as f:
+        characters = json.load(f)
+        for character in characters['test_character']:
+            db.session.add(Character(character['mbti'], character['name'], character['image_link']))
+
+    with open('./data/temp_movie_characters.json', 'r', encoding="utf-8") as f:
+        characters = json.load(f)
+        for character in characters['test_movie_character']:
+            db.session.add(CharacterInMovie(character['character_id'], character['movie_id']))
+    
+    db.session.commit()
+
+
 def store_init_data():
     store_questions()
     store_options()
     _store_user_for_test()
     _store_answers_for_test()
-
-
+    _store_test_data()
