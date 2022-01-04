@@ -1,4 +1,4 @@
-import React, {} from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import prevbtn from "../img/prevbtn.png";
 
@@ -27,7 +27,7 @@ const MainPage = () => {
             </div>
             
             <div>
-                <button id="leftbtn" onClick={ () => { history.push("/TestExPage") }}>인생캐 알아보기</button>
+                <button id="leftbtn" onClick={ () => { history.push("/TestPage") }}>인생캐 알아보기</button>
             </div>
 
             <div>

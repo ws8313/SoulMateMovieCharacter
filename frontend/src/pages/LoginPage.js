@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios"
-import * as auth from "../module/user";
 import { useHistory } from "react-router-dom";
 
 const LoginPage = () => {
@@ -14,7 +13,7 @@ const LoginPage = () => {
             .post("/user/login", {
                 "login_id": userId,
                 "login_pw": password,
-            },)
+            })
             .then((res) => {
                 console.log(res)
                 history.push("/MainPage");
@@ -32,7 +31,7 @@ const LoginPage = () => {
     return (
         <div>
             <input value={userId} onChange={(e) => setUserId(e.target.value)} />
-            <input value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             <button onClick={onSubmit}>로그인</button>
             <button onClick={signUp}>회원가입</button>
         </div>

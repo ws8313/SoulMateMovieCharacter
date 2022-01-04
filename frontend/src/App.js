@@ -5,7 +5,6 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import MainPage from './pages/MainPage';
 import TestPage from './pages/TestPage';
-import TestExPage from './pages/TestExPage';
 import TestCompletedPage from './pages/TestCompletedPage';
 
 
@@ -15,7 +14,6 @@ function App() {
       <Switch>
         <Route exact path="/" component={ LoginPage } />
         <Route path="/TestPage" component={ TestPage } />
-        <Route path="/TestExPage" component={ TestExPage } />
         <Route path="/TestCompletedPage" component={ TestCompletedPage } />
         <Route path="/MainPage" component={ MainPage } />
         <Route path="/RegisterPage" component={ RegisterPage } />
