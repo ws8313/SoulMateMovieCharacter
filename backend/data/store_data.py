@@ -60,6 +60,8 @@ def _store_test_data():
     # temp_genres.json
     # temp_characters.json
     # temp_movie_characters.json
+    # temp_satisfaction.json
+    
     with open('./data/temp_movies.json', 'r', encoding="utf-8") as f:
         movies = json.load(f)
         for m in movies['test_movies']:
@@ -84,6 +86,11 @@ def _store_test_data():
         characters = json.load(f)
         for character in characters['test_movie_character']:
             db.session.add(CharacterInMovie(character['character_id'], character['movie_id']))
+    
+    with open('./data/temp_satisfaction.json', 'r', encoding="utf-8") as f:
+        satisfactions = json.load(f)
+        for satisfaction in satisfactions['test_satisfaction']:
+            db.session.add(Satisfaction(satisfaction['user_id'], satisfaction['movie_id'], satisfaction['user_rating']))
     
     db.session.commit()
 
