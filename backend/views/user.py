@@ -6,7 +6,7 @@ from models import *
 from flask_bcrypt import Bcrypt
 
 UserManagement = Namespace(
-    name='User',
+    name='UserManagement',
     description="사용자 관련한 로그인, 회원 가입 등 API",
 )
 bcrypt = Bcrypt()
@@ -22,7 +22,7 @@ register_fields = UserManagement.model('Register', {
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.filter_by(id=user_id).first()
+    return User.query.filter(User.id == user_id).first()
 
 @UserManagement.route('/login')
 class Login(Resource):
@@ -32,7 +32,7 @@ class Login(Resource):
     def post(self):
         user_id = request.json.get('login_id')
         user_pw = request.json.get('login_pw')
-        user_data = User.query.filter(User.id==user_id).first()
+        user_data = User.query.filter(User.id == user_id).first()
         if not user_data:
             # 아이디 틀림
             return {'result': 'login_error'}, 500
@@ -59,21 +59,19 @@ class Logout(Resource):
 
 @UserManagement.route('/register')
 class Register(Resource):
-    # def get(self):
-    #     return render_template("register.html")
     @UserManagement.expect(register_fields)
     @UserManagement.response(200, 'success')
     @UserManagement.response(500, 'fail')
 
     def post(self):
-        user_data = User.query.filter_by(id=request.json.get('id')).first()
+        user_data = User.query.filter(User.id == request.json.get('id')).first()
         if not user_data:
             if not request.json.get('pw')==request.json.get('pw2'):
                 #비밀번호 불일치
                 return {'result': 'unmatched_pw'}, 500
             user_id = request.json.get('id')
             pw_hash = bcrypt.generate_password_hash(request.json.get('pw'))
-            user = User(id=user_id, pw=pw_hash)
+            user = User(user_id, pw_hash, None)
             db.session.add(user)
             db.session.commit()
             #회원가입 성공

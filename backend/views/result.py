@@ -21,7 +21,7 @@ answers_fields = Result.inherit('User Answers or direct input mbti', mbti_fields
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.filter_by(id=user_id).first()
+    return User.query.filter(User.id == user_id).first()
 
 @Result.route('/')
 class ShowResult(Resource):
@@ -89,12 +89,15 @@ class Top10Movies(Resource):
         # 영화 정보 : 이름, 이미지, 개봉일, 감독, 평점, 런타임, 배우, 장르
         # 워드 클라우드 보여주기
 
-        print(current_user.mbti)
-        top10 = db.session.query(Satisfaction.movie_id, func.avg(Satisfaction.user_rating)).filter(Satisfaction.user_id in (db.session.query(User.id).filter(User.mbti == "ISFJ").all())).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc).limit(10)
+        same_mbti_users = db.session.query(User.id).filter(User.mbti == "ISFP")
+        top10 = db.session.query(Satisfaction.movie_id, func.avg(Satisfaction.user_rating).label('avg_rating')).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10).all()
+
+        # TODO: 위 정보 가지고 영화 데이터까지 조인해서 읽어오기!
 
         print(top10)
         word_cloud = "imgurl"
         return {
-            'top10': top10,
-            'word_cloud': word_cloud
+            # 'top10': top10,
+            # 'word_cloud': word_cloud
+            'result': 'success'
         }
