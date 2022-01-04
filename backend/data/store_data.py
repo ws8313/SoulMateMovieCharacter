@@ -53,12 +53,8 @@ def _store_answers_for_test():
 def store_init_data():
     store_questions()
     store_options()
-<<<<<<< HEAD
-    store_answers_for_test()
-    store_compatibility()
-=======
     _store_user_for_test()
     _store_answers_for_test()
+    store_compatibility()
 
 
->>>>>>> 7754c08e4d9b10bf81d20b2896987ffde5098f81
