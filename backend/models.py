@@ -1,3 +1,4 @@
+from sqlalchemy.orm import backref
 from app import db
 from datetime import datetime
 from pytz import timezone
@@ -67,7 +68,8 @@ class Movie(db.Model):
     story = db.Column(db.Text)
     run_time = db.Column(db.Integer)
 
-    act = db.relationship('Act', backref=db.backref('movie'))
+    actor_in_movie = db.relationship('ActorInMovie', backref=db.backref('movie'))
+    movie_character = db.relationship('MovieCharacter', backref=db.backref('movie'))
     movie_genre = db.relationship('MovieGenre', backref=db.backref('movie'))
     satisfaction = db.relationship('Satisfaction', backref=db.backref('movie'))
 
@@ -79,19 +81,10 @@ class Movie(db.Model):
         self.rating = rating
         self. story = story
         self.run_time = run_time
-
-
-class Genres(db.Model):
-    genre = db.Column(db.String(20), nullable=False, primary_key=True)
-
-    movie_genre = db.relationship('MovieGenre', backref=db.backref('genres'))
-
-    def __init__(self, genre):
-        self.genre = genre
-
+        
 
 class MovieGenre(db.Model):
-    genre = db.Column(db.Integer, db.ForeignKey('genres.genre'), primary_key=True)
+    genre = db.Column(db.String(20), primary_key=True)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), primary_key=True)
 
     def __init__(self, genre, movie_id):
@@ -99,40 +92,28 @@ class MovieGenre(db.Model):
         self.movie_id = movie_id
 
 
-class Actor(db.Model):
+class ActorInMovie(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     actor_name = db.Column(db.String(20), nullable=False, unique=True)
-    
-    act = db.relationship('Act', backref=db.backref('actor'))
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
 
-    def __init__(self, actor_name):
+    def __init__(self, actor_name, movie_id):
         self.actor_name = actor_name
+        self.movie_id = movie_id
 
 
-class Character(db.Model):
+class MovieCharacter(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     mbti = db.Column(db.String(10), nullable=False)
     name = db.Column(db.String(30), nullable=False)
     image_link = db.Column(db.Text)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
     
-    act = db.relationship('Act', backref=db.backref('character'))
-
-    def __init__(self, mbti, name, image_link):
+    def __init__(self, mbti, name, image_link, movie_id):
         self.mbti = mbti
         self.name = name
         self.image_link = image_link
-
-
-class Act(db.Model):
-    id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
-    actor_id = db.Column(db.Integer, db.ForeignKey('actor.id'))
-    character_id = db.Column(db.Integer, db.ForeignKey('character.id'))
-    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
-
-    def __init__(self, actor_id, character_id, movie_id):
-        self.actor_id = actor_id
-        self.character_id = character_id
-        self.movie_id = movie_id
+        movie_id = movie_id
 
 
 class Satisfaction(db.Model):
