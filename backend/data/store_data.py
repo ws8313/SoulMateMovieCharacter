@@ -31,6 +31,13 @@ def store_options():
         db.session.add(option_2)
         db.session.commit()
 
+def store_compatibility():
+    mbti_list = ["ENTP", "ISFJ", "ESFJ", "INTP", "ENFJ", "ISTP", "ESTP", "INFJ", "ESFP", "INTJ", "ENTJ", "ISFP", "ESTJ", "INFP", "ENFP", "ISTJ"]
+
+    for i in range(0, len(mbti_list), 2):
+        db.session.add(Compatibility(mbti_list[i], mbti_list[i+1]))
+        db.session.add(Compatibility(mbti_list[i+1], mbti_list[i]))
+        db.session.commit()
 
 def _store_user_for_test():
 
@@ -87,3 +94,6 @@ def store_init_data():
     _store_user_for_test()
     _store_answers_for_test()
     _store_test_data()
+    store_compatibility()
+
+
