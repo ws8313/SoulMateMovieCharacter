@@ -6,11 +6,11 @@ import search_query
 
 client_id = "mIi3pzvEmKNwGSH54RZS"
 client_secret = "Gk_CbiaUFu"
-df = pd.DataFrame(columns=['code', 'title', 'link', 'image', 'pubDate', 'director', 'actors', 'rating'])
+df = pd.DataFrame(columns=['movie_index', 'code', 'title', 'link', 'image', 'pubDate', 'director', 'actors', 'rating'])
 movie_data = search_query.data
 index = 0
 
-for j in range(10):
+for j in range(len(movie_data['index'])):
     movie_index = movie_data['index'][j]
     movie = movie_data['movie'][j]
     movie = movie.split('(')[0].strip()
@@ -19,6 +19,10 @@ for j in range(10):
     url = f"https://openapi.naver.com/v1/search/movie.json?query={movie}"
     res = requests.get(url, headers=header_params)
     data = res.json()
+    
+    if 'items' not in data:
+        print(movie)
+        continue
 
     for i in range(len(data['items'])):
         index += 1
@@ -32,10 +36,10 @@ for j in range(10):
         actors = data['items'][i]['actor'].split('|')[:-1]
         rating = float(data['items'][i]['userRating'])
 
-        df.loc[index] = [code, title, link, image, date, director, actors, rating]
+        df.loc[index] = [movie_index, code, title, link, image, date, director, actors, rating]
 
         # # curl 요청
         # os.system("curl " + image + " > img/poster" +
         #           str(movie_index) + str(i) + ".jpg")
 
-df.to_csv('data/naver_movie.csv', encoding='euc-kr')
+df.to_csv('data/naver_movie.csv', encoding='utf-8')
