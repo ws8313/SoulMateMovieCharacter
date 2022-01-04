@@ -63,7 +63,7 @@ class Movie(db.Model):
     image_link = db.Column(db.Text)
     pub_year = db.Column(db.Integer)
     director = db.Column(db.String(30))
-    rating = db.Column(db.Integer)
+    rating = db.Column(db.Float)
     story = db.Column(db.Text)
     run_time = db.Column(db.Integer)
 
