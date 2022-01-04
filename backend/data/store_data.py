@@ -44,7 +44,7 @@ def store_answers_for_test():
 
 
 def store_init_data():
-    # store_user_for_test()
+    store_user_for_test()
     store_questions()
     store_options()
     store_answers_for_test()
