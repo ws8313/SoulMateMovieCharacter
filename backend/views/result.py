@@ -93,7 +93,6 @@ class Top10Movies(Resource):
         top10 = db.session.query(Satisfaction.movie_id, func.avg(Satisfaction.user_rating)).filter(Satisfaction.user_id in (db.session.query(User.id).filter(User.mbti == "ISFJ").all())).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc).limit(10)
 
         print(top10)
-        # top10 = ['Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1', 'Iron man 1']
         word_cloud = "imgurl"
         return {
             'top10': top10,

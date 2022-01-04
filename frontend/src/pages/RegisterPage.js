@@ -11,22 +11,22 @@ const LoginPage = () => {
 
     const history = useHistory();
 
-    const onSubmit = (e) => {
-        e.preventDefault();
+    const onSubmit = () => {
         axios
             .post("/user/register", {
                 "id": userId,
                 "pw": password,
                 "pw2": passwordCheck
-            })
+            },)
             .then((res) => {
                 console.log(res)
-                history.push("/LoginPage");
+                history.push("/");
             })
             .catch((error) => {
                 console.log(error);
             })
         }
+    console.log(userId, password, passwordCheck)
 
     return (
         <div>

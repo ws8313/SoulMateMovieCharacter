@@ -42,7 +42,7 @@ class Login(Resource):
         else:
             login_user(user_data)
             # 로그인 진행
-            return {'result': 'success'}, 200  
+            return {'result': 'success'}  
     
     # def get(self):
     #     return render_template("login.html")
