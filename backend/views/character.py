@@ -9,21 +9,18 @@ MbtiCharacter = Namespace(
 )
 
 matching_fields = MbtiCharacter.model('Mbti Character', {
-    'character_name': fields.List(fields.String),
-    'character_image': fields.List(fields.String)
+    'characters_info': fields.List(fields.List(fields.String, example=[18,
+      "Luna Lovegood",
+      "https://www.personality-database.com/profile_images/717.png?=undefined"]))
 })
-# 공통 코드를 함수화 시켜 따로 보관, mbti에 맞는 캐릭터를 출력
+
+# 공통 코드를 함수화 시켜 따로 보관, mbti에 맞는 캐릭터의 정보를 출력
 def ShowCharacter(mbti):
     character_list = Character.query.filter(Character.mbti == mbti).all()
-
-    character_id = [int(getattr(o, Character.id.name)) for o in character_list]
-    character_name = [str(getattr(o, Character.name.name)) for o in character_list]
-    character_image = [str(getattr(o, Character.image_link.name)) for o in character_list]
+    characters_info = [[ch.id, ch.name, ch.image_link] for ch in character_list]
 
     return {
-        'character_id': character_id,
-        'character_name': character_name,
-        'character_image': character_image
+        'character_info': characters_info
     }, 200
 
 @login_manager.user_loader
@@ -35,6 +32,7 @@ def load_user(user_id):
 class UserCharacter(Resource):
     @MbtiCharacter.response(200, 'Success', matching_fields)
     def get(self):
+        """mbti가 같은 character 출력"""
         user = User.query.filter(User.id == current_user.id).first()
         return ShowCharacter(user.mbti)
         
@@ -43,6 +41,7 @@ class UserCharacter(Resource):
 class CompatibleMbti(Resource):
     @MbtiCharacter.response(200, 'Success', matching_fields)
     def get(self):
+        """mbti궁합이 맞는 chracter 출력"""
         user = User.query.filter(User.id == current_user.id).first()
         compatible_mbti = Compatibility.query.filter(Compatibility.user_mbti == user.mbti).first()
         return ShowCharacter(compatible_mbti.compatible_mbti)
@@ -54,6 +53,7 @@ class CompatibleMbti(Resource):
 # class UserCharacter(Resource):
 #     @MbtiCharacter.response(200, 'Success', matching_fields)
 #     def get(self, mbti):
+#         """mbti가 같은 character 출력"""
 #         return ShowCharacter(mbti)
 
 # @MbtiCharacter.route('/compatibility/<string:mbti>')
@@ -61,5 +61,6 @@ class CompatibleMbti(Resource):
 # class CompatibleMbti(Resource):
 #     @MbtiCharacter.response(200, 'Success', matching_fields)
 #     def get(self, mbti):
+#         """mbti궁합이 맞는 chracter 출력"""
 #         compatible_mbti = Compatibility.query.filter(Compatibility.user_mbti == mbti).first()
 #         return ShowCharacter(compatible_mbti.compatible_mbti)
