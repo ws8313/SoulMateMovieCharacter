@@ -90,11 +90,17 @@ class Top10Movies(Resource):
         # 워드 클라우드 보여주기
 
         same_mbti_users = db.session.query(User.id).filter(User.mbti == "ISFP")
-        top10 = db.session.query(Satisfaction.movie_id, func.avg(Satisfaction.user_rating).label('avg_rating')).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10).all()
+        
+        # top10 = db.session.query(Satisfaction.movie_id, func.avg(Satisfaction.user_rating).label('avg_rating')).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
+
+        top10 = db.session.query(Satisfaction.movie_id).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
+
+        movie_infos = db.session.query(Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(top10)).all()
 
         # TODO: 위 정보 가지고 영화 데이터까지 조인해서 읽어오기!
 
         print(top10)
+        print(movie_infos)
         word_cloud = "imgurl"
         return {
             # 'top10': top10,
