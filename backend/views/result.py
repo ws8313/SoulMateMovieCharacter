@@ -96,7 +96,7 @@ class Top10Movies(Resource):
         """현재 사용자와 같은 유형에게 인기있는 영화 Top 10 정보, 워드 클라우드 전달하는 api.
         영화 정보 : 한글 제목(str), 영어 제목(str), 이미지 url(str), 개봉일(int), 감독(str), 평점(float), 스토리(str), 런타임(int), 장르(str list)"""
 
-        same_mbti_users = db.session.query(User.id).filter(User.mbti == "ISFP")
+        same_mbti_users = db.session.query(User.id).filter(User.mbti == current_user.mbti)
         
         # TODO: 유저 평점도 넘길 수 있는 방법 찾아보기
         # top10 = db.session.query(Satisfaction.movie_id, func.avg(Satisfaction.user_rating).label('avg_rating')).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
