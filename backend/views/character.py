@@ -40,11 +40,7 @@ total_character_N_movies_fields = MbtiCharacter.model('Characters and Movies Lis
 })
 
 satisfaction_fields = MbtiCharacter.model('User Satisfaction for movies', {
-    'satisfaction_list': fields.List(fields.Raw, example = 
-        [
-        fields.Integer(description="사용자가 평가한 영화의 id", example=1),
-        fields.Float(description="사용자의 만족도", example=7.5)
-        ]
+    'satisfaction_list': fields.List(fields.Float, example = [[1, 9.8], [2, 8.5]]
     )
 })
 
@@ -106,7 +102,8 @@ class MovieSatisfactionList(Resource):
     @MbtiCharacter.response(200, 'success')
     @MbtiCharacter.response(500, 'fail')
     def post(self):
-        """어떤 영화에 대해 만족도가 얼마인지 저장하기 위한 api"""
+        """어떤 영화에 대해 만족도가 얼마인지 저장하기 위한 api
+        예시처럼 [사용자가 평가한 영화의 id, 사용자 평점]의 리스트를 satisfaction_list의 value값으로 딕셔너리 형태로 데이터를 보내면 됩니다."""
         satisfaction_list = request.json.get('satisfaction_list')
         for satisfaction in satisfaction_list:
             db.session.add(Satisfaction(current_user.id, satisfaction[0], satisfaction[1]))
