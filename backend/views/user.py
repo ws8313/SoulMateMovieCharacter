@@ -28,6 +28,7 @@ def load_user(user_id):
 class Login(Resource):
     @UserManagement.expect(login_fields)
     @UserManagement.response(200, 'success')
+    @UserManagement.response(202, 'already_exists')
     @UserManagement.response(500, 'fail')
     def post(self):
         user_id = request.json.get('login_id')
@@ -77,4 +78,4 @@ class Register(Resource):
             #회원가입 성공
             return {'result': 'success'}, 200
         else:
-            return {'result': 'existed_id'}, 500
+            return {'result': 'id_already_exists'}, 202
