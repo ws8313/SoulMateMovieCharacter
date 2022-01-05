@@ -2,6 +2,7 @@ from flask_restx import Resource, Namespace, fields
 from models import *
 from flask_login import current_user
 from app import login_manager
+from flask import request
 import json
 
 MbtiCharacter = Namespace(
@@ -38,6 +39,15 @@ total_character_N_movies_fields = MbtiCharacter.model('Characters and Movies Lis
         }))
 })
 
+satisfaction_fields = MbtiCharacter.model('User Satisfaction for movies', {
+    'satisfaction_list': fields.List(fields.Raw, example = 
+        [
+        fields.Integer(description="사용자가 평가한 영화의 id", example=1),
+        fields.Float(description="사용자의 만족도", example=7.5)
+        ]
+    )
+})
+
 
 def row2dict(row):
     dictionary = {}
@@ -56,9 +66,11 @@ def ShowCharacter(mbti):
         'character_info': characters_info
     }, 200
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.filter(User.id == user_id).first()
+
 
 # # 기본 형태 유저의 mbti를 가지고 캐릭터 출력
 # @MbtiCharacter.route('/')
@@ -89,6 +101,7 @@ class UserCharacter(Resource):
         """mbti가 같은 character 출력"""
         return ShowCharacter(mbti)
 
+
 @MbtiCharacter.route('/compatibility/<string:mbti>')
 @MbtiCharacter.doc(params={'mbti': '검색할 mbti'})
 class CompatibleMbti(Resource):
@@ -97,6 +110,24 @@ class CompatibleMbti(Resource):
         """mbti궁합이 맞는 chracter 출력"""
         compatible_mbti = Compatibility.query.filter(Compatibility.user_mbti == mbti).first()
         return ShowCharacter(compatible_mbti.compatible_mbti)
+
+
+@MbtiCharacter.route('/movie_list')
+class MovieSatisfactionList(Resource):
+    @MbtiCharacter.expect(satisfaction_fields)
+    @MbtiCharacter.response(200, 'success')
+    @MbtiCharacter.response(500, 'fail')
+    def post(self):
+        """어떤 영화에 대해 만족도가 얼마인지 저장하기 위한 api"""
+        satisfaction_list = request.json.get('satisfaction_list')
+        for satisfaction in satisfaction_list:
+            db.session.add(Satisfaction(current_user.id, satisfaction[0], satisfaction[1]))
+        db.session.commit()
+
+        return {
+            "post": "success"
+        }
+
 
 @MbtiCharacter.route('/movie_list/<string:mbti>')
 @MbtiCharacter.doc(params={'mbti': '등장한 영화 리스트를 볼 캐릭터의 mbti'})
