@@ -17,6 +17,9 @@ const TestCompletedPage = ({ history }) => {
         }
         getMBTI();
     }, [userMBTI]);
+
+    const MbtiCharacterClickHandler = () => {
+    }
     
     return (
         <div>
@@ -33,7 +36,7 @@ const TestCompletedPage = ({ history }) => {
             </div>
             
             <div>
-                <button>나와 같은 유형인 캐릭터 확인하기</button>
+                <button onClick={ () => { history.push("/MbtiCharacterPage") }}>나와 같은 유형인 캐릭터 확인하기</button>
             </div>
 
             <div>

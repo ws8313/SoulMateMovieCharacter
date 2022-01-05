@@ -6,6 +6,7 @@ import RegisterPage from './pages/RegisterPage';
 import MainPage from './pages/MainPage';
 import TestPage from './pages/TestPage';
 import TestCompletedPage from './pages/TestCompletedPage';
+import MbtiCharacterPage from './pages/MbtiCharacterPage';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/TestCompletedPage" component={ TestCompletedPage } />
         <Route path="/MainPage" component={ MainPage } />
         <Route path="/RegisterPage" component={ RegisterPage } />
+        <Route path="/MbtiCharacterPage" component={ MbtiCharacterPage } />
       </Switch>
     </div>
   );
