@@ -1,5 +1,6 @@
 from flask import request
 from flask_restx import Resource, Namespace, fields
+from sqlalchemy.sql.expression import column
 from models import *
 from flask_login import current_user
 from collections import Counter
@@ -91,19 +92,19 @@ class Top10Movies(Resource):
 
         same_mbti_users = db.session.query(User.id).filter(User.mbti == "ISFP")
         
+        # TODO: 유저 평점도 넘길 수 있는 방법 찾아보기
         # top10 = db.session.query(Satisfaction.movie_id, func.avg(Satisfaction.user_rating).label('avg_rating')).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
 
         top10 = db.session.query(Satisfaction.movie_id).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
 
-        movie_infos = db.session.query(Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(top10)).all()
+        top10_movie_infos = db.session.query(Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(top10)).all()
 
-        # TODO: 위 정보 가지고 영화 데이터까지 조인해서 읽어오기!
+        top10_movie_infos = [list(row) for row in top10_movie_infos]
+        print(top10_movie_infos)
 
-        print(top10)
-        print(movie_infos)
-        word_cloud = "imgurl"
+        # TODO: word cloud
+        word_cloud = "I have to add image url. I will do when DA give word cloud data to me. please wait..."
         return {
-            # 'top10': top10,
-            # 'word_cloud': word_cloud
-            'result': 'success'
+            'top10_movie_infos': top10_movie_infos,
+            'word_cloud': word_cloud
         }
