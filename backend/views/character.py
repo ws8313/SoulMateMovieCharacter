@@ -109,12 +109,12 @@ class MovieListWithCharacters(Resource):
         """mbti 에 해당하는 캐릭터가 등장한 영화 리스트"""
         # (캐릭터, 캐릭터의 등장 영화 리스트)의 리스트
         character_N_movie_list = []
-        characters = list(ShowCharacter(mbti))
+        characters = ShowCharacter(mbti)[0]['character_info']
         for c in characters:
             # 영화 리스트 검색
             character = {}
-            character['character_name'] = "캐릭터 이름" # c[1] : 캐릭터 이름
-            movie_list = db.session.query(CharacterInMovie.movie_id).filter(CharacterInMovie.character_id == 1) # c[0] : 캐릭터 id
+            character['character_name'] = c[1] # c[1] : 캐릭터 이름
+            movie_list = db.session.query(CharacterInMovie.movie_id).filter(CharacterInMovie.character_id == c[0]) # c[0] : 캐릭터 id
 
             movie_infos = []
             for row in movie_list:
