@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const TestCompletedPage = ({ history }) => {
-    const ans = []
-            for (let i = 0; i <= localStorage.length - 1; i++) {
-                ans[i] = localStorage.getItem(i);
-                console.log(ans)
-            }
-            if(ans && ans.length > 0) {
-                console.log(ans)
-            }
+    const [userMBTI, setUserMBTI] = useState("")
 
+    useEffect(() => {
+        async function getMBTI() {
+            try {
+                const res = await axios.get("/result/")
+                setUserMBTI(res.data.user_mbti)
+                console.log(res)
+                console.log(userMBTI)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getMBTI();
+    }, [userMBTI]);
+    
     return (
         <div>
             <div>

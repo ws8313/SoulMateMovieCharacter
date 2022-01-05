@@ -21,7 +21,7 @@ answers_fields = Result.inherit('User Answers or direct input mbti', mbti_fields
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.filter_by(id=user_id).first()
+    return User.query.filter(User.id == user_id).first()
 
 @Result.route('/')
 class ShowResult(Resource):
