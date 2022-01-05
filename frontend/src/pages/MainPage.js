@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import prevbtn from "../img/prevbtn.png";
+import Modal from "../components/Modal";
 
 const MainPage = () => {
+    const [showModal, setShowModal] = useState(false);
+
     const history = useHistory();
+
+    const openModal = () => {
+        setShowModal(!showModal);
+    }
 
     return (
         <div id="container">
@@ -31,7 +38,8 @@ const MainPage = () => {
             </div>
 
             <div>
-                <button id="rightbtn">바로 결과 보기</button>
+                <button id="rightbtn" onClick={openModal}>바로 결과 보기</button>
+                { showModal && <Modal openModal={openModal}></Modal>}
             </div>
         </div>
     )
