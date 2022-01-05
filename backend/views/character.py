@@ -60,49 +60,48 @@ def ShowCharacter(mbti):
 def load_user(user_id):
     return User.query.filter(User.id == user_id).first()
 
-# 기본 형태 유저의 mbti를 가지고 캐릭터 출력
-@MbtiCharacter.route('/')
+# # 기본 형태 유저의 mbti를 가지고 캐릭터 출력
+# @MbtiCharacter.route('/')
+# class UserCharacter(Resource):
+#     @MbtiCharacter.response(200, 'Success', matching_fields)
+#     def get(self):
+#         """mbti가 같은 character 출력"""
+#         user = User.query.filter(User.id == current_user.id).first()
+#         return ShowCharacter(user.mbti)
+        
+# # 유저와 잘맞는 mbti를 가지고 캐릭터 출력
+# @MbtiCharacter.route('/compatibility')
+# class CompatibleMbti(Resource):
+#     @MbtiCharacter.response(200, 'Success', matching_fields)
+#     def get(self):
+#         """mbti궁합이 맞는 chracter 출력"""
+#         user = User.query.filter(User.id == current_user.id).first()
+#         compatible_mbti = Compatibility.query.filter(Compatibility.user_mbti == user.mbti).first()
+#         return ShowCharacter(compatible_mbti.compatible_mbti)
+
+
+#테스트용 코드
+@MbtiCharacter.route('/<string:mbti>')
 @MbtiCharacter.doc(params={'mbti': '검색할 mbti'})
 class UserCharacter(Resource):
     @MbtiCharacter.response(200, 'Success', matching_fields)
-    def get(self):
+    def get(self, mbti):
         """mbti가 같은 character 출력"""
-        user = User.query.filter(User.id == current_user.id).first()
-        return ShowCharacter(user.mbti)
-        
-# 유저와 잘맞는 mbti를 가지고 캐릭터 출력
-@MbtiCharacter.route('/compatibility')
+        return ShowCharacter(mbti)
+
+@MbtiCharacter.route('/compatibility/<string:mbti>')
+@MbtiCharacter.doc(params={'mbti': '검색할 mbti'})
 class CompatibleMbti(Resource):
     @MbtiCharacter.response(200, 'Success', matching_fields)
-    def get(self):
+    def get(self, mbti):
         """mbti궁합이 맞는 chracter 출력"""
-        user = User.query.filter(User.id == current_user.id).first()
-        compatible_mbti = Compatibility.query.filter(Compatibility.user_mbti == user.mbti).first()
+        compatible_mbti = Compatibility.query.filter(Compatibility.user_mbti == mbti).first()
         return ShowCharacter(compatible_mbti.compatible_mbti)
-
-
-# #테스트용 코드
-# @MbtiCharacter.route('/<string:mbti>')
-# @MbtiCharacter.doc(params={'mbti': '검색할 mbti'})
-# class UserCharacter(Resource):
-#     @MbtiCharacter.response(200, 'Success', matching_fields)
-#     def get(self, mbti):
-#         """mbti가 같은 character 출력"""
-#         return ShowCharacter(mbti)
-
-# @MbtiCharacter.route('/compatibility/<string:mbti>')
-# @MbtiCharacter.doc(params={'mbti': '검색할 mbti'})
-# class CompatibleMbti(Resource):
-#     @MbtiCharacter.response(200, 'Success', matching_fields)
-#     def get(self, mbti):
-#         """mbti궁합이 맞는 chracter 출력"""
-#         compatible_mbti = Compatibility.query.filter(Compatibility.user_mbti == mbti).first()
-#         return ShowCharacter(compatible_mbti.compatible_mbti)
 
 @MbtiCharacter.route('/movie_list/<string:mbti>')
 @MbtiCharacter.doc(params={'mbti': '등장한 영화 리스트를 볼 캐릭터의 mbti'})
 class MovieListWithCharacters(Resource):
-    @MbtiCharacter.response(200, 'Success')
+    @MbtiCharacter.response(200, 'Success', total_character_N_movies_fields)
     @MbtiCharacter.response(500, 'fail')
     def get(self, mbti):
         """mbti 에 해당하는 캐릭터가 등장한 영화 리스트"""
@@ -129,7 +128,7 @@ class MovieListWithCharacters(Resource):
             character['movies'] = movie_infos
             character_N_movie_list.append(character)
         
-        print(json.dumps(character_N_movie_list, ensure_ascii=False, indent=4))
+        # print(json.dumps(character_N_movie_list, ensure_ascii=False, indent=4))
         
         return {
             'total_character_N_movies': character_N_movie_list
