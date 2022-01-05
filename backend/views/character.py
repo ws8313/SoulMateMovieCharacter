@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-
 from flask_restx import Resource, Namespace, fields
-from flask_restx.marshalling import marshal
 from models import *
 from flask_login import current_user
 from app import login_manager
@@ -103,13 +100,14 @@ class CompatibleMbti(Resource):
 @MbtiCharacter.route('/movie_list/<string:mbti>')
 @MbtiCharacter.doc(params={'mbti': '등장한 영화 리스트를 볼 캐릭터의 mbti'})
 class MovieListWithCharacters(Resource):
-    @MbtiCharacter.response(200, 'Success', total_character_N_movies_fields)
+    @MbtiCharacter.response(200, 'Success')
     @MbtiCharacter.response(500, 'fail')
     def get(self, mbti):
         """mbti 에 해당하는 캐릭터가 등장한 영화 리스트"""
         # (캐릭터, 캐릭터의 등장 영화 리스트)의 리스트
         character_N_movie_list = []
         characters = ShowCharacter(mbti)[0]['character_info']
+        print(characters)
         for c in characters:
             # 영화 리스트 검색
             character = {}
@@ -119,7 +117,8 @@ class MovieListWithCharacters(Resource):
             movie_infos = []
             for row in movie_list:
                 movie_info = db.session.query(Movie).filter(Movie.id == row.movie_id).first()
-                temp_dict = row2dict(movie_info)
+                temp_dict = {}
+                temp_dict.update(row2dict(movie_info))
                 genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == row.movie_id).all()
                 genres = [str(getattr(g, MovieGenre.genre.name)) for g in genres]
                 temp_dict['genres'] = genres
@@ -128,7 +127,7 @@ class MovieListWithCharacters(Resource):
             character['movies'] = movie_infos
             character_N_movie_list.append(character)
         
-        # print(json.dumps(character_N_movie_list, ensure_ascii=False, indent=4))
+        print(json.dumps(character_N_movie_list, ensure_ascii=False, indent=4))
         
         return {
             'total_character_N_movies': character_N_movie_list
