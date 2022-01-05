@@ -18,26 +18,27 @@ matching_fields = MbtiCharacter.model('Mbti Character', {
       "https://www.personality-database.com/profile_images/717.png?=undefined"]))
 })
 
-movie_info_fields = MbtiCharacter.model('Movie info', {
-    'id': fields.Integer(description="movie id"),
-    'kor_title': fields.String,
-    'eng_title': fields.String,
-    'image_link': fields.String,
-    'pub_year': fields.Integer,
-    'director': fields.String,
-    'rating': fields.Float,
-    'story': fields.String,
-    'run_time': fields.Integer,
-    'genres': fields.List(fields.String)
-})
-
-character_N_movies_fields = MbtiCharacter.model('Character and Movies', {
-    'character_name': fields.String(description="캐릭터 이름"),
-    'movies': fields.List(fields.Raw(movie_info_fields))
-})
-
 total_character_N_movies_fields = MbtiCharacter.model('Characters and Movies List', {
-    'total_character_N_movies': fields.List(fields.Raw(character_N_movies_fields))
+    'total_character_N_movies': fields.List(fields.List(fields.List(fields.String), example=
+        {
+            "character_name": "Dobby",
+            "movies": [
+                {
+                    "id": "7",
+                    "kor_title": "해리 포터와 죽음의 성물 - 1부",
+                    "eng_title": "Harry Potter And The Deathly Hallows: Part 1",
+                    "image_link": "https://ssl.pstatic.net/imgmovie/mdi/mit110/0679/67901_P52_160214.jpg",
+                    "pub_year": "2010",
+                    "director": "데이빗 예이츠",
+                    "rating": "8.21",
+                    "story": "덤블도어 교장의 죽음 이후, 마법부는 죽음을 먹는 자들에게 점령당하고 호그와트는 위기에 빠진다. 이에 해리와 론, 헤르미온느는 볼드모트를 물리칠 수 있는 유일한 단서이자 그의 영혼이 담긴 ‘성물’ 호크룩스를 찾기 위한 위험한 여정에 나선다. 그러나 영혼이 연결되어 있는 볼드모트와 해리. 볼드모트를 파괴하면 해리의 목숨 또한 위태로워질지 모른다! 죽느냐 죽이느냐, 이제 그 마지막 대결은 극한을 향해 치닫는데…",
+                    "run_time": "146",
+                    "genres": [
+                        "판타지"
+                    ]
+                }
+            ]
+        }))
 })
 
 
@@ -64,6 +65,7 @@ def load_user(user_id):
 
 # 기본 형태 유저의 mbti를 가지고 캐릭터 출력
 @MbtiCharacter.route('/')
+@MbtiCharacter.doc(params={'mbti': '검색할 mbti'})
 class UserCharacter(Resource):
     @MbtiCharacter.response(200, 'Success', matching_fields)
     def get(self):
