@@ -1,5 +1,6 @@
 from flask import request
 from flask_restx import Resource, Namespace, fields
+from sqlalchemy.sql.expression import column
 from models import *
 from flask_login import current_user
 from collections import Counter
@@ -17,6 +18,11 @@ mbti_fields = Result.model('User MBTI', {
 
 answers_fields = Result.inherit('User Answers or direct input mbti', mbti_fields, {
     'answers': fields.List(fields.String)
+})
+
+same_mbti_top10_fields = Result.model('Same MBTI Top 10 Movies', {
+    'top10_movie_infos': fields.List(fields.List(fields.String)),
+    'word_cloud': fields.String(description="워드 클라우드 link")
 })
 
 @login_manager.user_loader
@@ -84,20 +90,36 @@ class ShowResult(Resource):
 
 @Result.route('/same/top10')
 class Top10Movies(Resource):
+    @Result.response(200, 'Success', same_mbti_top10_fields)
+    @Result.response(500, 'fail')
     def get(self):
-        # 같은 유형에게 인기있는 영화 top10 보여주기
-        # 영화 정보 : 이름, 이미지, 개봉일, 감독, 평점, 런타임, 배우, 장르
-        # 워드 클라우드 보여주기
+        """현재 사용자와 같은 유형에게 인기있는 영화 Top 10 정보, 워드 클라우드 전달하는 api.
+        영화 정보 : 한글 제목(str), 영어 제목(str), 이미지 url(str), 개봉일(int), 감독(str), 평점(float), 스토리(str), 런타임(int), 장르(str list)"""
 
         same_mbti_users = db.session.query(User.id).filter(User.mbti == "ISFP")
-        top10 = db.session.query(Satisfaction.movie_id, func.avg(Satisfaction.user_rating).label('avg_rating')).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10).all()
+        
+        # TODO: 유저 평점도 넘길 수 있는 방법 찾아보기
+        # top10 = db.session.query(Satisfaction.movie_id, func.avg(Satisfaction.user_rating).label('avg_rating')).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
 
-        # TODO: 위 정보 가지고 영화 데이터까지 조인해서 읽어오기!
+        # print(current_user)
+        top10_movie_in_same_mbti = db.session.query(Satisfaction.movie_id).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
 
-        print(top10)
-        word_cloud = "imgurl"
+        top10_movie_infos = db.session.query(Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(top10_movie_in_same_mbti)).all()
+
+        top10_movie_infos = [list(row) for row in top10_movie_infos]
+        # print(top10_movie_infos)
+
+        # 장르 삽입
+        for i in range(top10_movie_in_same_mbti.count()):
+            movie_id = str(getattr(top10_movie_in_same_mbti[i], Satisfaction.movie_id.name))
+            genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == movie_id).all()
+            genres = [str(getattr(row, MovieGenre.genre.name)) for row in genres]
+            top10_movie_infos[i].append(genres)
+        
+
+        # TODO: word cloud
+        word_cloud = "I have to add image url. I will do when DA give word cloud data to me. please wait..."
         return {
-            # 'top10': top10,
-            # 'word_cloud': word_cloud
-            'result': 'success'
+            'top10_movie_infos': top10_movie_infos,
+            'word_cloud': word_cloud
         }
