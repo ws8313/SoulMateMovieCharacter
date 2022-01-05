@@ -27,10 +27,12 @@ character_N_movies_list_fields = MbtiCharacter.model('Characters and Movies List
 def ShowCharacter(mbti):
     character_list = Character.query.filter(Character.mbti == mbti).all()
 
+    character_id = [int(getattr(o, Character.id.name)) for o in character_list]
     character_name = [str(getattr(o, Character.name.name)) for o in character_list]
     character_image = [str(getattr(o, Character.image_link.name)) for o in character_list]
 
     return {
+        'character_id': character_id,
         'character_name': character_name,
         'character_image': character_image
     }, 200
