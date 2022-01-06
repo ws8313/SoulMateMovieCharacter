@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup as bs
 from urllib.request import urlretrieve
 
 data = pd.read_csv('data/naver_movie.csv', encoding='utf-8')
+df = pd.DataFrame(columns=['movie_index', 'code', 'mbti', 'title', 'subtitle', 'genre', 'story', 'image', 'pubDate', 'director', 'actors', 'rating', 'rtime'])
 genre_store = []
 story_store = []
 rtime_store = []
@@ -19,10 +20,10 @@ def cleanText(readData):
     return text
 
 def isNone(readData):
-    if len(readData) == 0:
-        data_str = 'None'
-    else:
+    if readData:
         data_str = ' '.join(readData)
+    else:
+        data_str = 'None'
         
     return data_str
 
@@ -35,8 +36,9 @@ def crawling():
         # 네이버영화의 영화 코드 지정
         print(len(data['code']))
         for i in range(len(data['code'])):
+        # for i in range(10):
             movie_code = str(data['code'][i])
-            print(movie_code)
+
             raw = requests.get("https://movie.naver.com/movie/bi/mi/basic.nhn?code=" + movie_code)
             html = bs(raw.text, 'html.parser')
 
@@ -60,24 +62,23 @@ def crawling():
                     
                 story_list = [s.text for s in story]
                 story_str = isNone(story_list)
-                
-                genre_store.append(genre_str)
-                story_store.append(story_str)
                     
-                if rtime == None:
-                    rtime_store.append('None')
+                if rtime:
+                    rtime_str = rtime.text
                 else:
-                    rtime_store.append(rtime.text)
-                
+                    rtime_str = 'None'
+            
+            df.loc[i] = [data['movie_index'][i], data['code'][i], data['mbti'][i], data['title'][i], data['subtitle'][i], genre_str, story_str, data['image'][i], data['pubDate'][i], data['director'][i], data['actors'][i], data['rating'][i], rtime_str]
 
-            print(len(data['code']), " 중 ", i, "번째")
+            # print(len(data['code']), " 중 ", i, "번째")
 
     except Exception as ex:
         print("에러발생", ex)
     finally:
         print("완료")
     
-    data['genre'] = genre_store
-    data['story'] = story_store
-    data['runTime'] = rtime_store
-    data.to_csv('data/naver_movie_story.csv', encoding='utf-8')
+    # data['genre'] = genre_store
+    # data['story'] = story_store
+    # data['runTime'] = rtime_store
+    df.to_csv('data/naver_movie_story.csv', encoding='utf-8')
+    df.to_json('data/naver_movie_story.json', orient='table')

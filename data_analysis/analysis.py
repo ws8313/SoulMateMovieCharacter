@@ -1,14 +1,40 @@
 from konlpy.tag import *
+import pandas as pd
+import re
+from sklearn.feature_extraction.text import TfidfVectorizer
 import nltk
 
 # POS tag a sentence
-sentence = u'만 6세 이하의 초등학교 취학 전 자녀를 양육하기 위해서는 맛있는 간식'
-words = Okt().pos(sentence)
+data = pd.read_csv('data/naver_movie_story.csv')
 
-words_filtering = [x for x, y in words if y in ['Noun', 'Adjective', 'Verb']]
+"""한글, 숫자, 영어 빼고 전부 제거"""
+def sub_special(s):
+  return re.sub(r'[^ㄱ-ㅎㅏ-ㅣ가-힣0-9a-zA-Z ]','',s)
 
-print(words)
-print(words_filtering)
+STOP_WORDS = ['의','가','이','은','들','는','좀','잘','걍','과','도','를','으로','자','에','와','한','하다']
+
+def morph_and_stopword(s):
+  token_ls = []
+  #형태소 분석
+  tmp = Okt().morphs(s, stem=True)
+
+  #불용어 처리
+  for token in tmp:
+    if token not in STOP_WORDS:
+      token_ls.append(token)
+
+# words = Okt().pos(sentence)
+# words_filtering = [x for x, y in words if y in ['Noun', 'Adjective', 'Verb']]
+
+sentence = data['story'][0]
+sentence = sub_special(sentence)
+words = morph_and_stopword(sentence)
+
+tfidf = TfidfVectorizer()
+tfidf_matrix = tfidf.fit_transform(words)
+
+print(tfidf_matrix.shape)
+
 
 # # Define a chunk grammar, or chunking rules, then chunk
 # grammar = """
