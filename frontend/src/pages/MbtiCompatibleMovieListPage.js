@@ -89,11 +89,11 @@ const MbtiCompatibleMovieListPage = () => {
             <div id="divider"></div>
 
             <div>
-                { movieList && movieList.map((item, idx) => {
+                { movieList && movieList.map((items, idx) => {
                     return (
                         <div>
-                            <p key={ idx }>{ item.character_name }</p>
-                            { item.movies.map((item, idx) => {
+                            <p key={ idx }>{ items.character_name }</p>
+                            { items.movies.map((item, idx) => {
                                 return (
                                     <div>
                                         <img key={ idx } src={ item.image_link } alt={ item.kor_title + " 포스터" } onClick={ () => clickHandler(item) } />

@@ -24,7 +24,7 @@ const Top10MovieInfoModal = ({ openModal, selectedMovie }) => {
 
     const handleClick = (value) => {
         setCurValue(value)
-        setMovieId(selectedMovie.id)
+        setMovieId(selectedMovie[0])
         setRating(value * 2)
 
         let list = [...satisfactionList]
@@ -45,6 +45,8 @@ const Top10MovieInfoModal = ({ openModal, selectedMovie }) => {
             ]]
         setSatisfactionList(list)
     }, [movieId, rating])
+
+    console.log(movieId, rating)
 
     const handleMouseOver = (value) => {
         setHoverValue(value)
@@ -69,22 +71,22 @@ const Top10MovieInfoModal = ({ openModal, selectedMovie }) => {
 
     console.log(selectedMovie)
     // console.log(curValue)
-    // console.log(movieId)
-    // console.log(rating)
-    // console.log(satisfactionList)
+    console.log(movieId)
+    console.log(rating)
+    console.log(satisfactionList)
 
     return (
         <div className={styles.modal_container}>
             <div className={styles.modal}>
                 <img src={closebtn} alt="closebtn" onClick={ openModal } className={styles.modal_button} />
-                <img src={selectedMovie[2]} />
-                <p>감독 : {selectedMovie[4]}</p>
-                <p>장르 : {selectedMovie[8]}</p>
-                <p>제목 : {selectedMovie[0]}</p>
-                <p>개봉년도 : {selectedMovie[3]}년</p>
-                <p>평점 : {selectedMovie[5]}점</p>
-                <p>러닝타임 : {selectedMovie[7]}분</p>
-                <p>소개 : {selectedMovie[6]}</p>
+                <img src={selectedMovie[3]} />
+                <p>감독 : {selectedMovie[5]}</p>
+                <p>장르 : {selectedMovie[9]}</p>
+                <p>제목 : {selectedMovie[1]}</p>
+                <p>개봉년도 : {selectedMovie[4]}년</p>
+                <p>평점 : {selectedMovie[6]}점</p>
+                <p>러닝타임 : {selectedMovie[8]}분</p>
+                <p>소개 : {selectedMovie[7]}</p>
                 <div className={styles.RatingContainer}>
                     <div className={styles.stars}>
                         {stars.map((_, index) => {
