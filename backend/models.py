@@ -30,8 +30,9 @@ class Question(db.Model):
 
     option = db.relationship('Option', backref=db.backref('question'))
 
-    def __init__(self, content):
+    def __init__(self, content, img_url):
         self.content = content
+        self.img_url = img_url
 
 
 class Option(db.Model):
