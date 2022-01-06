@@ -3,6 +3,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import prevbtn from "../img/prevbtn.png";
 import Top10MovieInfoModal from "../components/Top10MovieInfoModal";
+import NaverTop10MovieInfoModal from "../components/NaverTop10MovieInfoModal";
 
 
 const MbtiTop10Page = () => {
@@ -91,7 +92,7 @@ const MbtiTop10Page = () => {
                 { top10.top10_for_same_mbti_users && top10.top10_for_same_mbti_users.map((item, idx) => {
                     return (
                         <div key={ idx }>
-                            <img src={ item[2] } alt={ item[0] + "포스터" }  onClick={ () => clickHandler(item) } />
+                            <img src={ item[2] } alt={ item[0] + " 포스터" }  onClick={ () => clickHandler(item) } />
                             { showModal && <Top10MovieInfoModal openModal={openModal} selectedMovie={selectedMovie} />}
                             <p>{ item[0] }</p>
                         </div>
@@ -105,7 +106,7 @@ const MbtiTop10Page = () => {
                     return (
                         <div key={ idx }>
                             <img src={ item[3] } alt={ item[1] + "포스터" }  onClick={ () => clickHandler(item) } />
-                            { showModal && <Top10MovieInfoModal openModal={openModal} selectedMovie={selectedMovie} />}
+                            { showModal && <NaverTop10MovieInfoModal openModal={openModal} selectedMovie={selectedMovie} />}
                             <p>{ item[1] }</p>
                         </div>
                     )

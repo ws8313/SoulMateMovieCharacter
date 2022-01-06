@@ -28,9 +28,9 @@ const MbtiCompatiblePage = () => {
     useEffect(() => {
         async function getCompatibleCharacter() {
             try {
-                const res = await axios.get(`/character/1/${userMBTI}`)
+                const res = await axios.get("/character/1")
                 setCharList(res.data.character_info)
-                setCompatibleMBTI(res.data.chracters_mbti)
+                setCompatibleMBTI(res.data.characters_mbti)
                 console.log(res)
             } catch (error) {
                 console.log(error)
@@ -78,7 +78,7 @@ const MbtiCompatiblePage = () => {
                 { charList && charList.map((item, idx) => {
                     return (
                         <div key={ idx }>
-                            <img src={ item[2] } alt={ item[1] + "사진" } onClick={ clickHandler } />
+                            <img src={ item[2] } alt={ item[1] + " 사진" } onClick={ clickHandler } />
                             <p>{ item[1] }</p>
                         </div>
                     )

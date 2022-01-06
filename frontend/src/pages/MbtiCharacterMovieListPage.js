@@ -93,7 +93,7 @@ const MbtiCharacterMovieListPage = () => {
                             { items.movies.map((item, idx) => {
                                 return (
                                     <div>
-                                        <img key={ idx } src={ item.image_link } alt={ item.kor_title + "포스터" } onClick={ () => clickHandler(item) } />
+                                        <img key={ idx } src={ item.image_link } alt={ item.kor_title + " 포스터" } onClick={ () => clickHandler(item) } />
                                         { showModal && <MovieInfoModal openModal={openModal} movieList={movieList} selectedMovie={selectedMovie} />}
                                         <p>{ item.kor_title }</p>
                                     </div>
