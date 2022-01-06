@@ -1,4 +1,4 @@
-from flask import request, redirect, url_for, render_template
+from flask import request
 from flask_restx import Resource, Namespace, fields
 from flask_login import login_required, login_user, logout_user
 from app import login_manager
@@ -11,18 +11,20 @@ UserManagement = Namespace(
 )
 bcrypt = Bcrypt()
 login_fields = UserManagement.model('Login', {
-    'login_id': fields.String(description="id", example="tester"),
-    'login_pw': fields.String(description="pw", example="123")
+    'login_id': fields.String(description="id", example="elice"),
+    'login_pw': fields.String(description="pw", example="1234")
 })
 register_fields = UserManagement.model('Register', {
-    'id': fields.String(description="id", example="tester"),
-    'pw': fields.String(description="pw", example="123"),
-    'pw2': fields.String(description="pw2", example="123")
+    'id': fields.String(description="id", example="elice"),
+    'pw': fields.String(description="pw", example="1234"),
+    'pw2': fields.String(description="pw2", example="1234")
 })
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.filter(User.id == user_id).first()
+
 
 @UserManagement.route('/login')
 class Login(Resource):
@@ -43,10 +45,7 @@ class Login(Resource):
         else:
             login_user(user_data)
             # 로그인 진행
-            return {'result': 'success'}  
-    
-    # def get(self):
-    #     return render_template("login.html")
+            return {'result': 'success'}
 
 
 @UserManagement.route('/logout')

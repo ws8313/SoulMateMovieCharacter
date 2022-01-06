@@ -1,4 +1,3 @@
-from sqlalchemy.orm import backref
 from app import db
 from datetime import datetime
 from pytz import timezone
@@ -30,8 +29,9 @@ class Question(db.Model):
 
     option = db.relationship('Option', backref=db.backref('question'))
 
-    def __init__(self, content):
+    def __init__(self, content, img_url):
         self.content = content
+        self.img_url = img_url
 
 
 class Option(db.Model):

@@ -19,12 +19,19 @@ def create_app():
     login_manager.init_app(app)
     cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000/"}})
 
+    authorizations = {
+        "basicAuth" : {
+            "type" : "basic"
+        }
+    }
+
     api = Api(
         app,
         version='0.1',
         title="일리스 API Server",
         description="일리스 API Server",
         terms_url="/",
+        authorizations=authorizations,
     )
 
     # ORM
