@@ -11,11 +11,16 @@ const MbtiTop10Page = () => {
     const [selectedMovie, setSelectedMovie] = useState([]);
 
     const [showModal, setShowModal] = useState(false);
+    const [naverShowModal, setNaverShowModal] = useState(false);
 
     const history = useHistory();
 
     const openModal = () => {
         setShowModal(!showModal);
+    }
+
+    const NaverOpenModal = () => {
+        setNaverShowModal(!naverShowModal)
     }
 
     useEffect(() => {
@@ -92,9 +97,9 @@ const MbtiTop10Page = () => {
                 { top10.top10_for_same_mbti_users && top10.top10_for_same_mbti_users.map((item, idx) => {
                     return (
                         <div key={ idx }>
-                            <img src={ item[2] } alt={ item[0] + " 포스터" }  onClick={ () => clickHandler(item) } />
+                            <img src={ item[3] } alt={ item[1] + " 포스터" }  onClick={ () => clickHandler(item) } />
                             { showModal && <Top10MovieInfoModal openModal={openModal} selectedMovie={selectedMovie} />}
-                            <p>{ item[0] }</p>
+                            <p>{ item[1] }</p>
                         </div>
                     )
                 }) }
@@ -106,12 +111,13 @@ const MbtiTop10Page = () => {
                     return (
                         <div key={ idx }>
                             <img src={ item[3] } alt={ item[1] + "포스터" }  onClick={ () => clickHandler(item) } />
-                            { showModal && <NaverTop10MovieInfoModal openModal={openModal} selectedMovie={selectedMovie} />}
+                            { showModal && <Top10MovieInfoModal openModal={openModal} selectedMovie={selectedMovie} />}
                             <p>{ item[1] }</p>
                         </div>
                     )
                 }) }
             </div>
+
 
             <div>
                 <p>워드클라우드 {top10.word_cloud_src}</p>
