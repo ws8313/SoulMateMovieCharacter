@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+import prevbtn from "../img/prevbtn.png";
 
-const TestCompletedPage = ({ history }) => {
+const TestCompletedPage = () => {
     const [userMBTI, setUserMBTI] = useState("")
+
+    const history = useHistory();
 
     useEffect(() => {
         async function getMBTI() {
@@ -23,13 +27,15 @@ const TestCompletedPage = ({ history }) => {
     
     return (
         <div>
-            <div>
-                <button onClick={ () => { history.goBack() }}>뒤로가기</button>
+            <div id="btnbox" onClick={ () => { history.goBack() }}>
+                <img className="prevbtn" src={prevbtn} alt="prevbtn" />
             </div>
 
-            <div>
+            <div className="title">
                 <p>일리스</p>
             </div>
+
+            <div id="divider"></div>
 
             <div>
                 <div>테스트가 완료되었습니다</div>
@@ -40,11 +46,11 @@ const TestCompletedPage = ({ history }) => {
             </div>
 
             <div>
-                <button>나와 궁합이 잘 맞는 캐릭터 확인하기</button>
+                <button onClick={ () => { history.push("/MbtiCompatiblePage") }}>나와 궁합이 잘 맞는 캐릭터 확인하기</button>
             </div>
 
             <div>
-                <button>같은 유형에게 인기있는 영화 확인하기</button>
+                <button onClick={ () => { history.push("/MbtiTop10Page") }}>같은 유형에게 인기있는 영화 확인하기</button>
             </div>
         </div>
     )

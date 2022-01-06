@@ -17,11 +17,16 @@ const LoginPage = () => {
                 "pw2": passwordCheck
             })
             .then((res) => {
-                console.log(res)
-                history.push("/");
+                if (res.status && res.status === 202) {
+                    alert("이미 사용 중인 아이디입니다.")
+                    console.log(res.data.result)
+                } else {
+                    console.log(res)
+                    history.push("/")
+                }
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error)
             })
         }
     console.log(userId, password, passwordCheck)

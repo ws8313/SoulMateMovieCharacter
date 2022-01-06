@@ -5,7 +5,7 @@ import styles from "./Modal.module.css";
 import closebtn from "../img/closebtn.png";
 
 const Modal = ({ openModal }) => {
-    const [selected, setSelected] = useState("");
+    const [selected, setSelected] = useState("ISTJ");
 
     const history = useHistory();
 
