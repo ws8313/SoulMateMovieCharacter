@@ -59,6 +59,7 @@ def ShowCharacter(mbti):
     characters_info = [[ch.id, ch.name, ch.image_link] for ch in character_list]
 
     return {
+        'chracters_mbti': mbti,
         'character_info': characters_info
     }, 200
 
