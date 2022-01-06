@@ -39,8 +39,8 @@ total_character_N_movies_fields = MbtiCharacter.model('Characters and Movies Lis
 })
 
 satisfaction_fields = MbtiCharacter.model('User Satisfaction for movies', {
-    'satisfaction_list': fields.List(fields.Float, example = [[1, 9.8], [2, 8.5]]
-    )
+    'satisfaction_list': fields.List(fields.List(fields.Float
+    ), example = [[1, 9.8], [2, 8.5]])
 })
 
 
