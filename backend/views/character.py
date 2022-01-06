@@ -88,7 +88,11 @@ class MovieSatisfactionList(Resource):
         예시처럼 [사용자가 평가한 영화의 id, 사용자 평점]의 리스트를 satisfaction_list의 value값으로 딕셔너리 형태로 데이터를 보내면 됩니다."""
         satisfaction_list = request.json.get('satisfaction_list')
         for satisfaction in satisfaction_list:
-            db.session.add(Satisfaction(current_user.id, satisfaction[0], satisfaction[1]))
+            isExistSatisfaction = db.session.query(Satisfaction).filter(Satisfaction.user_id == current_user.id, Satisfaction.movie_id == satisfaction[0]).first()
+            if isExistSatisfaction:
+                isExistSatisfaction.user_rating = satisfaction[1]
+            else:
+                db.session.add(Satisfaction(current_user.id, satisfaction[0], satisfaction[1]))
         db.session.commit()
 
         return {
