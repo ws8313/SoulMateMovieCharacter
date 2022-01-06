@@ -50,7 +50,8 @@ class ShowResult(Resource):
         answers가 ["a", "b", ..."] 형태 리스트 형태로 전달된다고 가정. answers 또는 user_mbti 둘 중 하나는 null값이 아니어야 함. 바로 결과보기의 경우 user_mbti 값만, 테스트 진행한 경우 answers 값만 post 요청하면 됨."""
         answers = request.json.get('answers')
         user_mbti = request.json.get('user_mbti')
-
+        print(answers)
+        print(user_mbti)
         # answers가 None이 아니고 user_mbti가 None이면 테스트 진행 답변 기반으로 mbti 계산.
         if answers and user_mbti is None:
             result = [[], [], [], []]
