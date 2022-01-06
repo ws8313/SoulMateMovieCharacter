@@ -14,6 +14,7 @@ option_fields = Test.inherit('Options', question_fields, {
     'options': fields.List(fields.String)
 })
 
+
 @Test.route('/<int:page>')
 @Test.doc(params={'page': '어떤 페이지에 해당하는 심리 테스트 문항을 볼 것인지 페이지 넘버'})
 class TestPage(Resource):

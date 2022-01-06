@@ -1,7 +1,6 @@
 from flask_restx import Resource, Namespace, fields
 from models import *
 from flask_login import current_user
-from app import login_manager
 from flask import request
 import json
 
@@ -59,41 +58,23 @@ def ShowCharacter(mbti):
     characters_info = [[ch.id, ch.name, ch.image_link] for ch in character_list]
 
     return {
-        'chracters_mbti': mbti,
+        'characters_mbti': mbti,
         'character_info': characters_info
     }, 200
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.filter(User.id == user_id).first()
-
-# # 기본 형태 유저의 mbti가 같은 캐릭터(compatible=0), mbti궁합이 잘맞는 캐릭터(compatible=1) 출력
-# @MbtiCharacter.route('/<int:compatible>')
-# @MbtiCharacter.doc(params={'compatible': '궁합여부'})
-# class UserCharacter(Resource):
-#     @MbtiCharacter.response(200, 'Success', matching_fields)
-#     def get(self, compatible):
-#         """compatible=0 일때 mbti가 같은 character 출력/compatible!=0 일때 mbti궁합이 맞는 chracter 출력"""
-#         user = User.query.filter(User.id == current_user.id).first()
-#         if compatible == 0:
-#             return ShowCharacter(user.mbti)
-#         else:
-#             compatible_mbti = Compatibility.query.filter(Compatibility.user_mbti == user.mbti).first()
-#             return ShowCharacter(compatible_mbti.compatible_mbti)
-
-#테스트용 코드
-@MbtiCharacter.route('/<int:compatible>/<string:mbti>')
-@MbtiCharacter.doc(params={'compatible': '궁합여부', 'mbti': '검색할 mbti'})
+# 기본 형태 유저의 mbti가 같은 캐릭터(compatible=0), mbti궁합이 잘맞는 캐릭터(compatible=1) 출력
+@MbtiCharacter.route('/<int:compatible>')
+@MbtiCharacter.doc(params={'compatible': '궁합여부'})
 class UserCharacter(Resource):
     @MbtiCharacter.response(200, 'Success', matching_fields)
-    def get(self, compatible, mbti):
+    def get(self, compatible):
         """compatible=0 일때 mbti가 같은 character 출력/compatible!=0 일때 mbti궁합이 맞는 chracter 출력"""
+        user = User.query.filter(User.id == current_user.id).first()
         if compatible == 0:
-            """mbti가 같은 character 출력"""
-            return ShowCharacter(mbti)
+            return ShowCharacter(user.mbti)
         else:
-            compatible_mbti = Compatibility.query.filter(Compatibility.user_mbti == mbti).first()
+            compatible_mbti = Compatibility.query.filter(Compatibility.user_mbti == user.mbti).first()
             return ShowCharacter(compatible_mbti.compatible_mbti)
 
 

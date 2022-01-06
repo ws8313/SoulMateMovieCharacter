@@ -1,4 +1,3 @@
-from sqlalchemy.orm import backref
 from app import db
 from datetime import datetime
 from pytz import timezone
