@@ -25,6 +25,7 @@ const MbtiCompatiblePage = () => {
         getMbti();
     }, [userMBTI]);
 
+    
     useEffect(() => {
         async function getCompatibleCharacter() {
             try {
