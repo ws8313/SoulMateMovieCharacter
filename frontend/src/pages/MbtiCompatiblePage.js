@@ -28,7 +28,7 @@ const MbtiCompatiblePage = () => {
     useEffect(() => {
         async function getCompatibleCharacter() {
             try {
-                const res = await axios.get(`/character/1/${userMBTI}`)
+                const res = await axios.get(`/character/1`)
                 setCharList(res.data.character_info)
                 setCompatibleMBTI(res.data.chracters_mbti)
                 console.log(res)

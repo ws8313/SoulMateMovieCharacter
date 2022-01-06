@@ -28,7 +28,7 @@ const MbtiCharacterPage = () => {
     useEffect(() => {
         async function getMbtiCharacter() {
             try {
-                const res = await axios.get(`/character/0/${userMBTI}`)
+                const res = await axios.get(`/character/0`)
                 setCharList(res.data.character_info)
                 console.log(res)
             } catch (error) {
