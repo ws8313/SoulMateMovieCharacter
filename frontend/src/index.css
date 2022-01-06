@@ -55,6 +55,14 @@
   background: #C4C4C4;
 }
 
+.mainimg {
+  position: absolute;
+  width: 100%;
+
+  top: 50%;
+  transform: translate(0%, -50%);
+}
+
 #maintext1 {
   position: absolute;
   width: 800px;

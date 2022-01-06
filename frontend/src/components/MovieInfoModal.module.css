@@ -9,8 +9,8 @@
 }
 
 .modal {
-    width: 300px;
-    height: 150px;
+    width: 1000px;
+    height: 1000px;
     background-color: #fff;
     position: absolute;
     left: 50%;
@@ -21,9 +21,14 @@
 
 .modal_button {
     position: relative;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    left: 940px;
+    top: -100px;
 
     cursor: pointer;
+}
+
+.RatingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

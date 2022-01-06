@@ -25,7 +25,7 @@ const MainPage = () => {
             <div id="divider"></div>
 
             <div id="img">
-                <div>이미지</div>
+                <div className="mainimg">이미지</div>
             </div>
 
             <div>
@@ -39,7 +39,7 @@ const MainPage = () => {
 
             <div>
                 <button id="rightbtn" onClick={openModal}>바로 결과 보기</button>
-                { showModal && <Modal openModal={openModal}></Modal>}
+                { showModal && <Modal openModal={openModal} />}
             </div>
         </div>
     )

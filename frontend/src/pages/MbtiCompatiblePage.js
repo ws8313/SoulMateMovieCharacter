@@ -4,10 +4,10 @@ import { useHistory } from "react-router-dom";
 import prevbtn from "../img/prevbtn.png";
 
 
-const MbtiCharacterPage = () => {
+const MbtiCompatiblePage = () => {
     const [userMBTI, setUserMBTI] = useState("");
     const [charList, setCharList] = useState([]);
-    const [selectedChar, setSelectedChar] = useState("");
+    const [compatibleMBTI, setCompatibleMBTI] = useState("");
 
     const history = useHistory();
 
@@ -26,33 +26,34 @@ const MbtiCharacterPage = () => {
     }, [userMBTI]);
 
     useEffect(() => {
-        async function getMbtiCharacter() {
+        async function getCompatibleCharacter() {
             try {
-                const res = await axios.get(`/character/0/${userMBTI}`)
+                const res = await axios.get(`/character/1/${userMBTI}`)
                 setCharList(res.data.character_info)
+                setCompatibleMBTI(res.data.chracters_mbti)
                 console.log(res)
             } catch (error) {
                 console.log(error)
             }
         }
-        getMbtiCharacter();
-    }, [userMBTI, selectedChar]);
+        getCompatibleCharacter();
+    }, [userMBTI]);
 
     console.log(charList)
+    console.log(compatibleMBTI)
+
 
     const mouseOverHandler = (e) => {
-        setSelectedChar(e.target.alt)
-        console.log(selectedChar)
+
     }
 
     const clickHandler = () => {
         history.push({
-            pathname: "/MbtiCharacterMovieListPage",
-            state: {selectedChar: selectedChar}
+            pathname: "/MbtiCompatibleMovieListPage",
+            state: {compatibleMBTI: compatibleMBTI}
         })
     }
 
-    console.log(selectedChar)
     
     const prevClick = () => {
     }
@@ -70,21 +71,22 @@ const MbtiCharacterPage = () => {
             <div id="divider"></div>
 
             <div>
-                <p>나와 같은 유형의 영화 속 캐릭터</p>
+                <p>나와 궁합이 잘 맞는 캐릭터</p>
             </div>
 
             <div>
-                { charList && charList.map((item) => {
+                { charList && charList.map((item, idx) => {
                     return (
-                        <div key={item}>
-                            <img src={ item[2] } alt={ item[1] + "사진" } onMouseOver={ mouseOverHandler } onClick={ clickHandler } />
+                        <div key={ idx }>
+                            <img src={ item[2] } alt={ item[1] + "사진" } onClick={ clickHandler } />
                             <p>{ item[1] }</p>
                         </div>
                     )
                 }) }
             </div>
+
         </div>
     )
 }
 
-export default MbtiCharacterPage;
+export default MbtiCompatiblePage;
