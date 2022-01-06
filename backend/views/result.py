@@ -133,7 +133,7 @@ def top10_in_naver_same_mbti_char(mbti):
     return total_movies_info
 
 
-@Result.route('/same/top10')
+@Result.route('/top10')
 class Top10Movies(Resource):
     @Result.response(200, 'Success', same_mbti_top10_fields)
     @Result.response(500, 'fail')
