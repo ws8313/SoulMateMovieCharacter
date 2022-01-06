@@ -24,8 +24,8 @@ const MainPage = () => {
 
             <div id="divider"></div>
 
-            <div id="img">
-                <div>이미지</div>
+            <div id="img" className="imgwrapper">
+                <img className="contentimg" src="img/for_test/0.png" alt="main logo" />
             </div>
 
             <div>

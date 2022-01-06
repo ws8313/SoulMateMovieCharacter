@@ -8,6 +8,7 @@ const TestPage = () => {
     const [index, setIndex] = useState(1);
     const [anslist, setAnsList] = useState([]);
     const [question, setQuestion] = useState([]);
+    const [img, setImg] = useState([]);
     const [option, setOption] = useState([]);
     const QUESTION_EX_INDEX = 1;
     const QUESTION_LAST_INDEX = 13;
@@ -19,6 +20,7 @@ const TestPage = () => {
             try {
                 const res = await axios.get(`/test/${index}`)
                 setQuestion(res.data.question);
+                setImg(res.data.img_url)
                 setOption(res.data.options);
                 console.log(res)
             } catch (error) {
@@ -28,6 +30,7 @@ const TestPage = () => {
         getQuestion();
     }, [index, anslist]);
     console.log(question)
+    console.log(img)
     console.log(option)
 
     const clickHandler = (e) => {
@@ -83,7 +86,7 @@ const TestPage = () => {
             <div id="divider"></div>
 
             <div id="img">
-                <div>이미지</div>
+                <img className="contentimg" src={img} alt="main logo" />
             </div>
 
             <div id="testtext">
