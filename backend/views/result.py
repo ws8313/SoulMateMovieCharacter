@@ -1,11 +1,10 @@
 from flask import request
 from flask_restx import Resource, Namespace, fields
-from sqlalchemy.sql.expression import column
 from models import *
 from flask_login import current_user
 from collections import Counter
-from app import login_manager
 from sqlalchemy import func
+
 
 Result = Namespace(
     name='Result',
@@ -26,9 +25,6 @@ same_mbti_top10_fields = Result.model('Same MBTI Top 10 Movies', {
     'word_cloud': fields.String(description="워드 클라우드 link")
 })
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.filter(User.id == user_id).first()
 
 @Result.route('/')
 class ShowResult(Resource):
