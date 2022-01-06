@@ -21,7 +21,8 @@ answers_fields = Result.inherit('User Answers or direct input mbti', mbti_fields
 })
 
 same_mbti_top10_fields = Result.model('Same MBTI Top 10 Movies', {
-    'top10_movie_infos': fields.List(fields.List(fields.String)),
+    'top10_for_same_mbti_users': fields.List(fields.List(fields.String)),
+    'top10_in_naver': fields.List(fields.List(fields.String)),
     'word_cloud': fields.String(description="워드 클라우드 link")
 })
 
@@ -88,38 +89,59 @@ class ShowResult(Resource):
         return {"post": "success"}
 
 
-@Result.route('/same/top10')
+def top10_to_same_mbti_user(mbti):
+    same_mbti_users = db.session.query(User.id).filter(User.mbti == mbti)
+        
+    # TODO: 유저 평점도 넘겨야 할 경우, 수정
+    top10_movie_in_same_mbti = db.session.query(Satisfaction.movie_id).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
+
+    top10_movie_infos = db.session.query(Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(top10_movie_in_same_mbti)).all()
+
+    top10_movie_infos = [list(row) for row in top10_movie_infos]
+
+    # 장르 삽입
+    for i in range(top10_movie_in_same_mbti.count()):
+        movie_id = str(getattr(top10_movie_in_same_mbti[i], Satisfaction.movie_id.name))
+        genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == movie_id).all()
+        genres = [str(getattr(row, MovieGenre.genre.name)) for row in genres]
+        top10_movie_infos[i].append(genres)
+    
+    return top10_movie_infos
+
+
+def top10_in_naver_same_mbti_char(mbti):
+    # 유저 mbti와 같은 캐릭터 뽑아내기
+    characters = db.session.query(Character.id).filter(Character.mbti == mbti)
+
+    movies = db.session.query(CharacterInMovie.movie_id).filter(CharacterInMovie.character_id.in_(characters))
+
+    movies_info = db.session.query(Movie.id, Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(movies)).order_by(Movie.rating.desc()).limit(10).all()
+
+    total_movies_info = [list(row) for row in movies_info]
+
+    # # 장르 삽입
+    for i in range(len(movies_info)):
+        genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == total_movies_info[i][0]).all()
+        genres = [str(getattr(row, MovieGenre.genre.name)) for row in genres]
+        total_movies_info[i].append(genres)
+    
+    print(total_movies_info)
+    return total_movies_info
+
+
+@Result.route('/top10')
 class Top10Movies(Resource):
     @Result.response(200, 'Success', same_mbti_top10_fields)
     @Result.response(500, 'fail')
     def get(self):
-        """현재 사용자와 같은 유형에게 인기있는 영화 Top 10 정보, 워드 클라우드 전달하는 api.
+        """현재 사용자와 같은 유형에게 인기있는 영화 Top 10 정보, 사용자와 같은 유형의 캐릭터가 나오는 영화 중 네이버 평점 top 10 영화 정보, 사용자와 같은 유형의 캐릭터가 나오는 영화 중 네이버 평점 top 10 영화 줄거리로 만든 워드 클라우드 전달하는 api.
         영화 정보 : 한글 제목(str), 영어 제목(str), 이미지 url(str), 개봉일(int), 감독(str), 평점(float), 스토리(str), 런타임(int), 장르(str list)"""
 
-        same_mbti_users = db.session.query(User.id).filter(User.mbti == current_user.mbti)
-        
-        # TODO: 유저 평점도 넘길 수 있는 방법 찾아보기
-        # top10 = db.session.query(Satisfaction.movie_id, func.avg(Satisfaction.user_rating).label('avg_rating')).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
-
-        # print(current_user)
-        top10_movie_in_same_mbti = db.session.query(Satisfaction.movie_id).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
-
-        top10_movie_infos = db.session.query(Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(top10_movie_in_same_mbti)).all()
-
-        top10_movie_infos = [list(row) for row in top10_movie_infos]
-        # print(top10_movie_infos)
-
-        # 장르 삽입
-        for i in range(top10_movie_in_same_mbti.count()):
-            movie_id = str(getattr(top10_movie_in_same_mbti[i], Satisfaction.movie_id.name))
-            genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == movie_id).all()
-            genres = [str(getattr(row, MovieGenre.genre.name)) for row in genres]
-            top10_movie_infos[i].append(genres)
-        
-
         # TODO: word cloud
-        word_cloud = "I have to add image url. I will do when DA give word cloud data to me. please wait..."
+        # TODO: 이미지 경로 : public 내부 img 폴더에 ENTP.png 이런식으로 넣기
+        
         return {
-            'top10_movie_infos': top10_movie_infos,
-            'word_cloud': word_cloud
+            'top10_for_same_mbti_users': top10_to_same_mbti_user(current_user.mbti),
+            'top10_in_naver': top10_in_naver_same_mbti_char(current_user.mbti),
+            'word_cloud_src': "img/"+str(current_user.mbti)+".png"
         }

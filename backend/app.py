@@ -38,8 +38,6 @@ def create_app():
     api.add_namespace(Test, '/test')
     from views.result import Result
     api.add_namespace(Result, '/result')
-    from views.movie import Movie
-    api.add_namespace(Movie, '/movie')
     from views.character import MbtiCharacter
     api.add_namespace(MbtiCharacter, '/character')
 
