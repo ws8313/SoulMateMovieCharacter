@@ -28,7 +28,7 @@ const MbtiCharacterPage = () => {
     useEffect(() => {
         async function getMbtiCharacter() {
             try {
-                const res = await axios.get(`/character/0`)
+                const res = await axios.get("/character/0")
                 setCharList(res.data.character_info)
                 console.log(res)
             } catch (error) {
@@ -77,7 +77,7 @@ const MbtiCharacterPage = () => {
                 { charList && charList.map((item) => {
                     return (
                         <div key={item}>
-                            <img src={ item[2] } alt={ item[1] + "사진" } onMouseOver={ mouseOverHandler } onClick={ clickHandler } />
+                            <img src={ item[2] } alt={ item[1] + " 사진" } onMouseOver={ mouseOverHandler } onClick={ clickHandler } />
                             <p>{ item[1] }</p>
                         </div>
                     )

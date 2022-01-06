@@ -36,6 +36,7 @@ const MbtiCompatibleMovieListPage = () => {
     // }, [userMBTI]);
 
     // 해당 유형의 MBTI get해서 가져와서 다 보여주던 예전 방식으로 복구 해야 할 듯
+    
 
     useEffect(() => {
         async function getMbtiCharacterMovieList() {
@@ -51,6 +52,7 @@ const MbtiCompatibleMovieListPage = () => {
     }, [userMBTI]);
 
     console.log(movieList)
+    console.log(compatibleMBTI)
 
 
     const clickHandler = (item) => {
@@ -94,7 +96,7 @@ const MbtiCompatibleMovieListPage = () => {
                             { item.movies.map((item, idx) => {
                                 return (
                                     <div>
-                                        <img key={ idx } src={ item.image_link } alt={ item.kor_title + "포스터" } onClick={ () => clickHandler(item) } />
+                                        <img key={ idx } src={ item.image_link } alt={ item.kor_title + " 포스터" } onClick={ () => clickHandler(item) } />
                                         { showModal && <MovieInfoModal openModal={openModal} movieList={movieList} selectedMovie={selectedMovie} />}
                                         <p>{ item.kor_title }</p>
                                     </div>
