@@ -92,16 +92,12 @@ class ShowResult(Resource):
 def top10_to_same_mbti_user(mbti):
     same_mbti_users = db.session.query(User.id).filter(User.mbti == mbti)
         
-    # TODO: 유저 평점도 넘길 수 있는 방법 찾아보기
-    # top10 = db.session.query(Satisfaction.movie_id, func.avg(Satisfaction.user_rating).label('avg_rating')).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
-
-    # print(current_user)
+    # TODO: 유저 평점도 넘겨야 할 경우, 수정
     top10_movie_in_same_mbti = db.session.query(Satisfaction.movie_id).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
 
     top10_movie_infos = db.session.query(Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(top10_movie_in_same_mbti)).all()
 
     top10_movie_infos = [list(row) for row in top10_movie_infos]
-    # print(top10_movie_infos)
 
     # 장르 삽입
     for i in range(top10_movie_in_same_mbti.count()):
@@ -145,7 +141,6 @@ class Top10Movies(Resource):
         # TODO: 이미지 경로 : public 내부 img 폴더에 ENTP.png 이런식으로 넣기
         
         return {
-            # 'top10_for_same_mbti_users': top10_same_mbti_user(current_user.mbti),
             'top10_for_same_mbti_users': top10_to_same_mbti_user(current_user.mbti),
             'top10_in_naver': top10_in_naver_same_mbti_char(current_user.mbti),
             'word_cloud_src': "img/"+str(current_user.mbti)+".png"
