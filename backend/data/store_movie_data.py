@@ -7,36 +7,13 @@ from models import *
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import json
 
-
-def store_movie():
-    f = open('data/real/naver_movie_story.csv', 'r', encoding="utf-8")
-    rdr = csv.reader(f)
-
-    cnt = 0
-    for line in rdr:
-        if cnt > 16:
-            break
-
-        line[13] = line[13].strip()
-        if line[13][-2] != "분":
-            print("분 아님")
-            continue
-        else: 
-            line[13] = line[:-2]
-        print(cnt)
-        print(line[13][-2])
-        print(line[4], line[5], line[8], line[9], line[10], line[12], line[7], line[13])
-        movie = Movie(line[4], line[5], line[8], line[9], line[10], line[12], line[7], line[13])
-        cnt += 1
-        db.session.add(movie)
-    # db.session.commit()
-
 def store_movie_json():
     with open('./data/real/naver_movie_story.json', 'r', encoding="utf-8") as f:
         movies = json.load(f)
         # print(json.dumps(movies, ensure_ascii=False, indent=4))
         
-        cnt = 1
+        movie_id = 1
+        character_id = 1
         for movie in movies['data']:
             rtime = movie['rtime'].strip()
             try:
@@ -60,11 +37,31 @@ def store_movie_json():
             genres = movie['genre'].split()
             # print(genres)
             for genre in genres:
-                db.session.add(MovieGenre(genre, cnt))
+                db.session.add(MovieGenre(genre, movie_id))
 
             actors = movie['actors'][1:-1].split(', ')
             for actor in actors:
-                db.session.add(ActorInMovie(actor[1:-1], cnt))
+                db.session.add(ActorInMovie(actor[1:-1], movie_id))
 
-            cnt += 1
+            char_n_mbti = movie['mbti'].split()
+            for cNm in char_n_mbti:
+                character_name = cNm[-6]
+                character_mbti = cNm[-5:-1]
+                db.session.add(Character(character_mbti, character_name))
+                db.session.add(CharacterInMovie(character_id, movie_id))
+                character_id += 1
+            movie_id += 1
+    db.session.commit()
+
+
+def store_chracter_image():
+
+    with open('./data/real/naver_movie_story.json', 'r', encoding="utf-8") as f:
+        characters = json.load(f)
+        # print(json.dumps(movies, ensure_ascii=False, indent=4))
+
+        for character in characters[0]:
+            c = db.session.query(Character).filter(Character.name == character['role'], Character.mbti == character['mbti']).first()
+            c.image_link = character['img_url']
+    
     db.session.commit()
