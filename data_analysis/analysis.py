@@ -2,8 +2,7 @@ from konlpy.tag import *
 from numpy import vectorize
 import pandas as pd
 import re
-from sklearn.feature_extraction.text import TfidfTransformer, TfidfVectorizer, CountVectorizer
-import nltk
+from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 import wordcloud
@@ -27,7 +26,10 @@ def morph_and_stopword(s):
   token_ls = []
   #형태소 분석
   s = sub_special(s)
-  tmp = Okt().morphs(s, stem=True)
+  # tmp = Okt().morphs(s, stem=True)
+  # tmp = Okt().nouns(s)
+  words = Kkma().pos(s)
+  tmp = [x for x, y in words if y in ['NNG', 'VA', 'VV']]
 
   #불용어 처리
   for token in tmp:
@@ -36,13 +38,12 @@ def morph_and_stopword(s):
   
   return token_ls
 
-# words = Okt().pos(sentence)
-# words_filtering = [x for x, y in words if y in ['Noun', 'Adjective', 'Verb']]
+
 
 for i in range(16):
   mbti_movie = data['mbti'].str.contains(mbti_key[i])
   set_mbti = data[mbti_movie]
-  top10 = set_mbti.nlargest(10, 'rating', keep='all')
+  top10 = set_mbti.nlargest(30, 'rating', keep='all')
   
   total_story = []
   for s in top10['story'].head():
@@ -53,10 +54,11 @@ for i in range(16):
   
   transformer = TfidfTransformer()
   tfidf = transformer.fit_transform(bow.toarray())
-  
+  print(vectorizer.get_feature_names())
   # wordcloud
   wordcloud = WordCloud(font_path=r'C:\Windows\Fonts\H2HDRM.TTF', background_color='white')
   word_tfidf = dict(zip(vectorizer.get_feature_names(),tfidf.toarray()[4]))
+  print(word_tfidf)
   image = wordcloud.generate_from_frequencies(word_tfidf).to_image()
   image.save("img/wordcloud_" + mbti_key[i] + ".jpg")
 

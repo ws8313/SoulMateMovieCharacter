@@ -15,10 +15,10 @@ idx = 0
 for m in movieList['movie']:
     mbti = ''
     tmp = data[data['movie']==m]
-    for t in tmp['mbti']:
-        if t not in mbti and t != 'XXXX':
-            mbti += t
-            mbti += ' '
+    
+    for i in range(len(tmp['role'])):
+        mbti += tmp.iloc[i]['role'] + '(' + tmp.iloc[i]['mbti'] + ')'
+        mbti += ','
     
     df.loc[idx] = [mbti, m]
     idx += 1
