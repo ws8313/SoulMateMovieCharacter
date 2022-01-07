@@ -67,8 +67,9 @@ def crawling():
                     rtime_str = rtime.text
                 else:
                     rtime_str = 'None'
-            
-            df.loc[i] = [data['movie_index'][i], data['code'][i], data['mbti'][i], data['title'][i], data['subtitle'][i], genre_str, story_str, data['image'][i], data['pubDate'][i], data['director'][i], data['actors'][i], data['rating'][i], rtime_str]
+                    
+            if story_str != 'None':
+                df.loc[i] = [data['movie_index'][i], data['code'][i], data['mbti'][i], data['title'][i], data['subtitle'][i], genre_str, story_str, data['image'][i], data['pubDate'][i], data['director'][i], data['actors'][i], data['rating'][i], rtime_str]
 
             # print(len(data['code']), " 중 ", i, "번째")
 

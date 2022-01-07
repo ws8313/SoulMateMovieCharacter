@@ -55,7 +55,8 @@ for j in range(len(movie_data['index'])):
         rating = float(data['items'][i]['userRating'])
         
         if image and date and director and actors and rating:
-            df.loc[index] = [movie_index, code, mbti, title, subtitle, link, image, date, director, actors, rating]
+            if rating != 10.0 and rating != 0.0:
+                df.loc[index] = [movie_index, code, mbti, title, subtitle, link, image, date, director, actors, rating]
 
         # # curl 요청
         # os.system("curl " + image + " > img/poster" +
