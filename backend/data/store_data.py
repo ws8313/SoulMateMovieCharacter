@@ -62,30 +62,30 @@ def _store_test_data():
     # temp_movie_characters.json
     # temp_satisfaction.json
     
-    with open('./data/temp_movies.json', 'r', encoding="utf-8") as f:
-        movies = json.load(f)
-        for m in movies['test_movies']:
-            db.session.add(Movie(m['kor_title'], m['eng_title'], m['image_link'], m['pub_year'], m['director'], m['rating'], m['story'], m['run_time']))
+    # with open('./data/temp_movies.json', 'r', encoding="utf-8") as f:
+    #     movies = json.load(f)
+    #     for m in movies['test_movies']:
+    #         db.session.add(Movie(m['kor_title'], m['eng_title'], m['image_link'], m['pub_year'], m['director'], m['rating'], m['story'], m['run_time']))
     
-    with open('./data/temp_actors.json', 'r', encoding="utf-8") as f:
-        actors = json.load(f)
-        for actor in actors['test_actor_in_movie']:
-            db.session.add(ActorInMovie(actor['actor_name'], actor['movie_id']))
+    # with open('./data/temp_actors.json', 'r', encoding="utf-8") as f:
+    #     actors = json.load(f)
+    #     for actor in actors['test_actor_in_movie']:
+    #         db.session.add(ActorInMovie(actor['actor_name'], actor['movie_id']))
 
-    with open('./data/temp_genres.json', 'r', encoding="utf-8") as f:
-        genres = json.load(f)
-        for genre in genres['test_movie_genre']:
-            db.session.add(MovieGenre(genre['genre'], genre['movie_id']))
+    # with open('./data/temp_genres.json', 'r', encoding="utf-8") as f:
+    #     genres = json.load(f)
+    #     for genre in genres['test_movie_genre']:
+    #         db.session.add(MovieGenre(genre['genre'], genre['movie_id']))
     
     with open('./data/temp_characters.json', 'r', encoding="utf-8") as f:
         characters = json.load(f)
         for character in characters['test_character']:
             db.session.add(Character(character['mbti'], character['name'], character['image_link']))
 
-    with open('./data/temp_movie_characters.json', 'r', encoding="utf-8") as f:
-        characters = json.load(f)
-        for character in characters['test_movie_character']:
-            db.session.add(CharacterInMovie(character['character_id'], character['movie_id']))
+    # with open('./data/temp_movie_characters.json', 'r', encoding="utf-8") as f:
+    #     characters = json.load(f)
+    #     for character in characters['test_movie_character']:
+    #         db.session.add(CharacterInMovie(character['character_id'], character['movie_id']))
     
     with open('./data/temp_satisfaction.json', 'r', encoding="utf-8") as f:
         satisfactions = json.load(f)

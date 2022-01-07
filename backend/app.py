@@ -55,8 +55,8 @@ def create_app():
     #     db.create_all()
     #     store_init_data()
 
-    from data.store_movie_data import store_movie
-    with app.app_context(): 
-        store_movie()
+    # from data.store_movie_data import store_movie_json
+    # with app.app_context(): 
+    #     store_movie_json()
 
     return app
