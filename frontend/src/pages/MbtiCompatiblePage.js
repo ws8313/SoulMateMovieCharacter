@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import prevbtn from "../img/prevbtn.png";
+import styles from "./MbtiCompatiblePage.module.css";
 
 
 const MbtiCompatiblePage = () => {
@@ -16,8 +17,6 @@ const MbtiCompatiblePage = () => {
             try {
                 const mbti = await axios.get("/result/")
                 setUserMBTI(mbti.data.user_mbti)
-                console.log(mbti.data.user_mbti)
-                console.log(userMBTI)
             } catch (error) {
                 console.log(error)
             }
@@ -32,7 +31,6 @@ const MbtiCompatiblePage = () => {
                 const res = await axios.get("/character/1")
                 setCharList(res.data.character_info)
                 setCompatibleMBTI(res.data.characters_mbti)
-                console.log(res)
             } catch (error) {
                 console.log(error)
             }
@@ -40,50 +38,44 @@ const MbtiCompatiblePage = () => {
         getCompatibleCharacter();
     }, [userMBTI]);
 
-    console.log(charList)
-    console.log(compatibleMBTI)
-
-
-    const mouseOverHandler = (e) => {
-
-    }
-
     const clickHandler = () => {
         history.push({
             pathname: "/MbtiCompatibleMovieListPage",
             state: {compatibleMBTI: compatibleMBTI}
         })
     }
-
-    
-    const prevClick = () => {
-    }
     
     return (
-        <div id="container">
-            <div id="btnbox" onClick={  () => { history.goBack() } }>
-                <img className="prevbtn" src={ prevbtn } alt="prevbtn" />
+        <div id={styles.container}>
+            <div id={styles.btnbox} onClick={  () => { history.goBack() } }>
+                <img className={styles.prevbtn} src={ prevbtn } alt="prevbtn" />
             </div>
 
-            <div className="title">
+            <div className={styles.title}>
                 <p>일리스</p>
             </div>
 
-            <div id="divider"></div>
+            <div id={styles.divider}></div>
 
             <div>
-                <p>나와 궁합이 잘 맞는 캐릭터</p>
+                <p className={styles.text1}>나와 궁합이 잘 맞는 캐릭터</p>
             </div>
 
             <div>
-                { charList && charList.map((item, idx) => {
-                    return (
-                        <div key={ idx }>
-                            <img src={ item[2] } alt={ item[1] + " 사진" } onClick={ clickHandler } />
-                            <p>{ item[1] }</p>
-                        </div>
-                    )
-                }) }
+                <p className={styles.text2}>맘에 드는 캐릭터를 클릭해 어떤 영화에 등장했는지 확인해 보세요</p>
+            </div>
+
+            <div>
+                <div className={styles.charlist}>
+                    { charList && charList.map((item, idx) => {
+                        return (
+                            <div key={ idx }>
+                                <img className={styles.char_img} src={ item[2] } alt={ item[1] + " 사진" } onClick={ clickHandler } />
+                                <p className={styles.char_name}>{ item[1] }</p>
+                            </div>
+                        )
+                    }) }
+                </div>
             </div>
 
         </div>

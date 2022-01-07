@@ -8,6 +8,22 @@
     margin-right: auto;
 }
 
+#btnbox {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 0px;
+    top: 0px;
+}
+
+.prevbtn {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    margin-left: 25px;
+
+    cursor: pointer;
+}
+
 .title {
     position: absolute;
     width: 150px;
@@ -24,22 +40,6 @@
     text-align: center;
 
     color: black;
-}
-
-#btnbox {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    left: 0px;
-    top: 0px;
-}
-
-.prevbtn {
-    margin-top: 25px;
-    margin-bottom: 25px;
-    margin-left: 25px;
-
-    cursor: pointer;
 }
 
 #divider {
@@ -65,11 +65,6 @@
     border-radius: 20px;
 }
 
-.imgwrapper{
-    background-color: #FFEE93!important;
-    width: 700px!important;
-}
-
 .contentimg {
     height: 90%;
     vertical-align: middle;
@@ -77,90 +72,92 @@
     border: 5 solid grey;
 }
 
-#maintext1 {
+#testtext {
     position: absolute;
-    width: 800px;
-    height: 65px;
-    top: 600px;
+    width: 1000px;
+    height: 120px;
+    top: 605px;
     left: 50%;
     transform: translate(-50%);
 
-    font-size: 30px;
-    line-height: 70px;
+    font-size: 20px;
+    line-height: 40px;
 
-    display: flex;
     align-items: center;
+    text-align: center;
 
     color: black;
+
+    white-space: pre-wrap;
 }
 
-#maintext2 {
+#progress {
     position: absolute;
-    width: 800px;
-    height: 65px;
-    top: 665px;
-    left: 50%;
-    transform: translate(-50%);
+    width: 200px;
+    height: 100px;
+    left: calc(50% - 200px/2 + 620px);
+    top: calc(50% - 100px/2 - 462px);
 
     font-size: 50px;
     line-height: 70px;
 
     display: flex;
     align-items: center;
+    text-align: center;
 
     color: black;
 }
 
-#leftbtn {
+#ansA {
     position: absolute;
-    width: 300px;
+    width: 800px;
     height: 100px;
-    left: 395px;
-    top: 780px;
+    left: 320px;
+    top: 750px;
 
-    font-size: 30px;
-    line-height: 70px;
-
-    align-items: center;
-    text-align: center;
-
-    color: black;
-
-    background: white;
+    background-color: white;
     border: 1px solid black;
     box-sizing: border-box;
     box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.5);
     border-radius: 50px;
 
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-#rightbtn {
-    position: absolute;
-    width: 300px;
-    height: 100px;
-    left: 745px;
-    top: 780px;
-
-    font-size: 30px;
-    line-height: 70px;
+    font-size: 20px;
+    line-height: 40px;
 
     align-items: center;
     text-align: center;
 
-    color: black;
+    cursor: pointer;
+    transition: all 0.3s;
 
-    background: white;
+    color: black;
+}
+
+#ansB {
+    position: absolute;
+    width: 800px;
+    height: 100px;
+    left: 320px;
+    top: 875px;
+
+    background-color: white;
     border: 1px solid black;
     box-sizing: border-box;
     box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.5);
     border-radius: 50px;
 
+    font-size: 20px;
+    line-height: 40px;
+
+    align-items: center;
+    text-align: center;
+
     cursor: pointer;
     transition: all 0.3s;
+
+    color: black;
 }
 
-#leftbtn:hover, #rightbtn:hover {
+#ansA:hover, #ansB:hover {
     background-color: #FFEE93;
 }

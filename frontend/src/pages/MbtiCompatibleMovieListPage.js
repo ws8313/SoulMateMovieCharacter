@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory, useLocation } from "react-router-dom";
 import prevbtn from "../img/prevbtn.png";
+import home from "../img/home.png";
 import MovieInfoModal from "../components/MovieInfoModal";
+import styles from "./MbtiCompatibleMovieListPage.module.css";
 
 
 const MbtiCompatibleMovieListPage = () => {
-    const [userMBTI, setUserMBTI] = useState("");
     const [movieList, setMovieList] = useState([]);
     const [selectedMovie, setSelectedMovie] = useState([]);
 
@@ -20,96 +21,73 @@ const MbtiCompatibleMovieListPage = () => {
     const openModal = () => {
         setShowModal(!showModal);
     }
-
-    // useEffect(() => {
-    //     async function getMbti() {
-    //         try {
-    //             const mbti = await axios.get("/result/")
-    //             setUserMBTI(mbti.data.user_mbti)
-    //             console.log(mbti.data.user_mbti)
-    //             console.log(userMBTI)
-    //         } catch (error) {
-    //             console.log(error)
-    //         }
-    //     }
-    //     getMbti();
-    // }, [userMBTI]);
-
-    // 해당 유형의 MBTI get해서 가져와서 다 보여주던 예전 방식으로 복구 해야 할 듯
     
-
     useEffect(() => {
         async function getMbtiCharacterMovieList() {
             try {
                 const res = await axios.get(`/character/movie_list/${compatibleMBTI}`)
                 setMovieList(res.data.total_character_N_movies)
-                console.log(res)
             } catch (error) {
                 console.log(error)
             }
         }
         getMbtiCharacterMovieList();
-    }, [userMBTI]);
-
-    console.log(movieList)
-    console.log(compatibleMBTI)
-
+    }, []);
 
     const clickHandler = (item) => {
         setSelectedMovie(item);
-        console.log(item);
         openModal();
     }
 
     const logout = () => {
         axios
             .get("/user/logout")
-            .then((res) => {
-                console.log(res)
+            .then(() => {
+                history.push("/")
             })
             .catch((error) => {
                 console.log(error)
             })
-        history.push("/")
-    }
-    
-    const prevClick = () => {
     }
     
     return (
-        <div id="container">
-            <div id="btnbox" onClick={  () => { history.goBack() } }>
-                <img className="prevbtn" src={ prevbtn } alt="prevbtn" />
+        <div id={styles.container}>
+            <div id={styles.btnbox} onClick={  () => { history.goBack() } }>
+                <img className={styles.prevbtn} src={ prevbtn } alt="prevbtn" />
             </div>
 
-            <div className="title">
+            <div className={styles.title}>
                 <p>일리스</p>
             </div>
 
-            <div id="divider"></div>
+            <div id={styles.divider}></div>
 
             <div>
                 { movieList && movieList.map((items, idx) => {
                     return (
+                    <div>
                         <div>
-                            <p key={ idx }>{ items.character_name }</p>
+                            <p className={styles.char_name} key={ idx }>{ items.character_name + " 등장한 영화"}</p>
+                        </div>
+                        <div className={styles.charlist}>
                             { items.movies.map((item, idx) => {
                                 return (
                                     <div>
-                                        <img key={ idx } src={ item.image_link } alt={ item.kor_title + " 포스터" } onClick={ () => clickHandler(item) } />
+                                        <img className={styles.char_img} key={ idx } src={ item.image_link } alt={ item.kor_title + " 포스터" } onClick={ () => clickHandler(item) } />
+                                        <p className={styles.movie_name}>{ item.kor_title }</p>
                                         { showModal && <MovieInfoModal openModal={openModal} movieList={movieList} selectedMovie={selectedMovie} />}
-                                        <p>{ item.kor_title }</p>
                                     </div>
                                 )
                             }) }
                         </div>
+                    </div>
                     )
                 }) }
+
                 <div>
-                    <button onClick={ logout }>처음으로</button>
+                    <img className={styles.homebtn} src={ home } alt="home button" onClick={ logout } />
                 </div>
             </div>
-
         </div>
     )
 }

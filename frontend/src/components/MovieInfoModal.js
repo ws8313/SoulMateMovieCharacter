@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
 import styles from "./MovieInfoModal.module.css";
 import closebtn from "../img/closebtn.png";
+import send from "../img/send.png";
 import { FaStar } from "react-icons/fa";
 
 const colors = {
@@ -19,8 +19,6 @@ const MovieInfoModal = ({ openModal, selectedMovie }) => {
     const [rating, setRating] = useState("");
 
     const stars = Array(5).fill(0);
-
-    const history = useHistory();
 
     const handleClick = (value) => {
         setCurValue(value)
@@ -59,39 +57,36 @@ const MovieInfoModal = ({ openModal, selectedMovie }) => {
             .post("/character/movie_list", {
                 "satisfaction_list": satisfactionList
             })
-            .then((res) => {
-                console.log(res)
+            .then(() => {
             })
             .catch((error) => {
                 console.log(error)
             })
     }
 
-    // console.log(selectedMovie)
-    // console.log(curValue)
-    // console.log(movieId)
-    // console.log(rating)
-    // console.log(satisfactionList)
-
     return (
         <div className={styles.modal_container}>
             <div className={styles.modal}>
                 <img src={closebtn} alt="closebtn" onClick={ openModal } className={styles.modal_button} />
-                <img src={selectedMovie.image_link} />
-                <p>감독 : {selectedMovie.director}</p>
-                <p>장르 : {selectedMovie.genres[0]}</p>
-                <p>제목 : {selectedMovie.kor_title}</p>
-                <p>개봉년도 : {selectedMovie.pub_year}년</p>
-                <p>평점 : {selectedMovie.rating}점</p>
-                <p>러닝타임 : {selectedMovie.run_time}분</p>
-                <p>소개 : {selectedMovie.story}</p>
+                <img className={styles.modal_img} src={selectedMovie.image_link} />
+                <div className={styles.modal_movie_info_container}>
+                    <p>감독 : {selectedMovie.director}</p>
+                    <p>장르 : {selectedMovie.genres[0]}</p>
+                    <p>제목 : {selectedMovie.kor_title}</p>
+                    <p>개봉년도 : {selectedMovie.pub_year}년</p>
+                    <p>평점 : {selectedMovie.rating}점</p>
+                    <p>러닝타임 : {selectedMovie.run_time}분</p>
+                </div>
+                <div className={styles.modal_movie_story_container}>
+                    <p>{selectedMovie.story}</p>
+                </div>
                 <div className={styles.RatingContainer}>
                     <div className={styles.stars}>
                         {stars.map((_, index) => {
                             return (
                                 <FaStar 
                                     key={index}
-                                    size={24}
+                                    size={48}
                                     style={{
                                         marginRight: 10,
                                         cursor: "pointer"
@@ -103,9 +98,8 @@ const MovieInfoModal = ({ openModal, selectedMovie }) => {
                                     
                                 />
                             )
-                        
                         })}
-                        <button onClick={ sendReview }>평가하기</button>
+                        <img className={styles.modal_rating_send} src={send} alt="ratingsend" onClick={ sendReview } />
                     </div>
                 </div>
             </div>

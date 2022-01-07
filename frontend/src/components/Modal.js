@@ -3,11 +3,18 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import styles from "./Modal.module.css";
 import closebtn from "../img/closebtn.png";
+import ResultLoginModal from "./ResultLoginModal"
 
 const Modal = ({ openModal }) => {
     const [selected, setSelected] = useState("ISTJ");
 
+    const [showResultLoginModal, setShowResultLoginModal] = useState(false);
+
     const history = useHistory();
+
+    const openResultLoginModal = () => {
+        setShowResultLoginModal(!showResultLoginModal);
+    }
 
     const changeSelectOptionHandler = (e) => {
         setSelected(e.target.value);
@@ -19,21 +26,21 @@ const Modal = ({ openModal }) => {
                 "user_mbti": selected
             })
             .then((res) => {
-                console.log(res)
                 history.push("/TestCompletedPage")
             })
             .catch((error) => {
+                setShowResultLoginModal(!showResultLoginModal);
                 console.log(error)
             })
     }
 
-    console.log(selected)
-
     return (
+        
         <div className={styles.modal_container}>
             <div className={styles.modal}>
                 <img src={closebtn} alt="closebtn" onClick={ openModal } className={styles.modal_button} />
-                <select onChange={ changeSelectOptionHandler }>
+                <p className={styles.modal_text}>당신의 유형을 선택해주세요</p>
+                <select className={styles.modal_selectbox} onChange={ changeSelectOptionHandler }>
                     <option value="ISTJ">ISTJ</option>
                     <option value="ISTP">ISTP</option>
                     <option value="ISFJ">ISFJ</option>
@@ -51,7 +58,8 @@ const Modal = ({ openModal }) => {
                     <option value="ENFJ">ENFJ</option>
                     <option value="ENFP">ENFP</option>
                 </select>
-                <button onClick={ clickHandler }>확인</button>
+                <button className={styles.modal_btn} onClick={ clickHandler }>확인</button>
+            { showResultLoginModal && <ResultLoginModal openResultLoginModal={openResultLoginModal} />}
             </div>
         </div>
     )

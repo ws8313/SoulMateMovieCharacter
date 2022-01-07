@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import prevbtn from "../img/prevbtn.png";
+import styles from "./TestCompletedPage.module.css";
 
 const TestCompletedPage = () => {
     const [userMBTI, setUserMBTI] = useState("")
@@ -13,44 +14,39 @@ const TestCompletedPage = () => {
             try {
                 const res = await axios.get("/result/")
                 setUserMBTI(res.data.user_mbti)
-                console.log(res)
-                console.log(userMBTI)
             } catch (error) {
                 console.log(error)
             }
         }
         getMBTI();
     }, [userMBTI]);
-
-    const MbtiCharacterClickHandler = () => {
-    }
     
     return (
-        <div>
-            <div id="btnbox" onClick={ () => { history.goBack() }}>
-                <img className="prevbtn" src={prevbtn} alt="prevbtn" />
+        <div id={styles.container}>
+            <div id={styles.btnbox} onClick={ () => { history.goBack() }}>
+                <img className={styles.prevbtn} src={prevbtn} alt="prevbtn" />
             </div>
 
-            <div className="title">
+            <div className={styles.title}>
                 <p>일리스</p>
             </div>
 
-            <div id="divider"></div>
+            <div id={styles.divider}></div>
 
             <div>
-                <div>테스트가 완료되었습니다</div>
+                <p className={styles.text}>테스트가 완료되었습니다</p>
             </div>
             
             <div>
-                <button onClick={ () => { history.push("/MbtiCharacterPage") }}>나와 같은 유형인 캐릭터 확인하기</button>
+                <button className={styles.btn1} onClick={ () => { history.push("/MbtiCharacterPage") }}>나와 같은 유형인 <br /> 캐릭터 확인하기</button>
             </div>
 
             <div>
-                <button onClick={ () => { history.push("/MbtiCompatiblePage") }}>나와 궁합이 잘 맞는 캐릭터 확인하기</button>
+                <button className={styles.btn2} onClick={ () => { history.push("/MbtiCompatiblePage") }}>나와 궁합이 잘 맞는 <br /> 캐릭터 확인하기</button>
             </div>
 
             <div>
-                <button onClick={ () => { history.push("/MbtiTop10Page") }}>같은 유형에게 인기있는 영화 확인하기</button>
+                <button className={styles.btn3} onClick={ () => { history.push("/MbtiTop10Page") }}>{userMBTI} 유형 관련 인기있는 <br /> 영화 확인하기</button>
             </div>
         </div>
     )

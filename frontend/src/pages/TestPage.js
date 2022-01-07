@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import prevbtn from "../img/prevbtn.png";
+import styles from "./TestPage.module.css";
 
 
 const TestPage = () => {
@@ -22,24 +23,19 @@ const TestPage = () => {
                 setQuestion(res.data.question);
                 setImg(res.data.img_url)
                 setOption(res.data.options);
-                console.log(res)
             } catch (error) {
                 console.log(error)
             }
         }
         getQuestion();
     }, [index, anslist]);
-    console.log(question)
-    console.log(img)
-    console.log(option)
 
     const clickHandler = (e) => {
         if(index === QUESTION_LAST_INDEX) {
             axios.post("/result/", {
                 "answers": anslist
             })
-            .then((res) => {
-                console.log(res)
+            .then(() => {
                 history.push("/TestCompletedPage")
             })
             .catch((error) => {
@@ -48,15 +44,12 @@ const TestPage = () => {
             const ans = [...anslist]
             ans.push(e.target.value)
             setAnsList(ans)
-            console.log(ans)
-            console.log(anslist)
         } else if (index === QUESTION_EX_INDEX) {
             setIndex(index + 1)
         } else {
             const ans = [...anslist]
             ans.push(e.target.value)
             setAnsList(ans)
-            console.log(ans)
             }
             setIndex(index + 1)
         }
@@ -66,53 +59,50 @@ const TestPage = () => {
             history.goBack()
         } else {
             anslist.pop();
-            console.log(anslist)
             setIndex(index - 1)
         }
     }
-    
-    console.log(anslist)
-    
+
     return (
-        <div id="container">
-            <div id="btnbox" onClick={prevClick}>
-                <img className="prevbtn" src={prevbtn} alt="prevbtn" />
+        <div id={styles.container}>
+            <div id={styles.btnbox} onClick={prevClick}>
+                <img className={styles.prevbtn} src={prevbtn} alt="prevbtn" />
             </div>
 
-            <div className="title">
+            <div className={styles.title}>
                 <p>일리스</p>
             </div>
 
-            <div id="divider"></div>
+            <div id={styles.divider}></div>
 
-            <div id="img">
-                <img className="contentimg" src={img} alt="main logo" />
+            <div id={styles.img}>
+                <img className={styles.contentimg} src={img} alt="main logo" />
             </div>
 
-            <div id="testtext">
+            <div id={styles.testtext}>
                 <p>{question}</p>
             </div>
 
             {
                 (index === QUESTION_EX_INDEX) ? 
                 <div>
-                    <div id="progress">
+                    <div id={styles.progress}>
                         <div>1 / 12</div>
                     </div>
                     <div>
-                        <button id="ansA" onClick={clickHandler}>다음</button>
+                        <button id={styles.ansA} onClick={clickHandler}>다음</button>
                     </div>
                 </div> :
                 <div>
-                    <div id="progress">
+                    <div id={styles.progress}>
                         <div>{index - 1} / 12</div>
                     </div>
                     <div>
-                        <button id="ansA" value="a" onClick={clickHandler}>{option[0]}</button>
+                        <button id={styles.ansA} value="a" onClick={clickHandler}>{option[0]}</button>
                     </div>
 
                     <div>
-                        <button id="ansB" value="b" onClick={clickHandler}>{option[1]}</button>
+                        <button id={styles.ansB} value="b" onClick={clickHandler}>{option[1]}</button>
                     </div>
                 </div>
             }
