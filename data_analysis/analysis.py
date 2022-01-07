@@ -59,9 +59,13 @@ for i in range(16):
   word_tfidf = dict(zip(vectorizer.get_feature_names(),tfidf.toarray()[4]))
   image = wordcloud.generate_from_frequencies(word_tfidf).to_image()
   image.save("img/wordcloud_" + mbti_key[i] + ".jpg")
-  
+
+
+  # img = Image.open('12.jpg')
+  # img_array = np.array(img)
+
   # from wordcloud import WordCloud
-  # wc = WordCloud(font_path='./fonts/truetype/nanum/NanumBarunGothic.ttf', background_color = 'white').generate(query)
+  # wc = WordCloud(font_path='./fonts/truetype/nanum/NanumBarunGothic.ttf', background_color = 'white', mask=img_array).generate(query)
   # plt.imshow(wc, interpolation=’bilinear’)
   # plt.axis(“off”)
   # plt.show()
