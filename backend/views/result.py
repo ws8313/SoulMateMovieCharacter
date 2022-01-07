@@ -74,7 +74,7 @@ class ShowResult(Resource):
             
             # 리스트를 문자열로 변환
             answers = "".join(str(_) for _ in answers)
-            print(answers)
+            # print(answers)
             answer = Answer(current_user.id, answers)
             db.session.add(answer)
 
@@ -122,7 +122,7 @@ def top10_in_naver_same_mbti_char(mbti):
         genres = [str(getattr(row, MovieGenre.genre.name)) for row in genres]
         total_movies_info[i].append(genres)
     
-    print(total_movies_info)
+    # print(total_movies_info)
     return total_movies_info
 
 
