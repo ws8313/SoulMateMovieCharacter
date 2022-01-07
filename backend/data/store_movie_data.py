@@ -33,35 +33,51 @@ def store_movie_json():
 
             if kor_title and eng_title and image_link and pub_year and director and rating and story:
                 db.session.add(Movie(movie['title'], movie['subtitle'], movie['image'], movie['pubDate'], movie['director'], movie['rating'], movie['story'], rtime))
+            # db.session.commit()
 
             genres = movie['genre'].split()
             # print(genres)
             for genre in genres:
                 db.session.add(MovieGenre(genre, movie_id))
+            # db.session.commit()
 
-            actors = movie['actors'][1:-1].split(', ')
+            actors = movie['actors'][1:-1].split(',')
             for actor in actors:
-                db.session.add(ActorInMovie(actor[1:-1], movie_id))
+                db.session.add(ActorInMovie(actor.strip()[1:-1], movie_id))
+            # db.session.commit()
 
-            char_n_mbti = movie['mbti'].split()
+            char_n_mbti = movie['mbti'].split(',')
             for cNm in char_n_mbti:
-                character_name = cNm[-6]
-                character_mbti = cNm[-5:-1]
-                db.session.add(Character(character_mbti, character_name))
-                db.session.add(CharacterInMovie(character_id, movie_id))
-                character_id += 1
+                if len(cNm) != 0:
+                    character_name = cNm[:-6]
+                    character_mbti = cNm[-5:-1]
+                    if character_mbti != "XXXX":
+                        try:
+                            db.session.add(Character(character_mbti, character_name))
+                            db.session.commit()
+                            db.session.add(CharacterInMovie(character_id, movie_id))
+                            # db.session.commit()
+                            character_id += 1
+                        except:
+                            db.session.rollback()
+                            continue
+            
             movie_id += 1
     db.session.commit()
 
 
 def store_chracter_image():
 
-    with open('./data/real/naver_movie_story.json', 'r', encoding="utf-8") as f:
+    with open('./data/real/mbti.json', 'r', encoding="utf-8") as f:
         characters = json.load(f)
-        # print(json.dumps(movies, ensure_ascii=False, indent=4))
+        # print(json.dumps(characters, ensure_ascii=False, indent=4))
 
-        for character in characters[0]:
+        for character in characters:
+            # print("role : "+character['role'])
+            # print("mbti : "+character['mbti'])
             c = db.session.query(Character).filter(Character.name == character['role'], Character.mbti == character['mbti']).first()
-            c.image_link = character['img_url']
+            img_url = character['img_url']
+            if c and img_url:
+                c.image_link = img_url
     
     db.session.commit()

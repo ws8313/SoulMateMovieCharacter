@@ -77,10 +77,10 @@ def _store_test_data():
     #     for genre in genres['test_movie_genre']:
     #         db.session.add(MovieGenre(genre['genre'], genre['movie_id']))
     
-    with open('./data/temp_characters.json', 'r', encoding="utf-8") as f:
-        characters = json.load(f)
-        for character in characters['test_character']:
-            db.session.add(Character(character['mbti'], character['name'], character['image_link']))
+    # with open('./data/temp_characters.json', 'r', encoding="utf-8") as f:
+    #     characters = json.load(f)
+    #     for character in characters['test_character']:
+    #         db.session.add(Character(character['mbti'], character['name'], character['image_link']))
 
     # with open('./data/temp_movie_characters.json', 'r', encoding="utf-8") as f:
     #     characters = json.load(f)
