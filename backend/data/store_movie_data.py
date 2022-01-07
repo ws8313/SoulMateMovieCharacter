@@ -47,20 +47,24 @@ def store_movie_json():
             # db.session.commit()
 
             char_n_mbti = movie['mbti'].split(',')
+            char_n_mbti.pop()
             for cNm in char_n_mbti:
-                if len(cNm) != 0:
-                    character_name = cNm[:-6]
-                    character_mbti = cNm[-5:-1]
-                    if character_mbti != "XXXX":
-                        try:
-                            db.session.add(Character(character_mbti, character_name))
-                            db.session.commit()
-                            db.session.add(CharacterInMovie(character_id, movie_id))
-                            # db.session.commit()
-                            character_id += 1
-                        except:
-                            db.session.rollback()
-                            continue
+                # if len(cNm) != 0:
+                character_name = cNm[:-6]
+                character_mbti = cNm[-5:-1]
+                if character_mbti != "XXXX":
+                    id = db.session.query(Character.id).filter(Character.name == character_name).first()
+                    if id is not None:
+                        character_id = id.id
+                    db.session.add(CharacterInMovie(character_id, movie_id))
+                    db.session.commit()
+                    try:
+                        db.session.add(Character(character_mbti, character_name))
+                        db.session.commit()
+                        character_id += 1
+                    except:
+                        db.session.rollback()
+                        continue
             
             movie_id += 1
     db.session.commit()

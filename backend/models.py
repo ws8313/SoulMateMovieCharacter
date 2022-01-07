@@ -117,8 +117,9 @@ class Character(db.Model):
 
 
 class CharacterInMovie(db.Model):
-    character_id = db.Column(db.Integer, db.ForeignKey('character.id'), primary_key=True, nullable=False)
-    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
+    character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), nullable=False)
 
     def __init__(self, character_id, movie_id):
         self.character_id = character_id
