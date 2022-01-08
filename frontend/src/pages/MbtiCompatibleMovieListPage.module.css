@@ -1,7 +1,7 @@
 #container {
     position: relative;
     width: 1440px;
-    height: 100%;
+    height: auto;
     border: 1px solid black;
     margin-left: auto;
     margin-right: auto;
@@ -64,13 +64,20 @@
     position: relative;
     width: 1340px;
     height: 100%;
-    left: 160px;
+    margin-left: auto;
+    margin-right: auto;
     top: 180px;
 
-    margin-bottom: 200px;
+    margin-bottom: 100px;
 
     display: grid;
     grid-template-columns: repeat(4, 300px);
+
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    align-content: center;
 }
 
 .char_name {
@@ -104,10 +111,14 @@
 }
 
 .movie_name {
-    width: 220px;
+    width: 270px;
+    height: 60px;
 
-    font-size: 25px;
-    line-height: 50px;
+    font-size: 20px;
+    line-height: 30px;
+
+    margin-top: 15px;
+    margin-bottom: 50px;
 
     align-items: center;
     text-align: center;

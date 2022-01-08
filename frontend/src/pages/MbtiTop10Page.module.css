@@ -1,7 +1,7 @@
 #container {
     position: relative;
     width: 1440px;
-    height: 100%;
+    height: auto;
     border: 1px solid black;
     margin-left: auto;
     margin-right: auto;
@@ -68,13 +68,16 @@
     margin-right: auto;
     top: 180px;
 
-    margin-bottom: 200px;
+    margin-bottom: 100px;
 
     display: grid;
     grid-template-columns: repeat(5, 270px);
 
     text-align: center;
     align-items: center;
+    justify-items: center;
+    justify-content: center;
+    align-content: center;
 }
 
 .char_name {
@@ -111,13 +114,34 @@
     width: 270px;
     height: 60px;
 
-    font-size: 23px;
+    font-size: 20px;
     line-height: 30px;
 
-    margin-top: 10px;
+    margin-top: 15px;
+    margin-bottom: 50px;
 
     align-items: center;
     text-align: center;
 
     color: #000000;
+}
+
+.word_cloud {
+    position: relative;
+    width: 1200px;
+    height: 600px;
+
+    top: 200px;
+
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 100px;
+
+    display: grid;
+
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    align-content: center;
 }

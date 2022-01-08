@@ -24,13 +24,14 @@ const MbtiTop10Page = () => {
             try {
                 const res = await axios.get("/result/top10")
                 setTop10(res.data)
-                console.log(top10)
             } catch (error) {
                 console.log(error)
             }
         }
         getTop10();
     }, []);
+
+    console.log(top10.word_cloud_src)
 
     const clickHandler = (item) => {
         setSelectedMovie(item);
@@ -61,20 +62,10 @@ const MbtiTop10Page = () => {
             <div id={styles.divider}></div>
 
             <div>
-                <p className={styles.char_name}>같은 유형에게 인기있는 영화 TOP 10</p>
-                <div className={styles.charlist}>
-                { top10.top10_for_same_mbti_users && top10.top10_for_same_mbti_users.map((item, idx) => {
-                    return (
-                        <div key={ idx }>
-                            <img className={styles.char_img} src={ item[3] } alt={ item[1] + " 포스터" }  onClick={ () => clickHandler(item) } />
-                            { showModal && <Top10MovieInfoModal openModal={openModal} selectedMovie={selectedMovie} />}
-                            <p className={styles.movie_name}>{ item[1] }</p>
-                        </div>
-                    )
-                }) }
-                </div>
+                <p className={styles.char_name}>네이버 인기있는 영화 TOP 10 워드 클라우드</p>
+                <img className={styles.word_cloud} src={ top10.word_cloud_src } alt={ top10.word_cloud_src } />
             </div>
-
+            
             <div>
                 <p className={styles.char_name}>네이버 인기있는 영화 TOP 10</p>
                 <div className={styles.charlist}>
@@ -90,10 +81,21 @@ const MbtiTop10Page = () => {
                 </div>
             </div>
 
-
             <div>
-                <img src="img/word_clouds/sample.png" alt="word_cloud"/>
+                <p className={styles.char_name}>같은 유형에게 인기있는 영화 TOP 10</p>
+                <div className={styles.charlist}>
+                { top10.top10_for_same_mbti_users && top10.top10_for_same_mbti_users.map((item, idx) => {
+                    return (
+                        <div key={ idx }>
+                            <img className={styles.char_img} src={ item[3] } alt={ item[1] + " 포스터" }  onClick={ () => clickHandler(item) } />
+                            { showModal && <Top10MovieInfoModal openModal={openModal} selectedMovie={selectedMovie} />}
+                            <p className={styles.movie_name}>{ item[1] }</p>
+                        </div>
+                    )
+                }) }
+                </div>
             </div>
+
 
             <div>
                 <img className={styles.homebtn} src={ home } alt="home button" onClick={ logout } />
