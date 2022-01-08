@@ -17,7 +17,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(config)
     login_manager.init_app(app)
-    cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:80/"}})
+    # cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:80/"}})
 
     authorizations = {
         "basicAuth" : {
