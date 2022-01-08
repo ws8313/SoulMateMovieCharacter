@@ -86,7 +86,7 @@ const LoginModal = ({ openLoginModal }) => {
                         />
                     <img src={closebtn} alt="closebtn" onClick={ openLoginModal } className={styles.modal_button} />
                     <button className={styles.login_btn} onClick={onSubmit}>로그인</button>
-                    <button className={styles.signup_btn} onClick={signUp}>회원가입</button> 
+                    <button method="post" className={styles.signup_btn} onClick={signUp}>회원가입</button> 
                 </div> 
                 :
                 <div>
