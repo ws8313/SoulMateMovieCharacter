@@ -3,6 +3,7 @@ from models import *
 from flask_login import current_user
 from flask import request
 import json
+import random
 
 MbtiCharacter = Namespace(
     name='MbtiCharacter',
@@ -57,9 +58,11 @@ def ShowCharacter(mbti):
     character_list = Character.query.filter(Character.mbti == mbti).all()
     characters_info = [[ch.id, ch.name, ch.image_link] for ch in character_list]
 
+    random_characters_info = random.sample(characters_info, 8)
+
     return {
         'characters_mbti': mbti,
-        'character_info': characters_info
+        'character_info': random_characters_info
     }, 200
 
 
@@ -129,9 +132,7 @@ class MovieListWithCharacters(Resource):
 
             character['movies'] = movie_infos
             character_N_movie_list.append(character)
-        
-        # print(json.dumps(character_N_movie_list, ensure_ascii=False, indent=4))
-        
+            
         return {
             'total_character_N_movies': character_N_movie_list
         }
