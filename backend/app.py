@@ -50,14 +50,15 @@ def create_app():
 
 
     # 초기 데이터 저장. 현재는 한 번 실행하여 데이터 적재되어 있음. 필요한 경우 실행.
-    from data.store_data import store_init_data
-    with app.app_context(): 
-        db.create_all()
-        store_init_data()
+    # from data.store_data import store_init_data
+    # with app.app_context(): 
+    #     db.create_all()
+    #     store_init_data()
 
-    from data.store_movie_data import store_movie_json, store_chracter_image
-    with app.app_context(): 
-        store_movie_json()
-        store_chracter_image()
+    # from data.store_movie_data import store_movie_json, store_chracter_image, set_to_default_char_image
+    # with app.app_context(): 
+    #     store_movie_json()
+    #     store_chracter_image()
+    #     set_to_default_char_image()
 
     return app

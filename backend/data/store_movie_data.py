@@ -32,7 +32,12 @@ def store_movie_json():
             story = movie['story']
 
             if kor_title and eng_title and image_link and pub_year and director and rating and story:
-                db.session.add(Movie(movie['title'], movie['subtitle'], movie['image'], movie['pubDate'], movie['director'], movie['rating'], movie['story'], rtime))
+                m = db.session.query(Movie).filter(Movie.kor_title == kor_title, Movie.eng_title == eng_title, Movie.director == director).first()
+
+                if m:
+                    continue
+                else:
+                    db.session.add(Movie(movie['title'], movie['subtitle'], movie['image'], movie['pubDate'], movie['director'], movie['rating'], movie['story'], rtime))
             # db.session.commit()
 
             genres = movie['genre'].split()
@@ -64,25 +69,6 @@ def store_movie_json():
                     if char_in_movie is None:
                         db.session.add(CharacterInMovie(id.id, movie_id))
                         db.session.commit()
-
-                    # id = db.session.query(Character.id).filter(Character.name == character_name, Character.mbti == character_mbti).first()
-                    # real_char_id = character_id
-                    # if id is not None:
-                    #     character_id = id.id
-                    # same_info = db.session.query(CharacterInMovie).filter(CharacterInMovie.character_id == character_id, CharacterInMovie.movie_id == movie_id).first()
-                    # if same_info is None:
-                    #     db.session.add(CharacterInMovie(character_id, movie_id))
-                    #     character_id = real_char_id
-                    # # else:
-                    #     # print(character_id, movie_id)
-                    # db.session.commit()
-                    # try:
-                    #     db.session.add(Character(character_mbti, character_name))
-                    #     db.session.commit()
-                    #     character_id += 1
-                    # except:
-                    #     db.session.rollback()
-                    #     continue
             
             movie_id += 1
             db.session.commit()
@@ -99,8 +85,16 @@ def store_chracter_image():
             # print("role : "+character['role'])
             # print("mbti : "+character['mbti'])
             c = db.session.query(Character).filter(Character.name == character['role'], Character.mbti == character['mbti']).first()
-            img_url = character['img_url']
+            img_url = character['img_url'].strip()
             if c and img_url:
                 c.image_link = img_url
+            elif c and img_url is None:
+                c.image_link = "https://www.personality-database.com/images/profile_transparent.png"
     
+    db.session.commit()
+
+def set_to_default_char_image():
+    null_images = db.session.query(Character).filter((Character.image_link == None) | (Character.image_link == "")).all()
+    for i in null_images:
+        i.image_link = "https://www.personality-database.com/images/profile_transparent.png"
     db.session.commit()
