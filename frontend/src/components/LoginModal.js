@@ -15,7 +15,7 @@ const LoginModal = ({ openLoginModal }) => {
 
     const onSubmit = () => {
         axios
-            .post("/user/login", {
+            .post("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:443/user/login", {
                 "login_id": userId,
                 "login_pw": password,
             })
