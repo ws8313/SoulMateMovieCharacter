@@ -62,7 +62,6 @@ class Register(Resource):
     @UserManagement.expect(register_fields)
     @UserManagement.response(200, 'success')
     @UserManagement.response(500, 'fail')
-
     def post(self):
         user_data = User.query.filter(User.id == request.json.get('id')).first()
         if not user_data:
