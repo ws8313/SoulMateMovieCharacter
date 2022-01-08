@@ -33,7 +33,15 @@ const MbtiCharacterPage = () => {
             }
         }
         getMbtiCharacter();
+<<<<<<< HEAD
     }, [userMBTI]);
+=======
+    }, [userMBTI, selectedChar]);
+
+    // const mouseOverHandler = (e) => {
+    //     setSelectedChar(e.target.alt)
+    // }
+>>>>>>> e6f939594e43c0e4a8bf7799d972f7b9043c416a
 
     const clickHandler = () => {
         history.push({

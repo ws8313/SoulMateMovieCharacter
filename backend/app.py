@@ -55,9 +55,10 @@ def create_app():
     #     db.create_all()
     #     store_init_data()
 
-    # from data.store_movie_data import store_movie_json, store_chracter_image
+    # from data.store_movie_data import store_movie_json, store_chracter_image, set_to_default_char_image
     # with app.app_context(): 
     #     store_movie_json()
     #     store_chracter_image()
+    #     set_to_default_char_image()
 
     return app

@@ -3,6 +3,7 @@ from models import *
 from flask_login import current_user
 from flask import request
 import json
+import random
 
 MbtiCharacter = Namespace(
     name='MbtiCharacter',
@@ -57,9 +58,11 @@ def ShowCharacter(mbti):
     character_list = Character.query.filter(Character.mbti == mbti).all()
     characters_info = [[ch.id, ch.name, ch.image_link] for ch in character_list]
 
+    random_characters_info = random.sample(characters_info, 8)
+
     return {
         'characters_mbti': mbti,
-        'character_info': characters_info
+        'character_info': random_characters_info
     }, 200
 
 
@@ -69,13 +72,16 @@ def ShowCharacter(mbti):
 class UserCharacter(Resource):
     @MbtiCharacter.response(200, 'Success', matching_fields)
     def get(self, compatible):
+        global characters
         """compatible=0 일때 mbti가 같은 character 출력/compatible!=0 일때 mbti궁합이 맞는 chracter 출력"""
         user = User.query.filter(User.id == current_user.id).first()
         if compatible == 0:
-            return ShowCharacter(user.mbti)
+            characters = ShowCharacter(user.mbti)
+            return characters
         else:
             compatible_mbti = Compatibility.query.filter(Compatibility.user_mbti == user.mbti).first()
-            return ShowCharacter(compatible_mbti.compatible_mbti)
+            characters = ShowCharacter(compatible_mbti.compatible_mbti)
+            return characters
 
 
 @MbtiCharacter.route('/movie_list')
@@ -106,11 +112,12 @@ class MovieListWithCharacters(Resource):
     @MbtiCharacter.response(200, 'Success', total_character_N_movies_fields)
     @MbtiCharacter.response(500, 'fail')
     def get(self, mbti):
+        global characters
         """mbti 에 해당하는 캐릭터가 등장한 영화 리스트"""
         # (캐릭터, 캐릭터의 등장 영화 리스트)의 리스트
         character_N_movie_list = []
-        characters = ShowCharacter(mbti)[0]['character_info']
-        print(characters)
+        characters = characters[0]['character_info']
+        # print(characters)
         for c in characters:
             # 영화 리스트 검색
             character = {}
@@ -128,10 +135,9 @@ class MovieListWithCharacters(Resource):
                 movie_infos.append(temp_dict)
 
             character['movies'] = movie_infos
+            # print(character)
             character_N_movie_list.append(character)
-        
-        # print(json.dumps(character_N_movie_list, ensure_ascii=False, indent=4))
-        
+            
         return {
             'total_character_N_movies': character_N_movie_list
         }
