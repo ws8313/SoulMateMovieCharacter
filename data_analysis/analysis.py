@@ -67,7 +67,7 @@ def drawWordCloud(freq):
     set_mbti = data[mbti_movie]
     top10 = set_mbti.nlargest(10, 'rating', keep='all')
     
-    top = top10.iloc[0]['image']
+    # top = top10.iloc[0]['image']
     # curl 요청
     # os.system("curl " + top + " > src/poster" + mbti_key[i] + ".jpg")
     # print(top)
@@ -98,7 +98,7 @@ def drawWordCloud(freq):
       # print(tfidf.shape)
 
     # draw wordcloud & save img
-    img = Image.open('src/poster' + mbti_key[i] + '.jpg')
+    img = Image.open('src/posterESFP.jpg')
     img = img.resize((2048, 2048))
     img_array = np.array(img)
     mask = Image.open('src/6.jpg')
