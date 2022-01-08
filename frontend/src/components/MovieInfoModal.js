@@ -68,7 +68,7 @@ const MovieInfoModal = ({ openModal, selectedMovie }) => {
         <div className={styles.modal_container}>
             <div className={styles.modal}>
                 <img src={closebtn} alt="closebtn" onClick={ openModal } className={styles.modal_button} />
-                <img className={styles.modal_img} src={selectedMovie.image_link} />
+                <img className={styles.modal_img} src={selectedMovie.image_link} alt={selectedMovie.kor_title + " 포스터"}/>
                 <div className={styles.modal_movie_info_container}>
                     <p>감독 : {selectedMovie.director}</p>
                     <p>장르 : {selectedMovie.genres[0]}</p>

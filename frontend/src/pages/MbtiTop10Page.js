@@ -31,8 +31,6 @@ const MbtiTop10Page = () => {
         getTop10();
     }, []);
 
-    console.log(top10.word_cloud_src)
-
     const clickHandler = (item) => {
         setSelectedMovie(item);
         openModal();
@@ -65,7 +63,7 @@ const MbtiTop10Page = () => {
                 <p className={styles.char_name}>네이버 인기있는 영화 TOP 10 워드 클라우드</p>
                 <img className={styles.word_cloud} src={ top10.word_cloud_src } alt={ top10.word_cloud_src } />
             </div>
-            
+
             <div>
                 <p className={styles.char_name}>네이버 인기있는 영화 TOP 10</p>
                 <div className={styles.charlist}>
@@ -95,7 +93,6 @@ const MbtiTop10Page = () => {
                 }) }
                 </div>
             </div>
-
 
             <div>
                 <img className={styles.homebtn} src={ home } alt="home button" onClick={ logout } />

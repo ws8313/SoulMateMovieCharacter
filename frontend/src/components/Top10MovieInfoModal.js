@@ -68,7 +68,7 @@ const Top10MovieInfoModal = ({ openModal, selectedMovie }) => {
         <div className={styles.modal_container}>
             <div className={styles.modal}>
                 <img src={closebtn} alt="closebtn" onClick={ openModal } className={styles.modal_button} />
-                <img className={styles.modal_img} src={selectedMovie[3]} />
+                <img className={styles.modal_img} src={selectedMovie[3]} alt={selectedMovie[1] + " 포스터"}/>
                 <div className={styles.modal_movie_info_container}>
                     <p>감독 : {selectedMovie[5]}</p>
                     <p>장르 : {selectedMovie[9]}</p>
