@@ -20,7 +20,11 @@ const LoginModal = ({ openLoginModal }) => {
                 "login_pw": password,
             })
             .then((res) => {
-                history.push("/TestPage");
+                if (res.status && res.status === 202) {
+                    alert("이미 사용 중인 아이디입니다.")
+                } else {
+                    history.push("/TestPage");
+                }
             })
             .catch((error) => {
                 console.log(error);

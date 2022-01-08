@@ -25,7 +25,7 @@ const Modal = ({ openModal }) => {
             .post("/result/", {
                 "user_mbti": selected
             })
-            .then((res) => {
+            .then(() => {
                 history.push("/TestCompletedPage")
             })
             .catch((error) => {

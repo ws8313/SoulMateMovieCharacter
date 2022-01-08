@@ -63,8 +63,6 @@ const TestPage = () => {
         }
     }
 
-    console.log(img)
-
     return (
         <div id={styles.container}>
             <div id={styles.btnbox} onClick={prevClick}>
