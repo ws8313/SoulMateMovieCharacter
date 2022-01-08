@@ -1,11 +1,14 @@
+import sys
+import os
+from collections import Counter
 from konlpy.tag import *
-from numpy import vectorize
+import numpy as np
 import pandas as pd
 import re
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
+from PIL import Image
+from wordcloud import WordCloud, ImageColorGenerator
 import matplotlib.pyplot as plt
-from wordcloud import WordCloud
-import wordcloud
 
 mbti_key = ['ENFP', 'INFP', 'ESFP', 'ISFP',
             'ENTP', 'INTP', 'ENFJ', 'INFJ',
@@ -20,55 +23,104 @@ df = pd.DataFrame(columns=[])
 def sub_special(s):
   return re.sub(r'[^ㄱ-ㅎㅏ-ㅣ가-힣0-9a-zA-Z ]','',s)
 
-STOP_WORDS = ['의','가','이','은','로','에게','것','들','는','좀','잘','걍','과','도','을','를','으로','자','에','와','한','하다', '되다', '후', '줄', '에서', '에서는', '에도', '다']
+STOP_WORDS = ['의','가','이','은','로','에게',
+              '것','들','는','좀','잘','걍','과',
+              '도','을','를','으로','자','에','와',
+              '한','하다','되다','후','줄','에서',
+              '에서는','에도','다','한다','된다',
+              '있다','싶다','위해','로부터','않다','되어다']
 
-def morph_and_stopword(s):
+def morph_and_stopword(s, freq):
   token_ls = []
   #형태소 분석
   s = sub_special(s)
-  # tmp = Okt().morphs(s, stem=True)
+  words = Okt().pos(s, norm=True, stem=True)
+  tmp = [x for x, y in words if y in ['Noun', 'Verb', 'Adjective']]
   # tmp = Okt().nouns(s)
-  words = Kkma().pos(s)
-  tmp = [x for x, y in words if y in ['NNG', 'VA', 'VV']]
-
+  # words = Kkma().pos(s)
+  
   #불용어 처리
   for token in tmp:
     if token not in STOP_WORDS:
       token_ls.append(token)
   
+  if freq:
+    for i, v in enumerate(token_ls):
+      if len(v)<2:
+        token_ls.pop(i)
+    
+    count = Counter(token_ls)
+    noun_list = count.most_common(300)
+    return noun_list
+
   return token_ls
 
 
-
-for i in range(16):
-  mbti_movie = data['mbti'].str.contains(mbti_key[i])
-  set_mbti = data[mbti_movie]
-  top10 = set_mbti.nlargest(30, 'rating', keep='all')
+def withFreq(s):
+  return sum(s, [])
   
-  total_story = []
-  for s in top10['story'].head():
-    total_story.append(' '.join(morph_and_stopword(s)))
-  
-  vectorizer = CountVectorizer(min_df=1)
-  bow = vectorizer.fit_transform(total_story)
-  
-  transformer = TfidfTransformer()
-  tfidf = transformer.fit_transform(bow.toarray())
-  print(vectorizer.get_feature_names())
-  # wordcloud
-  wordcloud = WordCloud(font_path=r'C:\Windows\Fonts\H2HDRM.TTF', background_color='white')
-  word_tfidf = dict(zip(vectorizer.get_feature_names(),tfidf.toarray()[4]))
-  print(word_tfidf)
-  image = wordcloud.generate_from_frequencies(word_tfidf).to_image()
-  image.save("img/wordcloud_" + mbti_key[i] + ".jpg")
 
+def drawWordCloud(freq):
+  for i in range(16):
+    # mbti 별 top10 줄거리 가져오기
+    mbti_movie = data['mbti'].str.contains(mbti_key[i])
+    set_mbti = data[mbti_movie]
+    top10 = set_mbti.nlargest(10, 'rating', keep='all')
+    
+    top = top10.iloc[0]['image']
+    # curl 요청
+    # os.system("curl " + top + " > src/poster" + mbti_key[i] + ".jpg")
+    # print(top)
+    
+    # 형태소 분석 및 count
+    if freq:
+      total_story = []
+      for s in top10['story']:
+        wordList = morph_and_stopword(s, freq)
+        total_story.append(wordList)
+    else:
+      total_story = ''
+      for s in top10['story']:
+        wordList = morph_and_stopword(s, freq)
+        total_story += ' '.join(wordList)
+        total_story += ' '
+    
+    # faltten / tf-idf
+    if (freq):
+      words = withFreq(total_story)
+    else:
+      vectorizer = CountVectorizer(min_df=1)
+      bow = vectorizer.fit_transform([total_story])
+      
+      transformer = TfidfTransformer()
+      tfidf = transformer.fit_transform(bow.toarray())
+      words = zip(vectorizer.get_feature_names(),tfidf.toarray()[0])
+      # print(tfidf.shape)
 
-  # img = Image.open('12.jpg')
-  # img_array = np.array(img)
+    # draw wordcloud & save img
+    img = Image.open('src/poster' + mbti_key[i] + '.jpg')
+    img = img.resize((2048, 2048))
+    img_array = np.array(img)
+    mask = Image.open('src/6.jpg')
+    mask = mask.resize((2048, 2048))
+    mask = np.array(mask)
+    
+    wordcloud = WordCloud(font_path=r'.\fonts\PoorStory-Regular.ttf', background_color='black', mask=mask)
+    image = wordcloud.generate_from_frequencies(dict(words))
+    image_colors = ImageColorGenerator(img_array)
+    image.recolor(color_func=image_colors)
+    image.to_image().save("img/wordcloud_" + mbti_key[i] + ".jpg")
+    
+    
 
-  # from wordcloud import WordCloud
-  # wc = WordCloud(font_path='./fonts/truetype/nanum/NanumBarunGothic.ttf', background_color = 'white', mask=img_array).generate(query)
-  # plt.imshow(wc, interpolation=’bilinear’)
-  # plt.axis(“off”)
-  # plt.show()
+if __name__ == '__main__':
+  arguments = sys.argv
   
+  # 단어 빈도수 이용
+  if arguments[1] == '-f' or arguments[1] == '-F':
+    drawWordCloud(True)
+  # tf-idf 이용
+  elif arguments[1] == '-t' or arguments[1] == '-T':
+    drawWordCloud(False)
+  else:
+    print("두 가지 옵션 중 한 가지를 선택하여 실행해주세요. (-f | -t")
