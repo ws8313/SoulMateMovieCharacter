@@ -78,7 +78,7 @@ const MovieInfoModal = ({ openModal, selectedMovie }) => {
                     <p>러닝타임 : {selectedMovie.run_time}분</p>
                 </div>
                 <div className={styles.modal_movie_story_container}>
-                    <p>{selectedMovie.story}</p>
+                    <p>{selectedMovie.story.substring(0, 500)+"..."}</p>
                 </div>
                 <div className={styles.RatingContainer}>
                     <div className={styles.stars}>
