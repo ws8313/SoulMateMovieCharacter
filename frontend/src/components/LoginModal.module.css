@@ -103,6 +103,7 @@
     color: #000000;
 
     cursor: pointer;
+    transition: all 0.3s;
 }
 
 .signup_btn {
@@ -127,6 +128,7 @@
     color: #000000;
 
     cursor: pointer;
+    transition: all 0.3s;
 }
 
 .signup_id_input {
@@ -214,4 +216,5 @@
     color: #000000;
 
     cursor: pointer;
+    transition: all 0.3s;
 }

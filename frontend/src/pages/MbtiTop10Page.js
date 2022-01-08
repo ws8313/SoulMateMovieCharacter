@@ -24,6 +24,7 @@ const MbtiTop10Page = () => {
             try {
                 const res = await axios.get("/result/top10")
                 setTop10(res.data)
+                console.log(top10)
             } catch (error) {
                 console.log(error)
             }
