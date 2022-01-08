@@ -57,7 +57,7 @@ class Logout(Resource):
         return {'result': 'success'}, 200
 
 
-@UserManagement.route('/register')
+@UserManagement.route('/register', method=['GET', 'POST'])
 class Register(Resource):
     @UserManagement.expect(register_fields)
     @UserManagement.response(200, 'success')
