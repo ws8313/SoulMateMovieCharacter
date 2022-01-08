@@ -16,6 +16,13 @@ const TestPage = () => {
 
     const history = useHistory();
 
+    let axiosConfig = {
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+        }
+    }
+
     useEffect(() => {
         async function getQuestion() {
             try {
@@ -34,7 +41,7 @@ const TestPage = () => {
         if(index === QUESTION_LAST_INDEX) {
             axios.post("/result/", {
                 "answers": anslist
-            })
+            }, axiosConfig)
             .then(() => {
                 history.push("/TestCompletedPage")
             })

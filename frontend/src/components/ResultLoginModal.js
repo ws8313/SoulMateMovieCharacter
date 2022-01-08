@@ -8,6 +8,12 @@ const ResultLoginModal = ({ openResultLoginModal }) => {
     const [password, setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
 
+    let axiosConfig = {
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+        }
+    }
 
     const [register, setRegister] = useState(false);
 
@@ -16,7 +22,7 @@ const ResultLoginModal = ({ openResultLoginModal }) => {
             .post("/user/login", {
                 "login_id": userId,
                 "login_pw": password,
-            })
+            }, axiosConfig)
             .then(() => {
                 openResultLoginModal()
             })
@@ -31,7 +37,7 @@ const ResultLoginModal = ({ openResultLoginModal }) => {
                 "id": userId,
                 "pw": password,
                 "pw2": passwordCheck
-            })
+            }, axiosConfig)
             .then((res) => {
                 if (res.status && res.status === 202) {
                     alert("이미 사용 중인 아이디입니다.")

@@ -20,6 +20,13 @@ const MovieInfoModal = ({ openModal, selectedMovie }) => {
 
     const stars = Array(5).fill(0);
 
+    let axiosConfig = {
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+        }
+    }
+
     const handleClick = (value) => {
         setCurValue(value)
         setMovieId(selectedMovie.id)
@@ -56,7 +63,7 @@ const MovieInfoModal = ({ openModal, selectedMovie }) => {
         axios
             .post("/character/movie_list", {
                 "satisfaction_list": satisfactionList
-            })
+            }, axiosConfig)
             .then(() => {
             })
             .catch((error) => {

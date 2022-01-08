@@ -14,7 +14,7 @@
     "react-scripts": "5.0.0",
     "web-vitals": "^2.1.2"
   },
-  "proxy": "http://localhost:443",
+  "proxy": "http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:443",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

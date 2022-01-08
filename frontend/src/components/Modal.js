@@ -12,6 +12,13 @@ const Modal = ({ openModal }) => {
 
     const history = useHistory();
 
+    let axiosConfig = {
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+        }
+    }
+
     const openResultLoginModal = () => {
         setShowResultLoginModal(!showResultLoginModal);
     }
@@ -24,7 +31,7 @@ const Modal = ({ openModal }) => {
         axios
             .post("/result/", {
                 "user_mbti": selected
-            })
+            }, axiosConfig)
             .then(() => {
                 history.push("/TestCompletedPage")
             })
