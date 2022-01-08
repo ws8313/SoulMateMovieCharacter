@@ -44,7 +44,7 @@ def store_movie_json():
             actors = movie['actors'][1:-1].split(',')
             for actor in actors:
                 db.session.add(ActorInMovie(actor.strip()[1:-1], movie_id))
-            # db.session.commit()
+            db.session.commit()
 
             char_n_mbti = movie['mbti'].split(',')
             char_n_mbti.pop()
@@ -53,28 +53,36 @@ def store_movie_json():
                 character_name = cNm[:-6]
                 character_mbti = cNm[-5:-1]
                 if character_mbti != "XXXX":
-                    id = db.session.query(Character.id).filter(Character.name == character_name, Character.mbti == character_mbti).first()
-                    real_char_id = character_id
-                    if id is not None:
-                        character_id = id.id
-                    same_info = db.session.query(CharacterInMovie).filter(CharacterInMovie.character_id == character_id, CharacterInMovie.movie_id == movie_id).first()
-                    if same_info is None:
-                        db.session.add(CharacterInMovie(character_id, movie_id))
-                        character_id = real_char_id
-
-
-
-                        
-                    # else:
-                        # print(character_id, movie_id)
-                    db.session.commit()
-                    try:
+                    # db에 해당 캐릭터가 있나? 검사 후 없으면 저장. 있으면 지금 영화 출연 정보도 있나? 검사후 없으면 저장.
+                    id = db.session.query(Character.id).filter(Character.name == character_name).first()
+                    if id is None:
                         db.session.add(Character(character_mbti, character_name))
                         db.session.commit()
-                        character_id += 1
-                    except:
-                        db.session.rollback()
-                        continue
+                        id = db.session.query(Character.id).filter(Character.name == character_name).first()
+                    
+                    char_in_movie = db.session.query(CharacterInMovie).filter(CharacterInMovie.character_id == id.id, CharacterInMovie.movie_id == movie_id).first()
+                    if char_in_movie is None:
+                        db.session.add(CharacterInMovie(id.id, movie_id))
+                        db.session.commit()
+
+                    # id = db.session.query(Character.id).filter(Character.name == character_name, Character.mbti == character_mbti).first()
+                    # real_char_id = character_id
+                    # if id is not None:
+                    #     character_id = id.id
+                    # same_info = db.session.query(CharacterInMovie).filter(CharacterInMovie.character_id == character_id, CharacterInMovie.movie_id == movie_id).first()
+                    # if same_info is None:
+                    #     db.session.add(CharacterInMovie(character_id, movie_id))
+                    #     character_id = real_char_id
+                    # # else:
+                    #     # print(character_id, movie_id)
+                    # db.session.commit()
+                    # try:
+                    #     db.session.add(Character(character_mbti, character_name))
+                    #     db.session.commit()
+                    #     character_id += 1
+                    # except:
+                    #     db.session.rollback()
+                    #     continue
             
             movie_id += 1
             db.session.commit()
