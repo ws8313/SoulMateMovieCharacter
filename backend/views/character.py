@@ -110,7 +110,7 @@ class MovieListWithCharacters(Resource):
         # (캐릭터, 캐릭터의 등장 영화 리스트)의 리스트
         character_N_movie_list = []
         characters = ShowCharacter(mbti)[0]['character_info']
-        print(characters)
+        # print(characters)
         for c in characters:
             # 영화 리스트 검색
             character = {}
@@ -128,6 +128,7 @@ class MovieListWithCharacters(Resource):
                 movie_infos.append(temp_dict)
 
             character['movies'] = movie_infos
+            # print(character)
             character_N_movie_list.append(character)
         
         # print(json.dumps(character_N_movie_list, ensure_ascii=False, indent=4))

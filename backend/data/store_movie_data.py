@@ -53,10 +53,14 @@ def store_movie_json():
                 character_name = cNm[:-6]
                 character_mbti = cNm[-5:-1]
                 if character_mbti != "XXXX":
-                    id = db.session.query(Character.id).filter(Character.name == character_name).first()
+                    id = db.session.query(Character.id).filter(Character.name == character_name, Character.mbti == character_mbti).first()
                     if id is not None:
                         character_id = id.id
-                    db.session.add(CharacterInMovie(character_id, movie_id))
+                    same_info = db.session.query(CharacterInMovie).filter(CharacterInMovie.character_id == character_id, CharacterInMovie.movie_id == movie_id).first()
+                    if same_info is None:
+                        db.session.add(CharacterInMovie(character_id, movie_id))
+                    # else:
+                        # print(character_id, movie_id)
                     db.session.commit()
                     try:
                         db.session.add(Character(character_mbti, character_name))
@@ -67,6 +71,7 @@ def store_movie_json():
                         continue
             
             movie_id += 1
+            db.session.commit()
     db.session.commit()
 
 
