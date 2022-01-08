@@ -1,3 +1,3 @@
 import pandas as pd
 
-data = pd.read_csv('data/movie_list.csv')
+data = pd.read_csv('data/mbti_movie.csv', encoding='utf-8')
