@@ -61,6 +61,10 @@ def store_movie_json():
                     if same_info is None:
                         db.session.add(CharacterInMovie(character_id, movie_id))
                         character_id = real_char_id
+
+
+
+                        
                     # else:
                         # print(character_id, movie_id)
                     db.session.commit()
