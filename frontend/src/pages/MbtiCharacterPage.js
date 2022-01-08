@@ -8,7 +8,6 @@ import styles from "./MbtiCharacterPage.module.css";
 const MbtiCharacterPage = () => {
     const [userMBTI, setUserMBTI] = useState("");
     const [charList, setCharList] = useState([]);
-    const [selectedChar, setSelectedChar] = useState("");
 
     const history = useHistory();
 
@@ -34,11 +33,7 @@ const MbtiCharacterPage = () => {
             }
         }
         getMbtiCharacter();
-    }, [userMBTI, selectedChar]);
-
-    const mouseOverHandler = (e) => {
-        setSelectedChar(e.target.alt)
-    }
+    }, [userMBTI]);
 
     const clickHandler = () => {
         history.push({
@@ -71,7 +66,7 @@ const MbtiCharacterPage = () => {
                     { charList && charList.map((item) => {
                         return (
                             <div key={item}>
-                                <img className={styles.char_img} src={ item[2] } alt={ item[1] + " 사진" } onMouseOver={ mouseOverHandler } onClick={ clickHandler } />
+                                <img className={styles.char_img} src={ item[2] } alt={ item[1] + " 사진" } onClick={ clickHandler } />
                                 <p className={styles.char_name}>{ item[1] }</p>
                             </div>
                         )

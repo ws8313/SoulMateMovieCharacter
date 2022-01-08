@@ -95,6 +95,7 @@
     color: #000000;
 
     cursor: pointer;
+    transition: all 0.3s;
 }
 
 .modal_btn:hover {
