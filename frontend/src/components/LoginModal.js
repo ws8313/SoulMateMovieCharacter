@@ -39,7 +39,7 @@ const LoginModal = ({ openLoginModal }) => {
 
     const onSignUp = () => {
         axios
-            .post("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:443/user/register", {
+            .get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:443/user/register", {
                 "id": userId,
                 "pw": password,
                 "pw2": passwordCheck
