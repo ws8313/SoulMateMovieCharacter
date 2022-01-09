@@ -13,11 +13,9 @@ const LoginModal = ({ openLoginModal }) => {
 
     const history = useHistory();
 
-    
     let axiosConfig = {
         headers: {
-            'Content-Type': 'text/plain;charset=utf-8',
-            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
         }
     }
 
@@ -41,7 +39,7 @@ const LoginModal = ({ openLoginModal }) => {
 
     const onSignUp = () => {
         axios
-            .post("/user/register", {
+            .post("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:443/user/register", {
                 "id": userId,
                 "pw": password,
                 "pw2": passwordCheck
