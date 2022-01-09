@@ -15,7 +15,7 @@ const LoginModal = ({ openLoginModal }) => {
 
     let axiosConfig = {
         headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
+            'Content-Type': 'text/plain;charset=utf-8',
             "Access-Control-Allow-Origin": "*",
         }
     }
