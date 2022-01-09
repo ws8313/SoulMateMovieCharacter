@@ -13,6 +13,7 @@ const LoginModal = ({ openLoginModal }) => {
 
     const history = useHistory();
 
+    
     let axiosConfig = {
         headers: {
             'Content-Type': 'text/plain;charset=utf-8',
