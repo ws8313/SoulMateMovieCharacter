@@ -13,18 +13,12 @@ const LoginModal = ({ openLoginModal }) => {
 
     const history = useHistory();
 
-    let axiosConfig = {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }
-
     const onSubmit = () => {
         axios
-            .post("/api/user/login", {
+            .post("/user/login", {
                 "login_id": userId,
                 "login_pw": password,
-            }, axiosConfig)
+            })
             .then((res) => {
                 if (res.status && res.status === 202) {
                     alert("이미 사용 중인 아이디입니다.")
@@ -39,11 +33,11 @@ const LoginModal = ({ openLoginModal }) => {
 
     const onSignUp = () => {
         axios
-            .get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:443/user/register", {
+            .post("/user/register", {
                 "id": userId,
                 "pw": password,
                 "pw2": passwordCheck
-            }, axiosConfig)
+            })
             .then((res) => {
                 if (res.status && res.status === 202) {
                     alert("이미 사용 중인 아이디입니다.")
