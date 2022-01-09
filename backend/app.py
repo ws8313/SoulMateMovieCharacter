@@ -18,6 +18,7 @@ def create_app():
     app.config.from_object(config)
     login_manager.init_app(app)
     CORS(app)
+    
 
     authorizations = {
         "basicAuth" : {
