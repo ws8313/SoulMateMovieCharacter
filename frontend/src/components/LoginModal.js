@@ -21,7 +21,7 @@ const LoginModal = ({ openLoginModal }) => {
 
     const onSubmit = () => {
         axios
-            .post("/user/login", {
+            .post("/api/user/login", {
                 "login_id": userId,
                 "login_pw": password,
             }, axiosConfig)
