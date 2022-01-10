@@ -1,6 +1,6 @@
 from flask_restx import Resource, Namespace, fields
 from models import *
-from flask_login import current_user
+from flask_login import current_user, login_required
 from flask import request
 import json
 import random
@@ -70,6 +70,7 @@ def ShowCharacter(mbti):
 @MbtiCharacter.route('/<int:compatible>')
 @MbtiCharacter.doc(params={'compatible': '궁합여부'})
 class UserCharacter(Resource):
+    @login_required
     @MbtiCharacter.response(200, 'Success', matching_fields)
     def get(self, compatible):
         global characters
@@ -86,6 +87,7 @@ class UserCharacter(Resource):
 
 @MbtiCharacter.route('/movie_list')
 class MovieSatisfactionList(Resource):
+    @login_required
     @MbtiCharacter.expect(satisfaction_fields)
     @MbtiCharacter.response(200, 'success')
     @MbtiCharacter.response(500, 'fail')
@@ -109,6 +111,7 @@ class MovieSatisfactionList(Resource):
 @MbtiCharacter.route('/movie_list/<string:mbti>')
 @MbtiCharacter.doc(params={'mbti': '등장한 영화 리스트를 볼 캐릭터의 mbti'})
 class MovieListWithCharacters(Resource):
+    @login_required
     @MbtiCharacter.response(200, 'Success', total_character_N_movies_fields)
     @MbtiCharacter.response(500, 'fail')
     def get(self, mbti):

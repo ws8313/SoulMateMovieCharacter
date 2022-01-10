@@ -1,7 +1,7 @@
 from flask import request
 from flask_restx import Resource, Namespace, fields
 from models import *
-from flask_login import current_user
+from flask_login import login_required, current_user
 from collections import Counter
 from sqlalchemy import func
 
@@ -28,6 +28,7 @@ same_mbti_top10_fields = Result.model('Same MBTI Top 10 Movies', {
 
 @Result.route('/')
 class ShowResult(Resource):
+    @login_required
     @Result.response(200, 'Success', mbti_fields)
     def get(self):
         """사용자 mbti 전달"""
@@ -38,6 +39,7 @@ class ShowResult(Resource):
         }, 200
 
 
+    @login_required
     @Result.expect(answers_fields)
     @Result.response(200, 'success')
     @Result.response(500, 'fail')
@@ -75,8 +77,11 @@ class ShowResult(Resource):
             # 리스트를 문자열로 변환
             answers = "".join(str(_) for _ in answers)
             # print(answers)
-            answer = Answer(current_user.id, answers)
-            db.session.add(answer)
+            if current_user.is_authenticated:
+                answer = Answer(current_user.id, answers)
+                db.session.add(answer)
+            else:
+                print("current_user is None")
 
         # 테스트를 진행했든, 바로 user_mbti를 입력 받았든 알게 된 user_mbti를 db에 저장
         user = User.query.filter(User.id == current_user.id).first()
@@ -125,7 +130,7 @@ def top10_in_naver_same_mbti_char(mbti):
     # print(total_movies_info)
     return total_movies_info
 
-
+@login_required
 @Result.route('/top10')
 class Top10Movies(Resource):
     @Result.response(200, 'Success', same_mbti_top10_fields)

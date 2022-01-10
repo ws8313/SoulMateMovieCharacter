@@ -35,6 +35,8 @@ class Login(Resource):
     def post(self):
         user_id = request.json.get('login_id')
         user_pw = request.json.get('login_pw')
+        print(user_id)
+        print(user_pw)
         user_data = User.query.filter(User.id == user_id).first()
         if not user_data:
             # 아이디 틀림
