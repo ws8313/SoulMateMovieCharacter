@@ -12,7 +12,7 @@ const TestCompletedPage = () => {
     useEffect(() => {
         async function getMBTI() {
             try {
-                const res = await axios.get("/result/")
+                const res = await axios.get("http://127.0.0.1:5000/result/")
                 setUserMBTI(res.data.user_mbti)
             } catch (error) {
                 console.log(error)

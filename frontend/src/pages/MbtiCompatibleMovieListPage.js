@@ -25,7 +25,7 @@ const MbtiCompatibleMovieListPage = () => {
     useEffect(() => {
         async function getMbtiCharacterMovieList() {
             try {
-                const res = await axios.get(`/character/movie_list/${compatibleMBTI}`)
+                const res = await axios.get(`http://127.0.0.1:5000/character/movie_list/${compatibleMBTI}`)
                 setMovieList(res.data.total_character_N_movies)
             } catch (error) {
                 console.log(error)

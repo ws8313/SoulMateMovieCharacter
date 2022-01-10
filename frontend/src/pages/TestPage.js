@@ -26,7 +26,7 @@ const TestPage = () => {
     useEffect(() => {
         async function getQuestion() {
             try {
-                const res = await axios.get(`/test/${index}`)
+                const res = await axios.get(`http://127.0.0.1:5000/test/${index}`)
                 setQuestion(res.data.question);
                 setImg(res.data.img_url)
                 setOption(res.data.options);
@@ -39,7 +39,7 @@ const TestPage = () => {
 
     const clickHandler = (e) => {
         if(index === QUESTION_LAST_INDEX) {
-            axios.post("/result/", {
+            axios.post("http://127.0.0.1:5000/result/", {
                 "answers": anslist
             }, axiosConfig)
             .then(() => {

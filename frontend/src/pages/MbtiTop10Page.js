@@ -22,7 +22,7 @@ const MbtiTop10Page = () => {
     useEffect(() => {
         async function getTop10() {
             try {
-                const res = await axios.get("/result/top10")
+                const res = await axios.get("http://127.0.0.1:5000/result/top10")
                 setTop10(res.data)
             } catch (error) {
                 console.log(error)
