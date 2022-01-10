@@ -17,7 +17,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(config)
     login_manager.init_app(app)
-    # cors = CORS(app)
+    cors = CORS(app)
 
     authorizations = {
         "basicAuth" : {
