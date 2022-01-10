@@ -23,7 +23,7 @@ const MbtiCharacterMovieListPage = () => {
     useEffect(() => {
         async function getMbti() {
             try {
-                const mbti = await axios.get("http://127.0.0.1:5000/result/")
+                const mbti = await axios.get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/result/")
                 setUserMBTI(mbti.data.user_mbti)
             } catch (error) {
                 console.log(error)
@@ -35,7 +35,7 @@ const MbtiCharacterMovieListPage = () => {
     useEffect(() => {
         async function getMbtiCharacterMovieList() {
             try {
-                const res = await axios.get(`http://127.0.0.1:5000/character/movie_list/${userMBTI}`)
+                const res = await axios.get(`http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/character/movie_list/${userMBTI}`)
                 setMovieList(res.data.total_character_N_movies)
             } catch (error) {
                 console.log(error)
