@@ -29,7 +29,7 @@ const Modal = ({ openModal }) => {
 
     const clickHandler = () => {
         axios
-            .post("/result/", {
+            .post("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/result/", {
                 "user_mbti": selected
             }, axiosConfig)
             .then(() => {

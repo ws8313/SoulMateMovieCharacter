@@ -38,7 +38,7 @@ const MbtiTop10Page = () => {
 
     const logout = () => {
         axios
-            .get("/user/logout")
+            .get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/user/logout")
             .then(() => {
                 history.push("/")
             })
