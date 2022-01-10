@@ -39,7 +39,8 @@ const TestPage = () => {
 
     const clickHandler = (e) => {
         if(index === QUESTION_LAST_INDEX) {
-            const ans = [...anslist, e.target.value]
+            const ans = [...anslist]
+            ans.push(e.target.value)
             setAnsList(ans);
             axios.post("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/result/", {
                 "answers": anslist
