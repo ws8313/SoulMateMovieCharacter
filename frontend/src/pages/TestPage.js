@@ -43,7 +43,7 @@ const TestPage = () => {
             ans.push(e.target.value)
             setAnsList(ans);
             axios.post("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/result/", {
-                "answers": anslist
+                "answers": [...anslist, e.target.value]
             }, axiosConfig)
             .then(() => {
                 history.push("/TestCompletedPage")
@@ -60,9 +60,9 @@ const TestPage = () => {
             const ans = [...anslist]
             ans.push(e.target.value)
             setAnsList(ans)
-            }
-            setIndex(index + 1)
         }
+        setIndex(index + 1)
+    }
     
     const prevClick = () => {
         if(index === QUESTION_EX_INDEX) {
