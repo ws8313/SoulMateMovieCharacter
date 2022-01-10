@@ -35,7 +35,7 @@ const TestPage = () => {
             }
         }
         getQuestion();
-    }, [index, anslist]);
+    }, [index]);
 
     const clickHandler = (e) => {
         if(index === QUESTION_LAST_INDEX) {
