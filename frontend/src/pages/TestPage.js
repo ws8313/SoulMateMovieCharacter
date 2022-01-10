@@ -39,6 +39,8 @@ const TestPage = () => {
 
     const clickHandler = (e) => {
         if(index === QUESTION_LAST_INDEX) {
+            const ans = [...anslist, e.target.value]
+            setAnsList(ans);
             axios.post("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/result/", {
                 "answers": anslist
             }, axiosConfig)
@@ -48,9 +50,9 @@ const TestPage = () => {
             .catch((error) => {
                 console.log(error)
             })
-            const ans = [...anslist]
-            ans.push(e.target.value)
-            setAnsList(ans)
+            // const ans = [...anslist]
+            // ans.push(e.target.value)
+            // setAnsList(ans)
         } else if (index === QUESTION_EX_INDEX) {
             setIndex(index + 1)
         } else {
