@@ -11,8 +11,9 @@ const ResultLoginModal = ({ openResultLoginModal }) => {
     let axiosConfig = {
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
-        }
+            // "Access-Control-Allow-Origin": "*",
+        },
+        withCredentials: true
     }
 
     const [register, setRegister] = useState(false);

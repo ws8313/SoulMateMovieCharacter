@@ -22,7 +22,7 @@ const MbtiTop10Page = () => {
     useEffect(() => {
         async function getTop10() {
             try {
-                const res = await axios.get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/result/top10")
+                const res = await axios.get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/result/top10", {withCredentials: true})
                 setTop10(res.data)
             } catch (error) {
                 console.log(error)
@@ -38,7 +38,7 @@ const MbtiTop10Page = () => {
 
     const logout = () => {
         axios
-            .get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/user/logout")
+            .get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/user/logout", {withCredentials: true})
             .then(() => {
                 history.push("/")
             })

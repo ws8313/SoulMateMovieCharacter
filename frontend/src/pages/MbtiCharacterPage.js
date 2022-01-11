@@ -14,7 +14,7 @@ const MbtiCharacterPage = () => {
     useEffect(() => {
         async function getMbti() {
             try {
-                const mbti = await axios.get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/result/")
+                const mbti = await axios.get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/result/", {withCredentials: true})
                 setUserMBTI(mbti.data.user_mbti)
             } catch (error) {
                 console.log(error)
@@ -26,7 +26,7 @@ const MbtiCharacterPage = () => {
     useEffect(() => {
         async function getMbtiCharacter() {
             try {
-                const res = await axios.get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/character/0")
+                const res = await axios.get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/character/0", {withCredentials: true})
                 setCharList(res.data.character_info)
             } catch (error) {
                 console.log(error)

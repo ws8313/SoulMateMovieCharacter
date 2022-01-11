@@ -19,14 +19,15 @@ const TestPage = () => {
     let axiosConfig = {
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
-        }
+            // "Access-Control-Allow-Origin": "*",
+        },
+        withCredentials: true
     }
 
     useEffect(() => {
         async function getQuestion() {
             try {
-                const res = await axios.get(`http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/test/${index}`)
+                const res = await axios.get(`http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/test/${index}`, {withCredentials: true})
                 setQuestion(res.data.question);
                 setImg(res.data.img_url)
                 setOption(res.data.options);

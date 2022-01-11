@@ -18,7 +18,7 @@ const LoginModal = ({ openLoginModal }) => {
             .post("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/user/login", {
                 "login_id": userId,
                 "login_pw": password,
-            })
+            }, {withCredentials: true})
             .then((res) => {
                 if (res.status && res.status === 202) {
                     alert("이미 사용 중인 아이디입니다.")
@@ -37,7 +37,7 @@ const LoginModal = ({ openLoginModal }) => {
                 "id": userId,
                 "pw": password,
                 "pw2": passwordCheck
-            })
+            }, {withCredentials: true})
             .then((res) => {
                 if (res.status && res.status === 202) {
                     alert("이미 사용 중인 아이디입니다.")

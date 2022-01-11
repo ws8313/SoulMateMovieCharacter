@@ -12,7 +12,7 @@ const TestCompletedPage = () => {
     useEffect(() => {
         async function getMBTI() {
             try {
-                const res = await axios.get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/result/")
+                const res = await axios.get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/result/", {withCredentials: true})
                 setUserMBTI(res.data.user_mbti)
             } catch (error) {
                 console.log(error)
