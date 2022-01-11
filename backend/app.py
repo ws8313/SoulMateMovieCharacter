@@ -15,7 +15,7 @@ login_manager = LoginManager()
 # flask run으로 실행해야 함.
 def create_app():
     app = Flask(__name__)
-    cors = CORS(app, resources={r"*": {"origins": ["elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com"]}},
+    cors = CORS(app, resources={r"*": {"origins": ["http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com"]}},
         supports_credentials=True,)
     app.config.from_object(config)
     login_manager.init_app(app)
