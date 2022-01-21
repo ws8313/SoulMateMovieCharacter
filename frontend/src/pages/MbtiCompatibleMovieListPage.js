@@ -25,7 +25,7 @@ const MbtiCompatibleMovieListPage = () => {
     useEffect(() => {
         async function getMbtiCharacterMovieList() {
             try {
-                const res = await axios.get(`http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/character/movie_list/${compatibleMBTI}`, {withCredentials: true})
+                const res = await axios.get(`http://localhost:5000/character/movie_list/${compatibleMBTI}`, {withCredentials: true})
                 setMovieList(res.data.total_character_N_movies)
             } catch (error) {
                 console.log(error)
@@ -41,7 +41,7 @@ const MbtiCompatibleMovieListPage = () => {
 
     const logout = () => {
         axios
-            .get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/user/logout", {withCredentials: true})
+            .get("http://localhost:5000/user/logout", {withCredentials: true})
             .then(() => {
                 history.push("/")
             })

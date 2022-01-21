@@ -62,7 +62,7 @@ const Top10MovieInfoModal = ({ openModal, selectedMovie }) => {
 
     const sendReview = () => {
         axios
-            .post("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/character/movie_list", {
+            .post("http://localhost:5000/character/movie_list", {
                 "satisfaction_list": satisfactionList
             }, axiosConfig)
             .then(() => {

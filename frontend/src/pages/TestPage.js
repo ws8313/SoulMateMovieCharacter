@@ -27,7 +27,7 @@ const TestPage = () => {
     useEffect(() => {
         async function getQuestion() {
             try {
-                const res = await axios.get(`http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/test/${index}`, {withCredentials: true})
+                const res = await axios.get(`http://localhost:5000/test/${index}`, {withCredentials: true})
                 setQuestion(res.data.question);
                 setImg(res.data.img_url)
                 setOption(res.data.options);
@@ -43,7 +43,7 @@ const TestPage = () => {
             const ans = [...anslist]
             ans.push(e.target.value)
             setAnsList(ans);
-            axios.post("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/result/", {
+            axios.post("http://localhost:5000/result/", {
                 "answers": [...anslist, e.target.value]
             }, axiosConfig)
             .then(() => {

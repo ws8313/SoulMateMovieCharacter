@@ -20,7 +20,7 @@ const ResultLoginModal = ({ openResultLoginModal }) => {
 
     const onSubmit = () => {
         axios
-            .post("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/user/login", {
+            .post("http://localhost:5000/user/login", {
                 "login_id": userId,
                 "login_pw": password,
             }, axiosConfig)
@@ -34,7 +34,7 @@ const ResultLoginModal = ({ openResultLoginModal }) => {
 
     const onSignUp = () => {
         axios
-            .post("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/user/register", {
+            .post("http://localhost:5000/user/register", {
                 "id": userId,
                 "pw": password,
                 "pw2": passwordCheck

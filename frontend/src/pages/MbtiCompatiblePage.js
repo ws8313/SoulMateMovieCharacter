@@ -15,7 +15,7 @@ const MbtiCompatiblePage = () => {
     useEffect(() => {
         async function getMbti() {
             try {
-                const mbti = await axios.get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/result/", {withCredentials: true})
+                const mbti = await axios.get("http://localhost:5000/result/", {withCredentials: true})
                 setUserMBTI(mbti.data.user_mbti)
             } catch (error) {
                 console.log(error)
@@ -28,7 +28,7 @@ const MbtiCompatiblePage = () => {
     useEffect(() => {
         async function getCompatibleCharacter() {
             try {
-                const res = await axios.get("http://elice-kdt-3rd-team-12.koreacentral.cloudapp.azure.com:5000/character/1", {withCredentials: true})
+                const res = await axios.get("http://localhost:5000/character/1", {withCredentials: true})
                 setCharList(res.data.character_info)
                 setCompatibleMBTI(res.data.characters_mbti)
             } catch (error) {
