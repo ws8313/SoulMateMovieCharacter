@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, session
 from flask_restx import Resource, Namespace, fields
 from flask_login import login_required, login_user, logout_user
 from app import login_manager
@@ -55,6 +55,7 @@ class Logout(Resource):
     @login_required
     def get(self):
         """로그인 되어있는 경우에 로그아웃하고 메인 페이지로 돌아가기"""
+        session.clear()
         logout_user()
         return {'result': 'success'}, 200
 

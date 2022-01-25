@@ -70,6 +70,19 @@
     color: #000000;
 }
 
+.refreshbtn {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    left: 980px;
+    top: 145px;
+
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+}
+
 .text2 {
     position: absolute;
     width: 1000px;

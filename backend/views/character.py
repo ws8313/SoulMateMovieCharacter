@@ -1,7 +1,7 @@
 from flask_restx import Resource, Namespace, fields
 from models import *
 from flask_login import current_user, login_required
-from flask import request
+from flask import request, session
 import json
 import random
 
@@ -65,7 +65,26 @@ def ShowCharacter(mbti):
         'character_info': random_characters_info
     }, 200
 
+def TargetSet(compatible):
+    user = User.query.filter(User.id == current_user.id).first()
+    if compatible == 0:
+        target = user.mbti
+    else:
+        compatible_mbti = Compatibility.query.filter(Compatibility.user_mbti == user.mbti).first()
+        target = compatible_mbti.compatible_mbti
+    return target
 
+def RefreshCharacters(session_type, target):    
+    session[session_type] = ShowCharacter(target)
+
+
+def RememberCharacters(session_type, target):
+    try:
+        session[session_type]
+    except:
+        RefreshCharacters(session_type, target)
+
+    
 # 기본 형태 유저의 mbti가 같은 캐릭터(compatible=0), mbti궁합이 잘맞는 캐릭터(compatible=1) 출력
 @MbtiCharacter.route('/<int:compatible>')
 @MbtiCharacter.doc(params={'compatible': '궁합여부'})
@@ -73,17 +92,30 @@ class UserCharacter(Resource):
     @login_required
     @MbtiCharacter.response(200, 'Success', matching_fields)
     def get(self, compatible):
-        global characters
         """compatible=0 일때 mbti가 같은 character 출력/compatible!=0 일때 mbti궁합이 맞는 chracter 출력"""
-        user = User.query.filter(User.id == current_user.id).first()
+        target = TargetSet(compatible)
         if compatible == 0:
-            characters = ShowCharacter(user.mbti)
-            return characters
+            RememberCharacters('same_characters', target)
+            return session['same_characters']
         else:
-            compatible_mbti = Compatibility.query.filter(Compatibility.user_mbti == user.mbti).first()
-            characters = ShowCharacter(compatible_mbti.compatible_mbti)
-            return characters
+            RememberCharacters('compatible_characters', target)
+            return session['compatible_characters']
 
+
+@MbtiCharacter.route('/refresh/<int:compatible>')
+@MbtiCharacter.doc(params={'compatible': '궁합여부'})
+class UserCharacter(Resource):
+    @login_required
+    @MbtiCharacter.response(200, 'Success', matching_fields)
+    def get(self, compatible):
+        """compatible=0 일때 mbti가 같은 character 출력/compatible!=0 일때 mbti궁합이 맞는 chracter 출력"""
+        target = TargetSet(compatible)
+        if compatible == 0:
+            RefreshCharacters('same_characters', target)
+            return session['same_characters']
+        else:
+            RefreshCharacters('compatible_characters', target)
+            return session['compatible_characters']
 
 @MbtiCharacter.route('/movie_list')
 class MovieSatisfactionList(Resource):
@@ -108,18 +140,55 @@ class MovieSatisfactionList(Resource):
         }
 
 
-@MbtiCharacter.route('/movie_list/<string:mbti>')
+@MbtiCharacter.route('/movie_list/<string:mbti>/0')
 @MbtiCharacter.doc(params={'mbti': '등장한 영화 리스트를 볼 캐릭터의 mbti'})
 class MovieListWithCharacters(Resource):
     @login_required
     @MbtiCharacter.response(200, 'Success', total_character_N_movies_fields)
     @MbtiCharacter.response(500, 'fail')
     def get(self, mbti):
-        global characters
+        # global characters
         """mbti 에 해당하는 캐릭터가 등장한 영화 리스트"""
         # (캐릭터, 캐릭터의 등장 영화 리스트)의 리스트
         character_N_movie_list = []
-        characters = characters[0]['character_info']
+        characters = session['same_characters'][0]['character_info']
+        # print(characters)
+        for c in characters:
+            # 영화 리스트 검색
+            character = {}
+            character['character_name'] = c[1] # c[1] : 캐릭터 이름
+            movie_list = db.session.query(CharacterInMovie.movie_id).filter(CharacterInMovie.character_id == c[0]) # c[0] : 캐릭터 id
+
+            movie_infos = []
+            for row in movie_list:
+                movie_info = db.session.query(Movie).filter(Movie.id == row.movie_id).first()
+                temp_dict = {}
+                temp_dict.update(row2dict(movie_info))
+                genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == row.movie_id).all()
+                genres = [str(getattr(g, MovieGenre.genre.name)) for g in genres]
+                temp_dict['genres'] = genres
+                movie_infos.append(temp_dict)
+
+            character['movies'] = movie_infos
+            # print(character)
+            character_N_movie_list.append(character)
+            
+        return {
+            'total_character_N_movies': character_N_movie_list
+        }
+
+@MbtiCharacter.route('/movie_list/<string:mbti>/1')
+@MbtiCharacter.doc(params={'mbti': '등장한 영화 리스트를 볼 캐릭터의 mbti'})
+class MovieListWithCharacters(Resource):
+    @login_required
+    @MbtiCharacter.response(200, 'Success', total_character_N_movies_fields)
+    @MbtiCharacter.response(500, 'fail')
+    def get(self, mbti):
+        # global characters
+        """mbti 에 해당하는 캐릭터가 등장한 영화 리스트"""
+        # (캐릭터, 캐릭터의 등장 영화 리스트)의 리스트
+        character_N_movie_list = []
+        characters = session['compatible_characters'][0]['character_info']
         # print(characters)
         for c in characters:
             # 영화 리스트 검색

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import prevbtn from "../img/prevbtn.png";
+import refreshbtn from "../img/refresh.png";
 import styles from "./MbtiCompatiblePage.module.css";
 
 
@@ -38,6 +39,18 @@ const MbtiCompatiblePage = () => {
         getCompatibleCharacter();
     }, [userMBTI]);
 
+    const refreshHandler = () => {
+        async function getMbtiCharacterRefresh() {
+            try {
+                const res = await axios.get("http://localhost:5000/character/refresh/1", {withCredentials: true})
+                setCharList(res.data.character_info)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getMbtiCharacterRefresh();
+    }
+
     const clickHandler = () => {
         history.push({
             pathname: "/MbtiCompatibleMovieListPage",
@@ -59,6 +72,10 @@ const MbtiCompatiblePage = () => {
 
             <div>
                 <p className={styles.text1}>나와 궁합이 잘 맞는 캐릭터</p>
+            </div>
+
+            <div onClick={ refreshHandler }>
+                <img className={styles.refreshbtn} src={ refreshbtn } alt="refreshbtn" />
             </div>
 
             <div>
