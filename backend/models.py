@@ -107,7 +107,7 @@ class ActorInMovie(db.Model):
 class Character(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     mbti = db.Column(db.String(10), nullable=False)
-    name = db.Column(db.String(30), nullable=False, unique=True)
+    name = db.Column(db.String(30), nullable=False)
     image_link = db.Column(db.Text)
     
     def __init__(self, mbti, name, image_link=""):
