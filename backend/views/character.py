@@ -2,7 +2,6 @@ from flask_restx import Resource, Namespace, fields
 from models import *
 from flask_login import current_user, login_required
 from flask import request, session
-import json
 import random
 
 MbtiCharacter = Namespace(
@@ -53,7 +52,7 @@ def row2dict(row):
     return dictionary
 
 
-# 공통 코드를 함수화 시켜 따로 보관, mbti에 맞는 캐릭터를 출력
+# 타겟에 맞는 mbti를 가진 캐릭터를 랜덤으로 출력
 def ShowCharacter(mbti):
     character_list = Character.query.filter(Character.mbti == mbti).all()
     characters_info = [[ch.id, ch.name, ch.image_link] for ch in character_list]
@@ -65,6 +64,7 @@ def ShowCharacter(mbti):
         'character_info': random_characters_info
     }, 200
 
+# db에서 mbti가 같은 캐릭터를 검색할지 또는 궁합이 같은 캐릭터를 검색할지 정할 목표지정
 def TargetSet(compatible):
     user = User.query.filter(User.id == current_user.id).first()
     if compatible == 0:
@@ -74,15 +74,43 @@ def TargetSet(compatible):
         target = compatible_mbti.compatible_mbti
     return target
 
+# 새로고침이 필요할때 바로 타겟에 맞는 캐릭터를 세션에 저장
 def RefreshCharacters(session_type, target):    
     session[session_type] = ShowCharacter(target)
 
-
+# 새로고침이 필요없는 경우를 try except문을 통해 확인하는 작업
 def RememberCharacters(session_type, target):
     try:
         session[session_type]
-    except:
+    except KeyError:
         RefreshCharacters(session_type, target)
+
+# 각 목표에 맞는 캐릭터 리스트를 기준으로 각 캐릭터 별로 영화목록을 출력
+def MovieList(session_type):
+    character_N_movie_list = []
+    characters = session[session_type][0]['character_info'] # 에러코드 튜플로 인해 [0] 사용
+    # print(characters)
+    for c in characters:
+        # 영화 리스트 검색
+        character = {}
+        character['character_name'] = c[1] # c[1] : 캐릭터 이름
+        movie_list = db.session.query(CharacterInMovie.movie_id).filter(CharacterInMovie.character_id == c[0]) # c[0] : 캐릭터 id
+
+        movie_infos = []
+        for row in movie_list:
+            movie_info = db.session.query(Movie).filter(Movie.id == row.movie_id).first()
+            temp_dict = {}
+            temp_dict.update(row2dict(movie_info))
+            genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == row.movie_id).all()
+            genres = [str(getattr(g, MovieGenre.genre.name)) for g in genres]
+            temp_dict['genres'] = genres
+            movie_infos.append(temp_dict)
+
+        character['movies'] = movie_infos
+        # print(character)
+        character_N_movie_list.append(character)
+
+    return character_N_movie_list
 
     
 # 기본 형태 유저의 mbti가 같은 캐릭터(compatible=0), mbti궁합이 잘맞는 캐릭터(compatible=1) 출력
@@ -140,76 +168,20 @@ class MovieSatisfactionList(Resource):
         }
 
 
-@MbtiCharacter.route('/movie_list/<string:mbti>/0')
-@MbtiCharacter.doc(params={'mbti': '등장한 영화 리스트를 볼 캐릭터의 mbti'})
+@MbtiCharacter.route('/movie_list/<string:mbti>/<int:compatible>')
+@MbtiCharacter.doc(params={'mbti': '등장한 영화 리스트를 볼 캐릭터의 mbti', 'compatible': '궁합여부' })
 class MovieListWithCharacters(Resource):
     @login_required
     @MbtiCharacter.response(200, 'Success', total_character_N_movies_fields)
     @MbtiCharacter.response(500, 'fail')
-    def get(self, mbti):
-        # global characters
+    def get(self, mbti, compatible):
         """mbti 에 해당하는 캐릭터가 등장한 영화 리스트"""
         # (캐릭터, 캐릭터의 등장 영화 리스트)의 리스트
-        character_N_movie_list = []
-        characters = session['same_characters'][0]['character_info']
-        # print(characters)
-        for c in characters:
-            # 영화 리스트 검색
-            character = {}
-            character['character_name'] = c[1] # c[1] : 캐릭터 이름
-            movie_list = db.session.query(CharacterInMovie.movie_id).filter(CharacterInMovie.character_id == c[0]) # c[0] : 캐릭터 id
-
-            movie_infos = []
-            for row in movie_list:
-                movie_info = db.session.query(Movie).filter(Movie.id == row.movie_id).first()
-                temp_dict = {}
-                temp_dict.update(row2dict(movie_info))
-                genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == row.movie_id).all()
-                genres = [str(getattr(g, MovieGenre.genre.name)) for g in genres]
-                temp_dict['genres'] = genres
-                movie_infos.append(temp_dict)
-
-            character['movies'] = movie_infos
-            # print(character)
-            character_N_movie_list.append(character)
-            
-        return {
-            'total_character_N_movies': character_N_movie_list
-        }
-
-@MbtiCharacter.route('/movie_list/<string:mbti>/1')
-@MbtiCharacter.doc(params={'mbti': '등장한 영화 리스트를 볼 캐릭터의 mbti'})
-class MovieListWithCharacters(Resource):
-    @login_required
-    @MbtiCharacter.response(200, 'Success', total_character_N_movies_fields)
-    @MbtiCharacter.response(500, 'fail')
-    def get(self, mbti):
-        # global characters
-        """mbti 에 해당하는 캐릭터가 등장한 영화 리스트"""
-        # (캐릭터, 캐릭터의 등장 영화 리스트)의 리스트
-        character_N_movie_list = []
-        characters = session['compatible_characters'][0]['character_info']
-        # print(characters)
-        for c in characters:
-            # 영화 리스트 검색
-            character = {}
-            character['character_name'] = c[1] # c[1] : 캐릭터 이름
-            movie_list = db.session.query(CharacterInMovie.movie_id).filter(CharacterInMovie.character_id == c[0]) # c[0] : 캐릭터 id
-
-            movie_infos = []
-            for row in movie_list:
-                movie_info = db.session.query(Movie).filter(Movie.id == row.movie_id).first()
-                temp_dict = {}
-                temp_dict.update(row2dict(movie_info))
-                genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == row.movie_id).all()
-                genres = [str(getattr(g, MovieGenre.genre.name)) for g in genres]
-                temp_dict['genres'] = genres
-                movie_infos.append(temp_dict)
-
-            character['movies'] = movie_infos
-            # print(character)
-            character_N_movie_list.append(character)
-            
+        if compatible == 0: #같은 mbit
+            character_N_movie_list = MovieList('same_characters')
+        else: #궁합 맞는 mbti
+            character_N_movie_list = MovieList('compatible_characters')
+                    
         return {
             'total_character_N_movies': character_N_movie_list
         }
