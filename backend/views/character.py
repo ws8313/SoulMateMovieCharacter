@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask_restx import Resource, Namespace, fields
 from models import *
 from flask_login import current_user, login_required

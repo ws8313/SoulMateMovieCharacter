@@ -49,17 +49,9 @@ def create_app():
     from views.character import MbtiCharacter
     api.add_namespace(MbtiCharacter, '/character')
 
-
-    # 초기 데이터 저장. 현재는 한 번 실행하여 데이터 적재되어 있음. 필요한 경우 실행.
-    # from data.store_data import store_init_data
-    # with app.app_context(): 
-    #     db.create_all()
-    #     store_init_data()
-
-    # from data.store_movie_data import store_movie_json, store_chracter_image, set_to_default_char_image
-    # with app.app_context(): 
-    #     store_movie_json()
-    #     store_chracter_image()
-    #     set_to_default_char_image()
+    # 데이터베이스 초기화. 필요한 경우 주석 해제 후 실행.
+    # with app.app_context():
+    #     from data.initialize_db import init_db
+    #     init_db()
 
     return app

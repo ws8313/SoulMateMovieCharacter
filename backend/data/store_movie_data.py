@@ -59,7 +59,7 @@ def store_movie_json():
                 character_mbti = cNm[-5:-1]
                 if character_mbti != "XXXX":
                     # db에 해당 캐릭터가 있나? 검사 후 없으면 저장. 있으면 지금 영화 출연 정보도 있나? 검사후 없으면 저장.
-                    id = db.session.query(Character.id).filter(Character.name == character_name).first()
+                    id = db.session.query(Character.id).filter(Character.name == character_name, Character.mbti == character_mbti).first()
                     if id is None:
                         db.session.add(Character(character_mbti, character_name))
                         db.session.commit()
