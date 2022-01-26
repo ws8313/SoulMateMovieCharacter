@@ -56,7 +56,7 @@ def row2dict(row):
 
 # 타겟에 맞는 mbti를 가진 캐릭터를 랜덤으로 출력
 def ShowCharacter(mbti):
-    character_list = Character.query.filter(Character.mbti == mbti).all()
+    character_list = Character.query.filter(Character.mbti == mbti, CharacterInMovie.character_id == Character.id).all()
     characters_info = [[ch.id, ch.name, ch.image_link] for ch in character_list]
 
     random_characters_info = random.sample(characters_info, 8)
@@ -65,6 +65,7 @@ def ShowCharacter(mbti):
         'characters_mbti': mbti,
         'character_info': random_characters_info
     }, 200
+
 
 # db에서 mbti가 같은 캐릭터를 검색할지 또는 궁합이 같은 캐릭터를 검색할지 정할 목표지정
 def TargetSet(compatible):
@@ -76,9 +77,11 @@ def TargetSet(compatible):
         target = compatible_mbti.compatible_mbti
     return target
 
+
 # 새로고침이 필요할때 바로 타겟에 맞는 캐릭터를 세션에 저장
 def RefreshCharacters(session_type, target):    
     session[session_type] = ShowCharacter(target)
+
 
 # 새로고침이 필요없는 경우를 try except문을 통해 확인하는 작업
 def RememberCharacters(session_type, target):
@@ -86,6 +89,7 @@ def RememberCharacters(session_type, target):
         session[session_type]
     except KeyError:
         RefreshCharacters(session_type, target)
+
 
 # 각 목표에 맞는 캐릭터 리스트를 기준으로 각 캐릭터 별로 영화목록을 출력
 def MovieList(session_type):

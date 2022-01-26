@@ -54,7 +54,7 @@ def store_movie_json():
                     if id is None:
                         db.session.add(Character(character_mbti, character_name))
                         db.session.commit()
-                        id = db.session.query(Character.id).filter(Character.name == character_name).first()
+                        id = db.session.query(Character.id).filter(Character.name == character_name, Character.mbti == character_mbti).first()
                     
                     char_in_movie = db.session.query(CharacterInMovie).filter(CharacterInMovie.character_id == id.id, CharacterInMovie.movie_id == movie_id).first()
                     if char_in_movie is None:
