@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask_restx import Resource, Namespace, fields
 from models import *
 from flask_login import current_user, login_required
@@ -189,7 +191,7 @@ class MovieListWithCharacters(Resource):
         # (캐릭터, 캐릭터의 등장 영화 리스트)의 리스트
         character_N_movie_list = []
         characters = session['compatible_characters'][0]['character_info']
-        # print(characters)
+        print(session['compatible_characters'])
         for c in characters:
             # 영화 리스트 검색
             character = {}

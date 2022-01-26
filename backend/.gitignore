@@ -12,7 +12,7 @@ instance/*
 .env
 
 ### database ###
-database.db
+# database.db
 
 ### Flask.Python Stack ###
 # Byte-compiled / optimized / DLL files

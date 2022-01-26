@@ -53,6 +53,5 @@ def create_app():
     # with app.app_context():
     #     from data.initialize_db import init_db
     #     init_db()
-    
 
     return app
