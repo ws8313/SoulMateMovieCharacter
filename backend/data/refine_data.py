@@ -11,5 +11,5 @@ def delete_null_image_in_DB():
     db.session.commit()
 
 
-def delete_html_entity():
+# def delete_html_entity():
     # db.session.query(Movie).filter(Movie.)
