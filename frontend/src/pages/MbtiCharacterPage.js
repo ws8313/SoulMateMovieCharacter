@@ -48,9 +48,10 @@ const MbtiCharacterPage = () => {
         getMbtiCharacterRefresh();
     }
 
-    const clickHandler = () => {
+    const clickHandler = (idx) => {
         history.push({
             pathname: "/MbtiCharacterMovieListPage",
+            state: { idx: idx }
         })
     }
     
@@ -80,10 +81,10 @@ const MbtiCharacterPage = () => {
 
             <div>
                 <div className={styles.charlist}>
-                    { charList && charList.map((item) => {
+                    { charList && charList.map((item, idx) => {
                         return (
-                            <div key={item}>
-                                <img className={styles.char_img} src={ item[2] } alt={ item[1] + " 사진" } onClick={ clickHandler } />
+                            <div key={ idx }>
+                                <img className={styles.char_img} src={ item[2] } alt={ item[1] + " 사진" } onClick={ () => clickHandler(idx) } />
                                 <p className={styles.char_name}>{ item[1] }</p>
                             </div>
                         )
