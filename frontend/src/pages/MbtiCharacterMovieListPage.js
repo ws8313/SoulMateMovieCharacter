@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import prevbtn from "../img/prevbtn.png";
 import home from "../img/home.png";
 import MovieInfoModal from "../components/MovieInfoModal";
@@ -15,6 +15,9 @@ const MbtiCharacterMovieListPage = () => {
     const [showModal, setShowModal] = useState(false);
 
     const history = useHistory();
+    const location = useLocation();
+
+    const idx = location.state.idx
 
     const openModal = () => {
         setShowModal(!showModal);
@@ -37,6 +40,9 @@ const MbtiCharacterMovieListPage = () => {
             try {
                 const res = await axios.get(`http://localhost:5000/character/movie_list/${userMBTI}/0`, {withCredentials: true})
                 setMovieList(res.data.total_character_N_movies)
+                if ( idx >= 1) {
+                    document.getElementById(idx).scrollIntoView({ behavior : "smooth" });
+                }
             } catch (error) {
                 console.log(error)
             }
@@ -76,14 +82,14 @@ const MbtiCharacterMovieListPage = () => {
                 { movieList && movieList.map((items, idx) => {
                     return (
                         <div>
-                            <div>
-                                <p className={styles.char_name} key={ idx }>{ items.character_name + " 등장한 영화" } </p>
+                            <div key={ idx } >
+                                <p className={styles.char_name} id={ idx } >{ items.character_name + " 등장한 영화" } </p>
                             </div>
                         <div className={styles.charlist}>
                             { items.movies.map((item, idx) => {
                                 return (
-                                    <div>
-                                        <img className={styles.char_img} key={ idx } src={ item.image_link } alt={ item.kor_title + " 포스터" } onClick={ () => clickHandler(item) } />
+                                    <div key={ idx }>
+                                        <img className={styles.char_img} src={ item.image_link } alt={ item.kor_title + " 포스터" } onClick={ () => clickHandler(item) } />
                                         <p className={styles.movie_name}>{ item.kor_title }</p>
                                         { showModal && <MovieInfoModal openModal={openModal} movieList={movieList} selectedMovie={selectedMovie} />}
                                     </div>

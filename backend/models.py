@@ -36,7 +36,7 @@ class Question(db.Model):
 
 class Option(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
-    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id', ondelete='CASCADE'))
     content = db.Column(db.Text, nullable=False)
     mbti_indicator = db.Column(db.String(5), nullable=False) # mbti 유형 지표 예) I, E, N, S, T, F, J, P
     
@@ -48,7 +48,7 @@ class Option(db.Model):
 
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
-    user_id = db.Column(db.String(20), db.ForeignKey('user.id'))
+    user_id = db.Column(db.String(20), db.ForeignKey('user.id', ondelete='CASCADE'))
     answers = db.Column(db.String(20), nullable=False)
     submitted_at = db.Column(db.DateTime, default=datetime.now(timezone('Asia/Seoul')))
 
@@ -74,7 +74,8 @@ class Movie(db.Model):
     movie_genre = db.relationship('MovieGenre', backref=db.backref('movie'))
     satisfaction = db.relationship('Satisfaction', backref=db.backref('movie'))
 
-    def __init__(self, kor_title, eng_title, image_link, pub_year, director, rating, story, run_time):
+    def __init__(self, id, kor_title, eng_title, image_link, pub_year, director, rating, story, run_time):
+        self.id = id
         self.kor_title = kor_title
         self.eng_title = eng_title
         self. image_link = image_link
@@ -87,7 +88,7 @@ class Movie(db.Model):
 
 class MovieGenre(db.Model):
     genre = db.Column(db.String(20), primary_key=True)
-    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), primary_key=True)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id', ondelete='CASCADE'), primary_key=True)
 
     def __init__(self, genre, movie_id):
         self.genre = genre
@@ -97,7 +98,7 @@ class MovieGenre(db.Model):
 class ActorInMovie(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     actor_name = db.Column(db.String(20), nullable=False)
-    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id', ondelete='CASCADE'))
 
     def __init__(self, actor_name, movie_id):
         self.actor_name = actor_name
@@ -118,8 +119,8 @@ class Character(db.Model):
 
 class CharacterInMovie(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
-    character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
-    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), nullable=False)
+    character_id = db.Column(db.Integer, db.ForeignKey('character.id', ondelete='CASCADE'), nullable=False)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id', ondelete='CASCADE'), nullable=False)
 
     def __init__(self, character_id, movie_id):
         self.character_id = character_id
@@ -128,8 +129,8 @@ class CharacterInMovie(db.Model):
 
 class Satisfaction(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
-    user_id = db.Column(db.String(20), db.ForeignKey('user.id'))
-    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
+    user_id = db.Column(db.String(20), db.ForeignKey('user.id', ondelete='CASCADE'))
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id', ondelete='CASCADE'))
     user_rating = db.Column(db.Integer, nullable=False)
 
     def __init__(self, user_id, movie_id, user_rating):

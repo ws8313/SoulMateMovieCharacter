@@ -51,10 +51,13 @@ const MbtiCompatiblePage = () => {
         getMbtiCharacterRefresh();
     }
 
-    const clickHandler = () => {
+    const clickHandler = (idx) => {
         history.push({
             pathname: "/MbtiCompatibleMovieListPage",
-            state: {compatibleMBTI: compatibleMBTI}
+            state: { 
+                compatibleMBTI: compatibleMBTI,
+                idx : idx 
+            }
         })
     }
     
@@ -87,7 +90,7 @@ const MbtiCompatiblePage = () => {
                     { charList && charList.map((item, idx) => {
                         return (
                             <div key={ idx }>
-                                <img className={styles.char_img} src={ item[2] } alt={ item[1] + " 사진" } onClick={ clickHandler } />
+                                <img className={styles.char_img} src={ item[2] } alt={ item[1] + " 사진" } onClick={ () => clickHandler(idx) } />
                                 <p className={styles.char_name}>{ item[1] }</p>
                             </div>
                         )

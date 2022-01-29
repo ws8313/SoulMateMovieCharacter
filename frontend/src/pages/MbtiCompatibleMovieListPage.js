@@ -17,6 +17,7 @@ const MbtiCompatibleMovieListPage = () => {
     const location = useLocation();
 
     const compatibleMBTI = location.state.compatibleMBTI;
+    const idx = location.state.idx
 
     const openModal = () => {
         setShowModal(!showModal);
@@ -27,6 +28,9 @@ const MbtiCompatibleMovieListPage = () => {
             try {
                 const res = await axios.get(`http://localhost:5000/character/movie_list/${compatibleMBTI}/1`, {withCredentials: true})
                 setMovieList(res.data.total_character_N_movies)
+                if ( idx >= 1) {
+                    document.getElementById(idx).scrollIntoView({ behavior : "smooth" });
+                }
             } catch (error) {
                 console.log(error)
             }
@@ -66,14 +70,14 @@ const MbtiCompatibleMovieListPage = () => {
                 { movieList && movieList.map((items, idx) => {
                     return (
                     <div>
-                        <div>
-                            <p className={styles.char_name} key={ idx }>{ items.character_name + " 등장한 영화"}</p>
+                        <div key={ idx }>
+                            <p className={styles.char_name} id={ idx }>{ items.character_name + " 등장한 영화"}</p>
                         </div>
                         <div className={styles.charlist}>
                             { items.movies.map((item, idx) => {
                                 return (
-                                    <div>
-                                        <img className={styles.char_img} key={ idx } src={ item.image_link } alt={ item.kor_title + " 포스터" } onClick={ () => clickHandler(item) } />
+                                    <div key={ idx }>
+                                        <img className={styles.char_img} src={ item.image_link } alt={ item.kor_title + " 포스터" } onClick={ () => clickHandler(item) } />
                                         <p className={styles.movie_name}>{ item.kor_title }</p>
                                         { showModal && <MovieInfoModal openModal={openModal} movieList={movieList} selectedMovie={selectedMovie} />}
                                     </div>

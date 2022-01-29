@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import csv
 import os
 import sys
 from app import db
@@ -10,19 +9,14 @@ import json
 def store_movie_json():
     with open('./data/real/naver_movie_story.json', 'r', encoding="utf-8") as f:
         movies = json.load(f)
-        # print(json.dumps(movies, ensure_ascii=False, indent=4))
         
         movie_id = 1
-        character_id = 1
         for movie in movies['data']:
             rtime = movie['rtime'].strip()
             try:
                 rtime = int(rtime[:-1])
-                # print(rtime)
             except:
-                # print("continue")
                 continue
-            # print(json.dumps(movie, ensure_ascii=False, indent=4))
             kor_title = movie['title']
             eng_title = movie['subtitle']
             image_link = movie['image']
@@ -37,14 +31,11 @@ def store_movie_json():
                 if m:
                     continue
                 else:
-                    db.session.add(Movie(movie['title'], movie['subtitle'], movie['image'], movie['pubDate'], movie['director'], movie['rating'], movie['story'], rtime))
-            # db.session.commit()
+                    db.session.add(Movie(movie_id, movie['title'], movie['subtitle'], movie['image'], movie['pubDate'], movie['director'], movie['rating'], movie['story'], rtime))
 
             genres = movie['genre'].split()
-            # print(genres)
             for genre in genres:
                 db.session.add(MovieGenre(genre, movie_id))
-            # db.session.commit()
 
             actors = movie['actors'][1:-1].split(',')
             for actor in actors:
@@ -54,7 +45,6 @@ def store_movie_json():
             char_n_mbti = movie['mbti'].split(',')
             char_n_mbti.pop()
             for cNm in char_n_mbti:
-                # if len(cNm) != 0:
                 character_name = cNm[:-6]
                 character_mbti = cNm[-5:-1]
                 if character_mbti != "XXXX":
@@ -63,7 +53,7 @@ def store_movie_json():
                     if id is None:
                         db.session.add(Character(character_mbti, character_name))
                         db.session.commit()
-                        id = db.session.query(Character.id).filter(Character.name == character_name).first()
+                        id = db.session.query(Character.id).filter(Character.name == character_name, Character.mbti == character_mbti).first()
                     
                     char_in_movie = db.session.query(CharacterInMovie).filter(CharacterInMovie.character_id == id.id, CharacterInMovie.movie_id == movie_id).first()
                     if char_in_movie is None:
@@ -79,11 +69,8 @@ def store_chracter_image():
 
     with open('./data/real/mbti.json', 'r', encoding="utf-8") as f:
         characters = json.load(f)
-        # print(json.dumps(characters, ensure_ascii=False, indent=4))
 
         for character in characters:
-            # print("role : "+character['role'])
-            # print("mbti : "+character['mbti'])
             c = db.session.query(Character).filter(Character.name == character['role'], Character.mbti == character['mbti']).first()
             img_url = character['img_url'].strip()
             if c and img_url:
@@ -92,6 +79,7 @@ def store_chracter_image():
                 c.image_link = "https://www.personality-database.com/images/profile_transparent.png"
     
     db.session.commit()
+
 
 def set_to_default_char_image():
     null_images = db.session.query(Character).filter((Character.image_link == None) | (Character.image_link == "")).all()
