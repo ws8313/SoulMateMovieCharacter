@@ -50,8 +50,8 @@ def create_app():
     api.add_namespace(MbtiCharacter, '/character')
 
     # 데이터베이스 초기화. 필요한 경우 주석 해제 후 실행.
-    with app.app_context():
-        from data.initialize_db import init_db
-        init_db()
+    # with app.app_context():
+    #     from data.initialize_db import init_db
+    #     init_db()
     
     return app

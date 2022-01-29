@@ -74,7 +74,8 @@ class Movie(db.Model):
     movie_genre = db.relationship('MovieGenre', backref=db.backref('movie'))
     satisfaction = db.relationship('Satisfaction', backref=db.backref('movie'))
 
-    def __init__(self, kor_title, eng_title, image_link, pub_year, director, rating, story, run_time):
+    def __init__(self, id, kor_title, eng_title, image_link, pub_year, director, rating, story, run_time):
+        self.id = id
         self.kor_title = kor_title
         self.eng_title = eng_title
         self. image_link = image_link

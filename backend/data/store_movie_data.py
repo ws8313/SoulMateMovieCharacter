@@ -11,7 +11,6 @@ def store_movie_json():
         movies = json.load(f)
         
         movie_id = 1
-        character_id = 1
         for movie in movies['data']:
             rtime = movie['rtime'].strip()
             try:
@@ -32,7 +31,7 @@ def store_movie_json():
                 if m:
                     continue
                 else:
-                    db.session.add(Movie(movie['title'], movie['subtitle'], movie['image'], movie['pubDate'], movie['director'], movie['rating'], movie['story'], rtime))
+                    db.session.add(Movie(movie_id, movie['title'], movie['subtitle'], movie['image'], movie['pubDate'], movie['director'], movie['rating'], movie['story'], rtime))
 
             genres = movie['genre'].split()
             for genre in genres:

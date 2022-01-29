@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, session
 from flask_restx import Resource, Namespace, fields
 from models import *
 from flask_login import login_required, current_user
@@ -88,6 +88,9 @@ class ShowResult(Resource):
         user.mbti = user_mbti
 
         db.session.commit()
+        session.pop('same_characters', None)
+        session.pop('compatible_characters', None)
+
         return {"post": "success"}
 
 
