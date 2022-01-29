@@ -11,5 +11,6 @@ def init_db():
     store_chracter_image()
     set_to_default_char_image()
 
-    from .refine_data import delete_null_image_in_DB
+    from .refine_data import delete_null_image_in_DB, delete_html_entity
     delete_null_image_in_DB()
+    delete_html_entity()
