@@ -80,6 +80,8 @@
     align-items: center;
     text-align: center;
 
+    cursor: pointer;
+
     color: #000000;
 }
 
