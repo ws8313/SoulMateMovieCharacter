@@ -55,7 +55,7 @@ const MbtiCompatiblePage = () => {
         history.push({
             pathname: "/MbtiCompatibleMovieListPage",
             state: { 
-                compatibleMBTI: compatibleMBTI,
+                compatibleMBTI : compatibleMBTI,
                 idx : idx 
             }
         })

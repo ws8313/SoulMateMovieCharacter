@@ -18,6 +18,8 @@ const MbtiCharacterMovieListPage = () => {
     const location = useLocation();
 
     const idx = location.state.idx
+    const charList = location.state.charList
+    console.log(charList)
 
     const openModal = () => {
         setShowModal(!showModal);
@@ -81,8 +83,14 @@ const MbtiCharacterMovieListPage = () => {
             <div>
                 { movieList && movieList.map((items, idx) => {
                     return (
-                        <div>
-                            <div key={ idx } >
+                        <div key={ idx } >
+                            <div>
+                                { charList && charList.map((items, idx) => {
+                                    return (
+                                        <div key={ idx }>
+                                            <img src={items[idx][2]}>{items}</img>
+                                        </div>
+                                )})}
                                 <p className={styles.char_name} id={ idx } >{ items.character_name + " 등장한 영화" } </p>
                             </div>
                         <div className={styles.charlist}>
