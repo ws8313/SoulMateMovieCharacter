@@ -2,6 +2,7 @@ from app import db
 from datetime import datetime
 from pytz import timezone
 
+# 사용자 테이블
 class User(db.Model):
     id = db.Column(db.String(20), primary_key=True, nullable=False, unique=True)
     pw = db.Column(db.String(60), nullable=False)
@@ -22,6 +23,7 @@ class User(db.Model):
         self.mbti = mbti
 
 
+# 심리 테스트 문항 테이블
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     content = db.Column(db.Text, nullable=False)
@@ -34,6 +36,7 @@ class Question(db.Model):
         self.img_url = img_url
 
 
+# 심리 테스트 문항에 대한 옵션 테이블
 class Option(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id', ondelete='CASCADE'))
@@ -46,6 +49,7 @@ class Option(db.Model):
         self.mbti_indicator = mbti_indicator
 
 
+# 심리 테스트 문항에 대한 사용자 답변 테이블
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     user_id = db.Column(db.String(20), db.ForeignKey('user.id', ondelete='CASCADE'))
@@ -57,7 +61,7 @@ class Answer(db.Model):
         self.answers = answers
 
 
-# # 컬럼 추가해야 함.
+# 영화 테이블
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     kor_title = db.Column(db.String(50), nullable=False)
@@ -86,6 +90,7 @@ class Movie(db.Model):
         self.run_time = run_time
 
 
+# 영화 장르 테이블
 class MovieGenre(db.Model):
     genre = db.Column(db.String(20), primary_key=True)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id', ondelete='CASCADE'), primary_key=True)
@@ -95,6 +100,7 @@ class MovieGenre(db.Model):
         self.movie_id = movie_id
 
 
+# 어떤 영화에 어떤 배우가 나왔는지에 대한 테이블
 class ActorInMovie(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     actor_name = db.Column(db.String(20), nullable=False)
@@ -105,6 +111,7 @@ class ActorInMovie(db.Model):
         self.movie_id = movie_id
 
 
+# 영화 캐릭터 테이블
 class Character(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     mbti = db.Column(db.String(10), nullable=False)
@@ -117,6 +124,7 @@ class Character(db.Model):
         self.image_link = image_link
 
 
+# 어떤 영화 캐릭터가 어떤 영화에 나왔는지에 대한 테이블
 class CharacterInMovie(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     character_id = db.Column(db.Integer, db.ForeignKey('character.id', ondelete='CASCADE'), nullable=False)
@@ -127,6 +135,7 @@ class CharacterInMovie(db.Model):
         self.movie_id = movie_id 
 
 
+# 사용자별 특정 영화에 대한 만족도 테이블
 class Satisfaction(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     user_id = db.Column(db.String(20), db.ForeignKey('user.id', ondelete='CASCADE'))
@@ -139,6 +148,7 @@ class Satisfaction(db.Model):
         self.user_rating = user_rating
 
 
+# mbti 별 천생연분인 mbti 나타내는 테이블
 class Compatibility(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False , autoincrement=True)
     user_mbti = db.Column(db.String(10), nullable=False)

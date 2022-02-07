@@ -95,7 +95,7 @@ def RememberCharacters(session_type, target):
 def MovieList(session_type):
     character_N_movie_list = []
     characters = session[session_type][0]['character_info'] # 에러코드 튜플로 인해 [0] 사용
-    # print(characters)
+
     for c in characters:
         # 영화 리스트 검색
         character = {}
@@ -113,7 +113,6 @@ def MovieList(session_type):
             movie_infos.append(temp_dict)
 
         character['movies'] = movie_infos
-        # print(character)
         character_N_movie_list.append(character)
 
     return character_N_movie_list
@@ -126,7 +125,9 @@ class UserCharacter(Resource):
     @login_required
     @MbtiCharacter.response(200, 'Success', matching_fields)
     def get(self, compatible):
-        """compatible=0 일때 mbti가 같은 character 출력/compatible!=0 일때 mbti궁합이 맞는 chracter 출력"""
+        """
+        compatible=0 일때 mbti가 같은 character 출력/compatible!=0 일때 mbti궁합이 맞는 chracter 출력
+        """
         target = TargetSet(compatible)
         if compatible == 0:
             RememberCharacters('same_characters', target)
@@ -142,7 +143,9 @@ class UserCharacter(Resource):
     @login_required
     @MbtiCharacter.response(200, 'Success', matching_fields)
     def get(self, compatible):
-        """compatible=0 일때 mbti가 같은 character 출력/compatible!=0 일때 mbti궁합이 맞는 chracter 출력"""
+        """
+        compatible=0 일때 mbti가 같은 character 출력/compatible!=0 일때 mbti궁합이 맞는 chracter 출력
+        """
         target = TargetSet(compatible)
         if compatible == 0:
             RefreshCharacters('same_characters', target)
@@ -151,6 +154,7 @@ class UserCharacter(Resource):
             RefreshCharacters('compatible_characters', target)
             return session['compatible_characters']
 
+
 @MbtiCharacter.route('/movie_list')
 class MovieSatisfactionList(Resource):
     @login_required
@@ -158,8 +162,10 @@ class MovieSatisfactionList(Resource):
     @MbtiCharacter.response(200, 'success')
     @MbtiCharacter.response(500, 'fail')
     def post(self):
-        """어떤 영화에 대해 만족도가 얼마인지 저장하기 위한 api
-        예시처럼 [사용자가 평가한 영화의 id, 사용자 평점]의 리스트를 satisfaction_list의 value값으로 딕셔너리 형태로 데이터를 보내면 됩니다."""
+        """
+        어떤 영화에 대해 만족도가 얼마인지 저장하기 위한 api
+        예시처럼 [사용자가 평가한 영화의 id, 사용자 평점]의 리스트를 satisfaction_list의 value값으로 딕셔너리 형태로 데이터를 보내면 됩니다.
+        """
         satisfaction_list = request.json.get('satisfaction_list')
         for satisfaction in satisfaction_list:
             isExistSatisfaction = db.session.query(Satisfaction).filter(Satisfaction.user_id == current_user.id, Satisfaction.movie_id == satisfaction[0]).first()
@@ -181,11 +187,13 @@ class MovieListWithCharacters(Resource):
     @MbtiCharacter.response(200, 'Success', total_character_N_movies_fields)
     @MbtiCharacter.response(500, 'fail')
     def get(self, mbti, compatible):
-        """mbti 에 해당하는 캐릭터가 등장한 영화 리스트"""
+        """
+        mbti 에 해당하는 캐릭터가 등장한 영화 리스트
+        """
         # (캐릭터, 캐릭터의 등장 영화 리스트)의 리스트
-        if compatible == 0: #같은 mbit
+        if compatible == 0: # 같은 mbti
             character_N_movie_list = MovieList('same_characters')
-        else: #궁합 맞는 mbti
+        else: # 궁합 맞는 mbti
             character_N_movie_list = MovieList('compatible_characters')
                     
         return {
