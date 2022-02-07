@@ -31,7 +31,9 @@ class ShowResult(Resource):
     @login_required
     @Result.response(200, 'Success', mbti_fields)
     def get(self):
-        """사용자 mbti 전달"""
+        """
+        사용자 mbti 전달
+        """
         # 테스트 결과 -> 사용자 mbti 전달
         user = User.query.filter(User.id == current_user.id).first()
         return {
@@ -44,12 +46,15 @@ class ShowResult(Resource):
     @Result.response(200, 'success')
     @Result.response(500, 'fail')
     def post(self):
-        """테스트 진행 후 결과 데이터 저장. 
-        answers가 ["a", "b", ..."] 형태 리스트 형태로 전달된다고 가정. answers 또는 user_mbti 둘 중 하나는 null값이 아니어야 함. 바로 결과보기의 경우 user_mbti 값만, 테스트 진행한 경우 answers 값만 post 요청하면 됨."""
+        """
+        테스트 진행 후 결과 데이터 저장. 
+        answers가 ["a", "b", ..."] 형태 리스트 형태로 전달된다고 가정. 
+        answers 또는 user_mbti 둘 중 하나는 null값이 아니어야 함. 
+        바로 결과보기의 경우 user_mbti 값만, 테스트 진행한 경우 answers 값만 post 요청하면 됨.
+        """
         answers = request.json.get('answers')
         user_mbti = request.json.get('user_mbti')
-        print(answers)
-        print(user_mbti)
+
         # answers가 None이 아니고 user_mbti가 None이면 테스트 진행 답변 기반으로 mbti 계산.
         if answers and user_mbti is None:
             result = [[], [], [], []]
@@ -76,7 +81,6 @@ class ShowResult(Resource):
             
             # 리스트를 문자열로 변환
             answers = "".join(str(_) for _ in answers)
-            # print(answers)
             if current_user.is_authenticated:
                 answer = Answer(current_user.id, answers)
                 db.session.add(answer)
@@ -97,7 +101,7 @@ class ShowResult(Resource):
 def top10_to_same_mbti_user(mbti):
     same_mbti_users = db.session.query(User.id).filter(User.mbti == mbti)
         
-    # TODO: 유저 평점도 넘겨야 할 경우, 수정
+    # TODO: 유저 평점도 넘겨야 할 경우, 수정 필요
     top10_movie_in_same_mbti = db.session.query(Satisfaction.movie_id).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
 
     top10_movie_infos = db.session.query(Movie.id, Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(top10_movie_in_same_mbti)).all()
@@ -117,21 +121,18 @@ def top10_to_same_mbti_user(mbti):
 def top10_in_naver_same_mbti_char(mbti):
     # 유저 mbti와 같은 캐릭터 뽑아내기
     characters = db.session.query(Character.id).filter(Character.mbti == mbti)
-
     movies = db.session.query(CharacterInMovie.movie_id).filter(CharacterInMovie.character_id.in_(characters))
-
     movies_info = db.session.query(Movie.id, Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(movies)).order_by(Movie.rating.desc()).limit(10).all()
-
     total_movies_info = [list(row) for row in movies_info]
 
-    # # 장르 삽입
+    # 장르 삽입
     for i in range(len(movies_info)):
         genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == total_movies_info[i][0]).all()
         genres = [str(getattr(row, MovieGenre.genre.name)) for row in genres]
         total_movies_info[i].append(genres)
     
-    # print(total_movies_info)
     return total_movies_info
+
 
 @login_required
 @Result.route('/top10')
@@ -139,11 +140,12 @@ class Top10Movies(Resource):
     @Result.response(200, 'Success', same_mbti_top10_fields)
     @Result.response(500, 'fail')
     def get(self):
-        """현재 사용자와 같은 유형에게 인기있는 영화 Top 10 정보, 사용자와 같은 유형의 캐릭터가 나오는 영화 중 네이버 평점 top 10 영화 정보, 사용자와 같은 유형의 캐릭터가 나오는 영화 중 네이버 평점 top 10 영화 줄거리로 만든 워드 클라우드 전달하는 api.
-        영화 정보 : 한글 제목(str), 영어 제목(str), 이미지 url(str), 개봉일(int), 감독(str), 평점(float), 스토리(str), 런타임(int), 장르(str list)"""
-
-        # TODO: word cloud
-        # TODO: 이미지 경로 : public 내부 img 폴더에 ENTP.png 이런식으로 넣기
+        """
+        1. 현재 사용자와 같은 유형에게 인기있는 영화 Top 10 정보, 
+        2. 사용자와 같은 유형의 캐릭터가 나오는 영화 중 네이버 평점 top 10 영화 정보,
+        3. 사용자와 같은 유형의 캐릭터가 나오는 영화 중 네이버 평점 top 10 영화 줄거리로 만든 워드 클라우드 전달하는 api.
+        * 영화 정보 : 한글 제목(str), 영어 제목(str), 이미지 url(str), 개봉일(int), 감독(str), 평점(float), 스토리(str), 런타임(int), 장르(str list)
+        """
         
         return {
             'top10_for_same_mbti_users': top10_to_same_mbti_user(current_user.mbti),
