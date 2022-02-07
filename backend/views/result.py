@@ -98,22 +98,32 @@ class ShowResult(Resource):
         return {"post": "success"}
 
 
+def append_genre(length, movie_infos, get_movie_id):
+    for i in range(length):
+        movie_id = get_movie_id(i)
+        movie_infos[i].append(get_genre(movie_id))
+    return movie_infos
+
+
+def get_genre(movie_id):
+    genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == movie_id).all()
+    genres = [str(getattr(row, MovieGenre.genre.name)) for row in genres]
+    return genres
+
+
 def top10_to_same_mbti_user(mbti):
     same_mbti_users = db.session.query(User.id).filter(User.mbti == mbti)
         
     # TODO: 유저 평점도 넘겨야 할 경우, 수정 필요
     top10_movie_in_same_mbti = db.session.query(Satisfaction.movie_id).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
-
     top10_movie_infos = db.session.query(Movie.id, Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(top10_movie_in_same_mbti)).all()
-
     top10_movie_infos = [list(row) for row in top10_movie_infos]
 
+    def get_movie_id(i):
+        return str(getattr(top10_movie_in_same_mbti[i], Satisfaction.movie_id.name))
+
     # 장르 삽입
-    for i in range(top10_movie_in_same_mbti.count()):
-        movie_id = str(getattr(top10_movie_in_same_mbti[i], Satisfaction.movie_id.name))
-        genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == movie_id).all()
-        genres = [str(getattr(row, MovieGenre.genre.name)) for row in genres]
-        top10_movie_infos[i].append(genres)
+    top10_movie_infos = append_genre(top10_movie_in_same_mbti.count(), top10_movie_infos, get_movie_id)
     
     return top10_movie_infos
 
@@ -125,11 +135,11 @@ def top10_in_naver_same_mbti_char(mbti):
     movies_info = db.session.query(Movie.id, Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(movies)).order_by(Movie.rating.desc()).limit(10).all()
     total_movies_info = [list(row) for row in movies_info]
 
+    def get_movie_id(i):
+        return total_movies_info[i][0]
+
     # 장르 삽입
-    for i in range(len(movies_info)):
-        genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == total_movies_info[i][0]).all()
-        genres = [str(getattr(row, MovieGenre.genre.name)) for row in genres]
-        total_movies_info[i].append(genres)
+    total_movies_info = append_genre(len(movies_info), total_movies_info, get_movie_id)
     
     return total_movies_info
 
@@ -150,5 +160,5 @@ class Top10Movies(Resource):
         return {
             'top10_for_same_mbti_users': top10_to_same_mbti_user(current_user.mbti),
             'top10_in_naver': top10_in_naver_same_mbti_char(current_user.mbti),
-            'word_cloud_src': "img/word_clouds/wordcloud_"+str(current_user.mbti)+".jpg"
+            'word_cloud_src': "img/word_clouds/wordcloud_" + str(current_user.mbti)+".jpg"
         }
