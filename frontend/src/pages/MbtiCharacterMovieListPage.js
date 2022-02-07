@@ -19,7 +19,6 @@ const MbtiCharacterMovieListPage = () => {
 
     const idx = location.state.idx
     const charList = location.state.charList
-    console.log(charList)
 
     const openModal = () => {
         setShowModal(!showModal);
@@ -52,9 +51,18 @@ const MbtiCharacterMovieListPage = () => {
         getMbtiCharacterMovieList();
     }, [userMBTI]);
 
+    useEffect(() => {
+        if (charList) {
+        }
+    }, [charList])
+
     const clickHandler = (item) => {
         setSelectedMovie(item);
         openModal();
+    }
+
+    const charImgClickHandler = (idx) => {
+        document.getElementById(idx).scrollIntoView({ behavior : "smooth" });
     }
     
     const logout = () => {
@@ -85,19 +93,13 @@ const MbtiCharacterMovieListPage = () => {
                     return (
                         <div key={ idx } >
                             <div>
-                                { charList && charList.map((items, idx) => {
-                                    return (
-                                        <div key={ idx }>
-                                            <img src={items[idx][2]}>{items}</img>
-                                        </div>
-                                )})}
                                 <p className={styles.char_name} id={ idx } >{ items.character_name + " 등장한 영화" } </p>
                             </div>
                         <div className={styles.charlist}>
                             { items.movies.map((item, idx) => {
                                 return (
                                     <div key={ idx }>
-                                        <img className={styles.char_img} src={ item.image_link } alt={ item.kor_title + " 포스터" } onClick={ () => clickHandler(item) } />
+                                        <img className={styles.movie_img} src={ item.image_link } alt={ item.kor_title + " 포스터" } onClick={ () => clickHandler(item) } />
                                         <p className={styles.movie_name}>{ item.kor_title }</p>
                                         { showModal && <MovieInfoModal openModal={openModal} movieList={movieList} selectedMovie={selectedMovie} />}
                                     </div>
@@ -107,6 +109,14 @@ const MbtiCharacterMovieListPage = () => {
                     </div>
                     )
                 }) }
+                <div className={ styles.char_list }>
+                    { charList && charList.map((items, idx) => {
+                            return (
+                                <div key={ idx }>
+                                    <img className={ styles.char_img } src={ items[2] } alt={ items[1] + " 사진" } onClick={ () => charImgClickHandler(idx) } />
+                                </div>
+                        )})}
+                </div>
                 
                 <div>
                     <img className={styles.homebtn} src={ home } alt="home button" onClick={ logout } />
