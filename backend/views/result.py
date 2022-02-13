@@ -28,6 +28,45 @@ same_mbti_top10_fields = Result.model('Same MBTI Top 10 Movies', {
 
 @Result.route('/')
 class ShowResult(Resource):
+    def result_to_mbti_indicator(self, answers):
+        """
+        테스트 진행 답변 기반으로 mbti 계산.
+        """
+        result = [[], [], [], []]
+        for i in range(len(answers)):
+            mbti_indicator = db.session.query(Option.mbti_indicator).filter(Option.question_id == i+2, Option.content.like(answers[i]+'%')).first()
+            mbti_indicator = str(getattr(mbti_indicator, Option.mbti_indicator.name))
+            
+            if mbti_indicator in ('I', 'E'):
+                result[0].append(mbti_indicator)
+            elif mbti_indicator in ('N', 'S'):
+                result[1].append(mbti_indicator)
+            elif mbti_indicator in ('T', 'F'):
+                result[2].append(mbti_indicator)
+            elif mbti_indicator in ('P', 'J'):
+                result[3].append(mbti_indicator)
+            else:
+                return False
+        return result
+
+    def calculate_mbti(self, result):
+        """
+        사용자 mbti 계산
+        """
+        user_mbti = ""
+        for li in result:
+            user_mbti += Counter(li).most_common(n=1)[0][0]            
+        
+        return user_mbti
+    
+    def answers_to_str(self, answers):
+        return "".join(str(_) for _ in answers)
+
+    def add_answer(self, user_id, answers):
+        answer = Answer(user_id, answers)
+        db.session.add(answer)
+        
+
     @login_required
     @Result.response(200, 'Success', mbti_fields)
     def get(self):
@@ -55,35 +94,18 @@ class ShowResult(Resource):
         answers = request.json.get('answers')
         user_mbti = request.json.get('user_mbti')
 
-        # answers가 None이 아니고 user_mbti가 None이면 테스트 진행 답변 기반으로 mbti 계산.
+        # answers가 None이 아니고 user_mbti가 None
         if answers and user_mbti is None:
-            result = [[], [], [], []]
-            for i in range(len(answers)):
-                mbti_indicator = db.session.query(Option.mbti_indicator).filter(Option.question_id == i+2, Option.content.like(answers[i]+'%')).first()
-                mbti_indicator = str(getattr(mbti_indicator, Option.mbti_indicator.name))
-                
-                if mbti_indicator in ('I', 'E'):
-                    result[0].append(mbti_indicator)
-                elif mbti_indicator in ('N', 'S'):
-                    result[1].append(mbti_indicator)
-                elif mbti_indicator in ('T', 'F'):
-                    result[2].append(mbti_indicator)
-                elif mbti_indicator in ('P', 'J'):
-                    result[3].append(mbti_indicator)
-                else:
-                    print('잘못된 데이터입니다.')
-                    return {"post": "wrong data"}, 500
+            result = self.result_to_mbti_indicator(answers)
+            if not result:
+                print('잘못된 데이터입니다.')
+                return {"post": "wrong data"}, 500
+        
+            user_mbti = self.calculate_mbti(result)
             
-            # mbti 계산            
-            user_mbti = ""
-            for li in result:
-                user_mbti += Counter(li).most_common(n=1)[0][0]            
-            
-            # 리스트를 문자열로 변환
-            answers = "".join(str(_) for _ in answers)
             if current_user.is_authenticated:
-                answer = Answer(current_user.id, answers)
-                db.session.add(answer)
+                answers = self.answers_to_str(answers)
+                self.add_answer(current_user.id, answers)
             else:
                 print("current_user is None")
 
@@ -98,55 +120,55 @@ class ShowResult(Resource):
         return {"post": "success"}
 
 
-def append_genre(length, movie_infos, get_movie_id):
-    for i in range(length):
-        movie_id = get_movie_id(i)
-        movie_infos[i].append(get_genre(movie_id))
-    return movie_infos
 
-
-def get_genre(movie_id):
-    genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == movie_id).all()
-    genres = [str(getattr(row, MovieGenre.genre.name)) for row in genres]
-    return genres
-
-
-def top10_to_same_mbti_user(mbti):
-    same_mbti_users = db.session.query(User.id).filter(User.mbti == mbti)
-        
-    # TODO: 유저 평점도 넘겨야 할 경우, 수정 필요
-    top10_movie_in_same_mbti = db.session.query(Satisfaction.movie_id).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
-    top10_movie_infos = db.session.query(Movie.id, Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(top10_movie_in_same_mbti)).all()
-    top10_movie_infos = [list(row) for row in top10_movie_infos]
-
-    def get_movie_id(i):
-        return str(getattr(top10_movie_in_same_mbti[i], Satisfaction.movie_id.name))
-
-    # 장르 삽입
-    top10_movie_infos = append_genre(top10_movie_in_same_mbti.count(), top10_movie_infos, get_movie_id)
-    
-    return top10_movie_infos
-
-
-def top10_in_naver_same_mbti_char(mbti):
-    # 유저 mbti와 같은 캐릭터 뽑아내기
-    characters = db.session.query(Character.id).filter(Character.mbti == mbti)
-    movies = db.session.query(CharacterInMovie.movie_id).filter(CharacterInMovie.character_id.in_(characters))
-    movies_info = db.session.query(Movie.id, Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(movies)).order_by(Movie.rating.desc()).limit(10).all()
-    total_movies_info = [list(row) for row in movies_info]
-
-    def get_movie_id(i):
-        return total_movies_info[i][0]
-
-    # 장르 삽입
-    total_movies_info = append_genre(len(movies_info), total_movies_info, get_movie_id)
-    
-    return total_movies_info
 
 
 @login_required
 @Result.route('/top10')
 class Top10Movies(Resource):
+    def get_genre(self, movie_id):
+        genres = db.session.query(MovieGenre.genre).filter(MovieGenre.movie_id == movie_id).all()
+        genres = [str(getattr(row, MovieGenre.genre.name)) for row in genres]
+        return genres
+
+    def append_genre(self, length, movie_infos, get_movie_id):
+        for i in range(length):
+            movie_id = get_movie_id(i)
+            movie_infos[i].append(self.get_genre(movie_id))
+        return movie_infos
+    
+    def top10_to_same_mbti_user(self, mbti):
+        same_mbti_users = db.session.query(User.id).filter(User.mbti == mbti)
+            
+        # TODO: 유저 평점도 넘겨야 할 경우, 수정 필요
+        top10_movie_in_same_mbti = db.session.query(Satisfaction.movie_id).filter(Satisfaction.user_id.in_(same_mbti_users)).group_by(Satisfaction.movie_id).order_by(func.avg(Satisfaction.user_rating).desc()).limit(10)
+        top10_movie_infos = db.session.query(Movie.id, Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(top10_movie_in_same_mbti)).all()
+        top10_movie_infos = [list(row) for row in top10_movie_infos]
+
+        def get_movie_id(i):
+            return str(getattr(top10_movie_in_same_mbti[i], Satisfaction.movie_id.name))
+
+        # 장르 삽입
+        top10_movie_infos = self.append_genre(top10_movie_in_same_mbti.count(), top10_movie_infos, get_movie_id)
+        
+        return top10_movie_infos
+
+
+    def top10_in_naver_same_mbti_char(self, mbti):
+        # 유저 mbti와 같은 캐릭터 뽑아내기
+        characters = db.session.query(Character.id).filter(Character.mbti == mbti)
+        movies = db.session.query(CharacterInMovie.movie_id).filter(CharacterInMovie.character_id.in_(characters))
+        movies_info = db.session.query(Movie.id, Movie.kor_title, Movie.eng_title, Movie.image_link, Movie.pub_year, Movie.director, Movie.rating, Movie.story, Movie.run_time).filter(Movie.id.in_(movies)).order_by(Movie.rating.desc()).limit(10).all()
+        total_movies_info = [list(row) for row in movies_info]
+
+        def get_movie_id(i):
+            return total_movies_info[i][0]
+
+        # 장르 삽입
+        total_movies_info = self.append_genre(len(movies_info), total_movies_info, get_movie_id)
+        
+        return total_movies_info
+
     @Result.response(200, 'Success', same_mbti_top10_fields)
     @Result.response(500, 'fail')
     def get(self):
@@ -158,7 +180,7 @@ class Top10Movies(Resource):
         """
         
         return {
-            'top10_for_same_mbti_users': top10_to_same_mbti_user(current_user.mbti),
-            'top10_in_naver': top10_in_naver_same_mbti_char(current_user.mbti),
+            'top10_for_same_mbti_users': self.top10_to_same_mbti_user(current_user.mbti),
+            'top10_in_naver': self.top10_in_naver_same_mbti_char(current_user.mbti),
             'word_cloud_src': "img/word_clouds/wordcloud_" + str(current_user.mbti)+".jpg"
         }
