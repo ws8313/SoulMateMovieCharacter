@@ -28,7 +28,20 @@ same_mbti_top10_fields = Result.model('Same MBTI Top 10 Movies', {
 
 @Result.route('/')
 class ShowResult(Resource):
-    def result_to_mbti_indicator(self, answers):
+    def clear_characters_in_session(self):
+        """
+        session에서 same_characters와 compatible_characters를 None으로 변경
+        """
+        session.pop('same_characters', None)
+        session.pop('compatible_characters', None)
+
+    def get_user(self):
+        """
+        user id가 current_user id와 같은 user 객체 반환
+        """
+        return User.query.filter(User.id == current_user.id).first()
+
+    def result_list_to_mbti_indicator(self, answers):
         """
         테스트 진행 답변 기반으로 mbti 계산.
         """
@@ -59,10 +72,10 @@ class ShowResult(Resource):
         
         return user_mbti
     
-    def answers_to_str(self, answers):
+    def answer_list_to_str(self, answers):
         return "".join(str(_) for _ in answers)
 
-    def add_answer(self, user_id, answers):
+    def store_answer(self, user_id, answers):
         answer = Answer(user_id, answers)
         db.session.add(answer)
         
@@ -96,31 +109,27 @@ class ShowResult(Resource):
 
         # answers가 None이 아니고 user_mbti가 None
         if answers and user_mbti is None:
-            result = self.result_to_mbti_indicator(answers)
-            if not result:
+            mbti_indicators = self.result_list_to_mbti_indicator(answers)
+            if not mbti_indicators:
                 print('잘못된 데이터입니다.')
                 return {"post": "wrong data"}, 500
         
-            user_mbti = self.calculate_mbti(result)
+            user_mbti = self.calculate_mbti(mbti_indicators)
             
             if current_user.is_authenticated:
-                answers = self.answers_to_str(answers)
-                self.add_answer(current_user.id, answers)
+                answers = self.answer_list_to_str(answers)
+                self.store_answer(current_user.id, answers)
             else:
                 print("current_user is None")
 
         # 테스트를 진행했든, 바로 user_mbti를 입력 받았든 알게 된 user_mbti를 db에 저장
-        user = User.query.filter(User.id == current_user.id).first()
+        user = self.get_user()
         user.mbti = user_mbti
 
         db.session.commit()
-        session.pop('same_characters', None)
-        session.pop('compatible_characters', None)
+        self.clear_characters_in_session()
 
         return {"post": "success"}
-
-
-
 
 
 @login_required
