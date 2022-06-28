@@ -15,7 +15,7 @@ const LoginModal = ({ openLoginModal }) => {
 
     const onSubmit = () => {
         axios
-            .post("http://soulmate-movie-character.herokuapp.com/user/login", {
+            .post("https://soulmate-movie-character.herokuapp.com/user/login", {
                 "login_id": userId,
                 "login_pw": password,
             }, {withCredentials: true})
@@ -33,7 +33,7 @@ const LoginModal = ({ openLoginModal }) => {
 
     const onSignUp = () => {
         axios
-            .post("http://soulmate-movie-character.herokuapp.com/user/register", {
+            .post("https://soulmate-movie-character.herokuapp.com/user/register", {
                 "id": userId,
                 "pw": password,
                 "pw2": passwordCheck
