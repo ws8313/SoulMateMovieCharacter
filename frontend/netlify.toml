@@ -11,4 +11,4 @@
   publish = "/"
 
   # Default build command.
-  command = "npm run-script build"
+  command = "npm build"
