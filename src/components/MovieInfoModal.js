@@ -50,7 +50,7 @@ const MovieInfoModal = ({ openModal, selectedMovie }) => {
             rating
             ]]
         setSatisfactionList(list)
-    }, [movieId, rating])
+    }, [movieId, rating, satisfactionList])
 
     const handleMouseOver = (value) => {
         setHoverValue(value)

@@ -49,7 +49,7 @@ const MbtiCharacterMovieListPage = () => {
             }
         }
         getMbtiCharacterMovieList();
-    }, [userMBTI]);
+    }, [userMBTI, idx]);
 
     useEffect(() => {
         if (charList) {

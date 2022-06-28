@@ -36,7 +36,7 @@ const MbtiCompatibleMovieListPage = () => {
             }
         }
         getMbtiCharacterMovieList();
-    }, []);
+    }, [compatibleMBTI, idx]);
 
     const clickHandler = (item) => {
         setSelectedMovie(item);
