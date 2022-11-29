@@ -18,7 +18,7 @@ const MainPage = () => {
     return (
         <div id={styles.container}>
             <div className={styles.title}>
-                <div>일리스</div>
+                <div>영화 캐릭터 테스트</div>
             </div>
 
             <div id={styles.divider}></div>
