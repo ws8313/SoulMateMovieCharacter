@@ -1,16 +1,26 @@
 #container {
-    position: relative;
+    /* position: relative;
     width: 1440px;
     height: 1024px;
     border: 1px solid black;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: auto; */
+    max-width: 550px;
+    min-height: 550px;
+    z-index: 2;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin: auto;
 }
 
 .title {
-    position: absolute;
-    width: 150px;
-    height: 70px;
+    /* position: absolute; */
+    /* width: 100%;
+    height: 100%;
     left: 50%;
     top: 15px;
     transform: translate(-50%);
@@ -22,7 +32,15 @@
     align-items: center;
     text-align: center;
 
-    color: black;
+    color: black; */
+    padding-top: 30px;
+    padding-bottom: 20px;
+
+    font-size: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #btnbox {
@@ -42,20 +60,20 @@
 }
 
 #divider {
-    position: absolute;
+    /* position: absolute; */
     left: 0px;
     width: 100%;
-    height: 100px;
+    /* height: 100px; */
 
     border-bottom: rgba(0, 0, 0, 0.3) solid 2px ;
 
-    background-color: #FFEE93;
+    /* background-color: #FFEE93; */
 
     z-index: -10;
 }
 
 #img {
-    position: absolute;
+    /* position: absolute; */
     width: 600px;
     height: 400px;
     
