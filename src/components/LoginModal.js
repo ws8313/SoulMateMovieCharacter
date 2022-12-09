@@ -18,7 +18,7 @@ const LoginModal = ({ openLoginModal }) => {
   const onSubmit = () => {
     axios
       .post(
-        `${PROXY}/user/login`,
+        `/${PROXY}/user/login`,
         {
           login_id: userId,
           login_pw: password,
