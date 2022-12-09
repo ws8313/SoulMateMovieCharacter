@@ -13,6 +13,14 @@ const LoginModal = ({ openLoginModal }) => {
 
   const history = useHistory();
 
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+    },
+    withCredentials: true,
+  };
+
   const onSubmit = () => {
     axios
       .post(
@@ -21,7 +29,8 @@ const LoginModal = ({ openLoginModal }) => {
           login_id: userId,
           login_pw: password,
         },
-        { withCredentials: true }
+        axiosConfig
+        // { withCredentials: true }
       )
       .then((res) => {
         if (res.status && res.status === 202) {
@@ -44,7 +53,8 @@ const LoginModal = ({ openLoginModal }) => {
           pw: password,
           pw2: passwordCheck,
         },
-        { withCredentials: true }
+        axiosConfig
+        // { withCredentials: true }
       )
       .then((res) => {
         if (res.status && res.status === 202) {
