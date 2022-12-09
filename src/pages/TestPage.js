@@ -26,7 +26,7 @@ const TestPage = () => {
   useEffect(() => {
     async function getQuestion() {
       try {
-        const res = await axios.get(`http://localhost:5000/test/${index}`, {
+        const res = await axios.get(`https://soulmatemoviecharacter-ws8313.koyeb.app/test/${index}`, {
           withCredentials: true,
         });
         setQuestion(res.data.question);
@@ -46,7 +46,7 @@ const TestPage = () => {
       setAnsList(ans);
       axios
         .post(
-          "http://localhost:5000/result/",
+          "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
           {
             answers: [...anslist, e.target.value],
           },
