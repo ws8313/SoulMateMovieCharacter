@@ -11,12 +11,14 @@ const LoginModal = ({ openLoginModal }) => {
 
   const [register, setRegister] = useState(false);
 
+  const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
+
   const history = useHistory();
 
   const onSubmit = () => {
     axios
       .post(
-        "/user/login",
+        `${PROXY}/user/login`,
         {
           login_id: userId,
           login_pw: password,
@@ -38,7 +40,7 @@ const LoginModal = ({ openLoginModal }) => {
   const onSignUp = () => {
     axios
       .post(
-        "/user/register",
+        `${PROXY}/user/register`,
         {
           id: userId,
           pw: password,
