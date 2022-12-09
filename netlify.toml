@@ -17,6 +17,7 @@
   from = "/proxy/*"
   to = "https://soulmatemoviecharacter-ws8313.koyeb.app/:splat"
   status = 200
+  force = true
 
   [[headers]]
   for = "/*"
