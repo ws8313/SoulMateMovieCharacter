@@ -27,12 +27,13 @@ const Modal = ({ openModal }) => {
   const onSubmit = () => {
     axios
       .post(
-        "https://soulmate-movie-character.herokuapp.com/user/login",
+        "/user/login",
         {
           login_id: userId,
           login_pw: password,
         },
         axiosConfig
+        // { withCredentials: true }
       )
       .then(() => {
         openResultLoginModal();
@@ -45,7 +46,7 @@ const Modal = ({ openModal }) => {
   const onSignUp = () => {
     axios
       .post(
-        "https://soulmate-movie-character.herokuapp.com/user/register",
+        "/user/register",
         {
           id: userId,
           pw: password,
@@ -80,7 +81,7 @@ const Modal = ({ openModal }) => {
   const clickHandler = () => {
     axios
       .post(
-        "https://soulmate-movie-character.herokuapp.com/result/",
+        "/result/",
         {
           user_mbti: selected,
         },
@@ -102,14 +103,14 @@ const Modal = ({ openModal }) => {
   return (
     <div className={styles.modal_container}>
       <div className={styles.modal}>
-        <img
-          src={closebtn}
-          alt="closebtn"
-          onClick={modalClickHandler}
-          className={styles.modal_button}
-        />
         {showResultLoginModal === false ? (
-          <div>
+          <div className={styles.input_container}>
+            <img
+              src={closebtn}
+              alt="closebtn"
+              onClick={modalClickHandler}
+              className={styles.modal_button}
+            />
             <p className={styles.modal_text}>당신의 유형을 선택해주세요</p>
             <select
               className={styles.modal_selectbox}
@@ -140,7 +141,13 @@ const Modal = ({ openModal }) => {
           <div className={styles.login_modal_container}>
             <div className={styles.login_modal}>
               {register === false ? (
-                <div>
+                <div className={styles.input_container}>
+                  <img
+                    src={closebtn}
+                    alt="closebtn"
+                    onClick={modalClickHandler}
+                    className={styles.modal_button}
+                  />
                   <input
                     value={userId}
                     className={styles.login_id_input}
@@ -154,12 +161,6 @@ const Modal = ({ openModal }) => {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="비밀번호를 입력해주세요"
                   />
-                  <img
-                    src={closebtn}
-                    alt="closebtn"
-                    onClick={modalClickHandler}
-                    className={styles.modal_button}
-                  />
                   <button className={styles.login_btn} onClick={onSubmit}>
                     로그인
                   </button>
@@ -168,7 +169,13 @@ const Modal = ({ openModal }) => {
                   </button>
                 </div>
               ) : (
-                <div>
+                <div className={styles.input_container}>
+                  <img
+                    src={closebtn}
+                    alt="closebtn"
+                    onClick={modalClickHandler}
+                    className={styles.modal_button}
+                  />
                   <input
                     value={userId}
                     onChange={(e) => setUserId(e.target.value)}
@@ -188,12 +195,6 @@ const Modal = ({ openModal }) => {
                     onChange={(e) => setPasswordCheck(e.target.value)}
                     className={styles.signup_pw2_input}
                     placeholder="비밀번호를 다시 입력해주세요"
-                  />
-                  <img
-                    src={closebtn}
-                    alt="closebtn"
-                    onClick={modalClickHandler}
-                    className={styles.modal_button}
                   />
                   <button className={styles.send_signup_btn} onClick={onSignUp}>
                     회원가입
