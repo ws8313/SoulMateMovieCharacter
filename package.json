@@ -21,7 +21,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "https://soulmatemoviecharacter-ws8313.koyeb.app/",
+  "proxy": "https://soulmatemoviecharacter-ws8313.koyeb.app",
   "eslintConfig": {
     "extends": [
       "react-app",
