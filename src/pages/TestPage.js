@@ -26,9 +26,10 @@ const TestPage = () => {
   useEffect(() => {
     async function getQuestion() {
       try {
-        const res = await axios.get(`https://soulmatemoviecharacter-ws8313.koyeb.app/test/${index}`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${index}`,
+          { withCredentials: true }
+        );
         setQuestion(res.data.question);
         setImg(res.data.img_url);
         setOption(res.data.options);
