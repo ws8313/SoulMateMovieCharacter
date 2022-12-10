@@ -25,9 +25,9 @@ const MainPage = () => {
         <div>당신과 똑같은 성향의 영화 캐릭터는?</div>
       </div>
 
-      <div id={styles.img} className={styles.imgwrapper}>
+      <div className={styles.img_wrapper}>
         <img
-          className={styles.contentimg}
+          className={styles.content_img}
           src="img/for_test/0.png"
           alt="main logo"
         />

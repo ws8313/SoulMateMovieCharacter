@@ -20,21 +20,6 @@
   justify-content: center;
 }
 
-#btnbox {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  left: 0px;
-  top: 0px;
-}
-
-.prevbtn {
-  margin-top: 25px;
-  margin-bottom: 25px;
-  margin-left: 25px;
-  cursor: pointer;
-}
-
 #subtitle {
   padding-top: 10px;
   font-size: 20px;
@@ -43,19 +28,16 @@
   justify-content: center;
 }
 
-#img {
-  height: 400px;
-}
-
-.imgwrapper {
+.img_wrapper {
   width: 100%;
+  height: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 10px 0 10px 0;
 }
 
-.contentimg {
+.content_img {
   width: 90%;
   height: 70%;
   background-size: cover;
