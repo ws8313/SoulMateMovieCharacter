@@ -11,14 +11,12 @@ const LoginModal = ({ openLoginModal }) => {
 
   const [register, setRegister] = useState(false);
 
-  const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
-
   const history = useHistory();
 
   const onSubmit = () => {
     axios
       .post(
-        `${PROXY}/user/login`,
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/user/login",
         {
           login_id: userId,
           login_pw: password,
@@ -40,7 +38,7 @@ const LoginModal = ({ openLoginModal }) => {
   const onSignUp = () => {
     axios
       .post(
-        `${PROXY}/user/register`,
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/user/register",
         {
           id: userId,
           pw: password,
