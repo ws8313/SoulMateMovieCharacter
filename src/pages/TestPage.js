@@ -59,9 +59,6 @@ const TestPage = () => {
         .catch((error) => {
           console.log(error);
         });
-      // const ans = [...anslist]
-      // ans.push(e.target.value)
-      // setAnsList(ans)
     } else if (index === QUESTION_EX_INDEX) {
       setIndex(index + 1);
     } else {
@@ -81,20 +78,48 @@ const TestPage = () => {
     }
   };
 
+  const percent = ((index - 1) / 12) * 100;
+
   return (
     <div id={styles.container}>
-      <div id={styles.btnbox} onClick={prevClick}>
-        <img className={styles.prevbtn} src={prevbtn} alt="prevbtn" />
-      </div>
-
       <div className={styles.title}>
-        <p>일리스</p>
+        <p>영화 캐릭터 테스트</p>
       </div>
 
-      <div id={styles.divider}></div>
+      {index === QUESTION_EX_INDEX ? (
+        <div className={styles.progress_container}>
+          <div id={styles.btnbox} onClick={prevClick}>
+            <img className={styles.prevbtn} src={prevbtn} alt="prevbtn" />
+          </div>
+          <div className={styles.progress_bar_container}>
+            <div
+              className={styles.progress_bar}
+              style={{ width: "8.333%" }}
+            ></div>
+          </div>
+          <div id={styles.progress}>
+            <div>1/12</div>
+          </div>
+        </div>
+      ) : (
+        <div className={styles.progress_container}>
+          <div id={styles.btnbox} onClick={prevClick}>
+            <img className={styles.prevbtn} src={prevbtn} alt="prevbtn" />
+          </div>
+          <div className={styles.progress_bar_container}>
+            <div
+              className={styles.progress_bar}
+              style={{ width: `${percent}%` }}
+            ></div>
+          </div>
+          <div id={styles.progress}>
+            <div>{index - 1}/12</div>
+          </div>
+        </div>
+      )}
 
-      <div id={styles.img}>
-        <img className={styles.contentimg} src={img} alt="main logo" />
+      <div className={styles.img_wrapper}>
+        <img className={styles.content_img} src={img} alt="test img" />
       </div>
 
       <div id={styles.testtext}>
@@ -102,32 +127,19 @@ const TestPage = () => {
       </div>
 
       {index === QUESTION_EX_INDEX ? (
-        <div>
-          <div id={styles.progress}>
-            <div>1 / 12</div>
-          </div>
-          <div>
-            <button id={styles.ansA} onClick={clickHandler}>
-              다음
-            </button>
-          </div>
+        <div className={styles.btn_container}>
+          <button id={styles.btn} onClick={clickHandler}>
+            다음
+          </button>
         </div>
       ) : (
         <div>
-          <div id={styles.progress}>
-            <div>{index - 1} / 12</div>
-          </div>
-          <div>
-            <button id={styles.ansA} value="a" onClick={clickHandler}>
-              {option[0]}
-            </button>
-          </div>
-
-          <div>
-            <button id={styles.ansB} value="b" onClick={clickHandler}>
-              {option[1]}
-            </button>
-          </div>
+          <button id={styles.btn} value="a" onClick={clickHandler}>
+            {option[0]}
+          </button>
+          <button id={styles.btn} value="b" onClick={clickHandler}>
+            {option[1]}
+          </button>
         </div>
       )}
     </div>
