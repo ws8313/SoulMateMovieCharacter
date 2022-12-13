@@ -35,20 +35,7 @@
   margin: 10px 10px 60px 0;
 }
 
-.login_input {
-  width: 70%;
-  height: 50px;
-  margin: 0 auto;
-  margin-bottom: 50px;
-  background-color: #ffffff;
-  border: 1px solid #000000;
-  border-radius: 5px;
-  font-size: 20px;
-  align-items: center;
-  text-align: center;
-}
-
-.signup_input {
+.input {
   width: 70%;
   height: 50px;
   margin: 0 auto;

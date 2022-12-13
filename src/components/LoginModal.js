@@ -24,7 +24,8 @@ const LoginModal = ({ openLoginModal }) => {
   const onSubmit = () => {
     axios
       .post(
-        "https://soulmatemoviecharacter-ws8313.koyeb.app/user/login",
+        // "https://soulmatemoviecharacter-ws8313.koyeb.app/user/login",
+        "http://127.0.0.1:5000/user/login",
         {
           login_id: userId,
           login_pw: password,
@@ -36,6 +37,8 @@ const LoginModal = ({ openLoginModal }) => {
         if (res.status && res.status === 202) {
           alert("이미 사용 중인 아이디입니다.");
         } else {
+          console.log(res.data)
+          sessionStorage.setItem("token", res.data.token)
           history.push("/TestPage");
         }
       })
@@ -47,7 +50,8 @@ const LoginModal = ({ openLoginModal }) => {
   const onSignUp = () => {
     axios
       .post(
-        "https://soulmatemoviecharacter-ws8313.koyeb.app/user/register",
+        // "https://soulmatemoviecharacter-ws8313.koyeb.app/user/register",
+        "http://127.0.0.1:5000/user/register",
         {
           id: userId,
           pw: password,
@@ -90,14 +94,14 @@ const LoginModal = ({ openLoginModal }) => {
             />
             <input
               value={userId}
-              className={styles.login_input}
+              className={styles.input}
               onChange={(e) => setUserId(e.target.value)}
               placeholder="아이디를 입력해주세요"
             />
             <input
               type="password"
               value={password}
-              className={styles.login_input}
+              className={styles.input}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="비밀번호를 입력해주세요"
             />
@@ -119,21 +123,21 @@ const LoginModal = ({ openLoginModal }) => {
             <input
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
-              className={styles.signup_input}
+              className={styles.input}
               placeholder="아이디를 입력해주세요"
             />
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className={styles.signup_input}
+              className={styles.input}
               placeholder="비밀번호를 입력해주세요"
             />
             <input
               type="password"
               value={passwordCheck}
               onChange={(e) => setPasswordCheck(e.target.value)}
-              className={styles.signup_input}
+              className={styles.input}
               placeholder="비밀번호를 다시 입력해주세요"
             />
             <button className={styles.btn} onClick={onSignUp}>
