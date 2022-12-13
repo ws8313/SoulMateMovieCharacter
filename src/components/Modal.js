@@ -133,75 +133,73 @@ const Modal = ({ openModal }) => {
               <option value="ENFJ">ENFJ</option>
               <option value="ENFP">ENFP</option>
             </select>
-            <button className={styles.modal_btn} onClick={clickHandler}>
+            <button className={styles.btn} onClick={clickHandler}>
               확인
             </button>
           </div>
         ) : (
-          <div className={styles.login_modal_container}>
-            <div className={styles.login_modal}>
-              {register === false ? (
-                <div className={styles.input_container}>
-                  <img
-                    src={closebtn}
-                    alt="closebtn"
-                    onClick={modalClickHandler}
-                    className={styles.modal_button}
-                  />
-                  <input
-                    value={userId}
-                    className={styles.login_id_input}
-                    onChange={(e) => setUserId(e.target.value)}
-                    placeholder="아이디를 입력해주세요"
-                  />
-                  <input
-                    type="password"
-                    value={password}
-                    className={styles.login_pw_input}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="비밀번호를 입력해주세요"
-                  />
-                  <button className={styles.login_btn} onClick={onSubmit}>
-                    로그인
-                  </button>
-                  <button className={styles.signup_btn} onClick={signUp}>
-                    회원가입
-                  </button>
-                </div>
-              ) : (
-                <div className={styles.input_container}>
-                  <img
-                    src={closebtn}
-                    alt="closebtn"
-                    onClick={modalClickHandler}
-                    className={styles.modal_button}
-                  />
-                  <input
-                    value={userId}
-                    onChange={(e) => setUserId(e.target.value)}
-                    className={styles.signup_id_input}
-                    placeholder="아이디를 입력해주세요"
-                  />
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className={styles.signup_pw1_input}
-                    placeholder="비밀번호를 입력해주세요"
-                  />
-                  <input
-                    type="password"
-                    value={passwordCheck}
-                    onChange={(e) => setPasswordCheck(e.target.value)}
-                    className={styles.signup_pw2_input}
-                    placeholder="비밀번호를 다시 입력해주세요"
-                  />
-                  <button className={styles.send_signup_btn} onClick={onSignUp}>
-                    회원가입
-                  </button>
-                </div>
-              )}
-            </div>
+          <div className={styles.modal}>
+            {register === false ? (
+              <div className={styles.input_container}>
+                <img
+                  src={closebtn}
+                  alt="closebtn"
+                  onClick={modalClickHandler}
+                  className={styles.modal_button}
+                />
+                <input
+                  value={userId}
+                  className={styles.input}
+                  onChange={(e) => setUserId(e.target.value)}
+                  placeholder="아이디를 입력해주세요"
+                />
+                <input
+                  type="password"
+                  value={password}
+                  className={styles.input}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="비밀번호를 입력해주세요"
+                />
+                <button className={styles.btn} onClick={onSubmit}>
+                  로그인
+                </button>
+                <button className={styles.btn} onClick={signUp}>
+                  회원가입
+                </button>
+              </div>
+            ) : (
+              <div className={styles.input_container}>
+                <img
+                  src={closebtn}
+                  alt="closebtn"
+                  onClick={modalClickHandler}
+                  className={styles.modal_button}
+                />
+                <input
+                  value={userId}
+                  onChange={(e) => setUserId(e.target.value)}
+                  className={styles.input}
+                  placeholder="아이디를 입력해주세요"
+                />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={styles.input}
+                  placeholder="비밀번호를 입력해주세요"
+                />
+                <input
+                  type="password"
+                  value={passwordCheck}
+                  onChange={(e) => setPasswordCheck(e.target.value)}
+                  className={styles.input}
+                  placeholder="비밀번호를 다시 입력해주세요"
+                />
+                <button className={styles.btn} onClick={onSignUp}>
+                  회원가입
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
