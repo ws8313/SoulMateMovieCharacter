@@ -44,15 +44,13 @@
 
 .modal_selectbox {
   width: 350px;
-  height: 80px;
+  height: 70px;
   margin: 0 auto 90px auto;
   background: #ffffff;
   border: 1px solid #000000;
-  box-sizing: border-box;
-  border-radius: 30px;
-  font-size: 30px;
-  line-height: 70px;
-  align-items: center;
+  border-radius: 10px;
+  font-size: 25px;
+  font-weight: bold;
   text-align: center;
   color: rgba(0, 0, 0, 0.7);
 }
