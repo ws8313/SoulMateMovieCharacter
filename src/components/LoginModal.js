@@ -37,7 +37,6 @@ const LoginModal = ({ openLoginModal }) => {
         if (res.status && res.status === 202) {
           alert("이미 사용 중인 아이디입니다.");
         } else {
-          console.log(res.data)
           sessionStorage.setItem("token", res.data.token)
           history.push("/TestPage");
         }
