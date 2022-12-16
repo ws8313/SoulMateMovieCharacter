@@ -1,80 +1,114 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import prevbtn from "../img/prevbtn.png";
 import styles from "./TestCompletedPage.module.css";
 
 const TestCompletedPage = () => {
   const [userMBTI, setUserMBTI] = useState("");
+  const [wordCloud, setWordCloud] = useState([]);
 
   const history = useHistory();
+
+  const accessToken = sessionStorage.getItem("token");
+
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    withCredentials: true,
+  };
 
   useEffect(() => {
     async function getMBTI() {
       try {
         const res = await axios.get(
-          "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
-          { withCredentials: true }
+          "http://127.0.0.1:5000/result/",
+          axiosConfig
         );
         setUserMBTI(res.data.user_mbti);
       } catch (error) {
         console.log(error);
       }
     }
+
+    async function getWordCloud() {
+      try {
+        const res = await axios.get(
+          "http://127.0.0.1:5000/result/top10",
+          axiosConfig
+        );
+        setWordCloud(res.data);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
     getMBTI();
+    getWordCloud();
   }, [userMBTI]);
 
   return (
     <div id={styles.container}>
-      <div
-        id={styles.btnbox}
-        onClick={() => {
-          history.goBack();
-        }}
-      >
-        <img className={styles.prevbtn} src={prevbtn} alt="prevbtn" />
-      </div>
-
       <div className={styles.title}>
-        <p>일리스</p>
+        <div>영화 캐릭터 테스트</div>
       </div>
 
-      <div id={styles.divider}></div>
+      <div id={styles.subtitle}>
+        <div>테스트가 완료되었습니다</div>
+      </div>
 
-      <div>
-        <p className={styles.text}>테스트가 완료되었습니다</p>
+      <div className={styles.img_container}>
+        <img
+          className={styles.word_cloud}
+          src={wordCloud.word_cloud_src}
+          alt={wordCloud.word_cloud_src}
+        />
+        <div className={styles.text}>{userMBTI} 유형의 워드 클라우드</div>
       </div>
 
       <div>
         <button
-          className={styles.btn1}
+          className={styles.btn}
           onClick={() => {
             history.push("/MbtiCharacterPage");
           }}
         >
-          나와 같은 유형인 <br /> 캐릭터 확인하기
+          나와 같은 유형인 캐릭터 확인하기
         </button>
       </div>
 
       <div>
         <button
-          className={styles.btn2}
+          className={styles.btn}
           onClick={() => {
             history.push("/MbtiCompatiblePage");
           }}
         >
-          나와 궁합이 잘 맞는 <br /> 캐릭터 확인하기
+          나와 궁합이 잘 맞는 캐릭터 확인하기
         </button>
       </div>
 
       <div>
         <button
-          className={styles.btn3}
+          className={styles.btn}
           onClick={() => {
             history.push("/MbtiTop10Page");
           }}
         >
-          {userMBTI} 유형 관련 인기있는 <br /> 영화 확인하기
+          {userMBTI} 유형 관련 인기있는 영화 확인하기
+        </button>
+      </div>
+
+      <div>
+        <button
+          className={styles.btn}
+          onClick={() => {
+            history.push("/");
+          }}
+        >
+          테스트 다시 하기
         </button>
       </div>
     </div>
