@@ -15,10 +15,13 @@ const TestPage = () => {
 
   const history = useHistory();
 
+  const accessToken = sessionStorage.getItem("token");
+
   let axiosConfig = {
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      // "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Bearer ${accessToken}`,
     },
     withCredentials: true,
   };
@@ -27,8 +30,10 @@ const TestPage = () => {
     async function getQuestion() {
       try {
         const res = await axios.get(
-          `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${index}`,
-          { withCredentials: true }
+          // `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${index}`,
+          `http://127.0.0.1:5000/test/${index}`,
+          // { withCredentials: true }
+          axiosConfig
         );
         setQuestion(res.data.question);
         setImg(res.data.img_url);
@@ -47,7 +52,8 @@ const TestPage = () => {
       setAnsList(ans);
       axios
         .post(
-          "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
+          // "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
+          "http://127.0.0.1:5000/result/",
           {
             answers: [...anslist, e.target.value],
           },
