@@ -79,10 +79,6 @@ const MbtiCharacterPage = () => {
 
   return (
     <div id={styles.container}>
-      {/* <div id={styles.btnbox} onClick={  () => { history.goBack() } }>
-                <img className={styles.prevbtn} src={ prevbtn } alt="prevbtn" />
-            </div> */}
-
       <div className={styles.title}>
         <div>영화 캐릭터 테스트</div>
       </div>
@@ -92,10 +88,6 @@ const MbtiCharacterPage = () => {
           나와 같은 {userMBTI} 유형의 영화 속 캐릭터
         </div>
       </div>
-
-      {/* <div onClick={ refreshHandler }>
-                <img className={styles.refreshbtn} src={ refreshbtn } alt="refreshbtn" />
-            </div> */}
 
       <div>
         <div className={styles.description}>
@@ -120,6 +112,23 @@ const MbtiCharacterPage = () => {
               );
             })}
         </div>
+      </div>
+
+      <div>
+        <button className={styles.btn} onClick={refreshHandler}>
+          같은 유형의 다른 캐릭터 보기
+        </button>
+      </div>
+
+      <div>
+        <button
+          className={styles.btn}
+          onClick={() => {
+            history.goBack();
+          }}
+        >
+          뒤로 가기
+        </button>
       </div>
     </div>
   );
