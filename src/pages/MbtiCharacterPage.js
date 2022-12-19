@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import prevbtn from "../img/prevbtn.png";
-import refreshbtn from "../img/refresh.png";
 import styles from "./MbtiCharacterPage.module.css";
 
 const MbtiCharacterPage = () => {
@@ -72,6 +70,7 @@ const MbtiCharacterPage = () => {
       pathname: "/MbtiCharacterMovieListPage",
       state: {
         idx: idx,
+        mbti: userMBTI,
         charList: charList,
       },
     });
