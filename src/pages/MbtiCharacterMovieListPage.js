@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory, useLocation } from "react-router-dom";
-import prevbtn from "../img/prevbtn.png";
-import home from "../img/home.png";
 import MovieInfoModal from "../components/MovieInfoModal";
 import styles from "./MbtiCharacterMovieListPage.module.css";
 
 const MbtiCharacterMovieListPage = () => {
-  const [userMBTI, setUserMBTI] = useState("");
   const [movieList, setMovieList] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState([]);
 
@@ -19,59 +16,48 @@ const MbtiCharacterMovieListPage = () => {
   const idx = location.state.idx;
   const charList = location.state.charList;
 
+  const character_id = charList[idx][0];
+  const character_name = charList[idx][1];
+
+  const accessToken = sessionStorage.getItem("token");
+
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    withCredentials: true,
+  };
+
   const openModal = () => {
     setShowModal(!showModal);
   };
 
   useEffect(() => {
-    async function getMbti() {
-      try {
-        const mbti = await axios.get("http://localhost:5000/result/", {
-          withCredentials: true,
-        });
-        setUserMBTI(mbti.data.user_mbti);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getMbti();
-  }, [userMBTI]);
-
-  useEffect(() => {
-    async function getMbtiCharacterMovieList() {
+    async function getCharacterMovieList() {
       try {
         const res = await axios.get(
-          `http://localhost:5000/character/movie_list/${userMBTI}/0`,
-          { withCredentials: true }
+          `http://127.0.0.1:5000/character/movie_list/${character_id}/${character_name}`,
+          axiosConfig
         );
-        setMovieList(res.data.total_character_N_movies);
-        if (idx >= 1) {
-          document.getElementById(idx).scrollIntoView({ behavior: "smooth" });
-        }
+        setMovieList(res.data.character_movies);
       } catch (error) {
         console.log(error);
       }
     }
-    getMbtiCharacterMovieList();
-  }, [userMBTI, idx]);
 
-  useEffect(() => {
-    if (charList) {
-    }
-  }, [charList]);
+    getCharacterMovieList();
+  }, [character_id, character_name]);
 
   const clickHandler = (item) => {
     setSelectedMovie(item);
     openModal();
   };
 
-  const charImgClickHandler = (idx) => {
-    document.getElementById(idx).scrollIntoView({ behavior: "smooth" });
-  };
-
   const logout = () => {
     axios
-      .get("http://localhost:5000/user/logout", { withCredentials: true })
+      .get("http://127.0.0.1:5000/user/logout", axiosConfig)
       .then(() => {
         history.push("/");
       })
@@ -82,81 +68,76 @@ const MbtiCharacterMovieListPage = () => {
 
   return (
     <div id={styles.container}>
-      <div
-        id={styles.btnbox}
-        onClick={() => {
-          history.goBack();
-        }}
-      >
-        <img className={styles.prevbtn} src={prevbtn} alt="prevbtn" />
-      </div>
-
       <div className={styles.title}>
-        <p>일리스</p>
+        <div>영화 캐릭터 테스트</div>
       </div>
 
-      <div id={styles.divider}></div>
+      <div className={styles.subtitle}>{character_name + " 등장한 영화"}</div>
 
-      <div>
+      <div className={styles.description}>
+        맘에 드는 영화 포스터를 클릭해 보세요
+      </div>
+
+      <div className={styles.movie_list_container}>
         {movieList &&
           movieList.map((items, idx) => {
             return (
-              <div key={idx}>
-                <div>
-                  <p className={styles.char_name} id={idx}>
-                    {items.character_name + " 등장한 영화"}{" "}
-                  </p>
+              <div className={styles.movie_list} key={idx}>
+                <img
+                  className={styles.movie_img}
+                  src={items.image_link}
+                  alt={items.kor_title + " 포스터"}
+                  onClick={() => clickHandler(items)}
+                />
+                <div className={styles.movie_info_container}>
+                  <div className={styles.movie_title}>
+                    <div>{items.kor_title}</div>
+                  </div>
+                  <div className={styles.movie_info}>
+                    <div>
+                      <span className={styles.movie_info_content}>장르</span>
+                      <span>{items.genres.join(", ")}</span>
+                    </div>
+                    <div>
+                      <span className={styles.movie_info_content}>개봉</span>
+                      <span>{items.pub_year}년</span>
+                    </div>
+                    <div>
+                      <span className={styles.movie_info_content}>런타임</span>
+                      <span>{items.run_time}분</span>
+                    </div>
+                    <div>
+                      <span className={styles.movie_info_content}>평점</span>
+                      <span>{items.rating}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className={styles.charlist}>
-                  {items.movies.map((item, idx) => {
-                    return (
-                      <div key={idx}>
-                        <img
-                          className={styles.movie_img}
-                          src={item.image_link}
-                          alt={item.kor_title + " 포스터"}
-                          onClick={() => clickHandler(item)}
-                        />
-                        <p className={styles.movie_name}>{item.kor_title}</p>
-                        {showModal && (
-                          <MovieInfoModal
-                            openModal={openModal}
-                            movieList={movieList}
-                            selectedMovie={selectedMovie}
-                          />
-                        )}
-                      </div>
-                    );
-                  })}
+                <div>
+                  {showModal && (
+                    <MovieInfoModal
+                      openModal={openModal}
+                      movieList={movieList}
+                      selectedMovie={selectedMovie}
+                    />
+                  )}
                 </div>
               </div>
             );
           })}
-        <div className={styles.char_list}>
-          {charList &&
-            charList.map((items, idx) => {
-              return (
-                <div key={idx}>
-                  <img
-                    className={styles.char_img}
-                    src={items[2]}
-                    alt={items[1] + " 사진"}
-                    onClick={() => charImgClickHandler(idx)}
-                  />
-                </div>
-              );
-            })}
-        </div>
-
-        <div>
-          <img
-            className={styles.homebtn}
-            src={home}
-            alt="home button"
-            onClick={logout}
-          />
-        </div>
       </div>
+
+      <button
+        className={styles.btn}
+        onClick={() => {
+          history.goBack();
+        }}
+      >
+        뒤로 가기
+      </button>
+
+      <button className={styles.btn} onClick={logout}>
+        테스트 다시 하기
+      </button>
     </div>
   );
 };
