@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory, useLocation } from "react-router-dom";
-import MovieInfoModal from "../components/MovieInfoModal";
 import styles from "./MbtiCharacterMovieListPage.module.css";
 
 const MbtiCharacterMovieListPage = () => {
   const [movieList, setMovieList] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState([]);
-
-  const [showModal, setShowModal] = useState(false);
 
   const history = useHistory();
   const location = useLocation();
@@ -30,10 +26,6 @@ const MbtiCharacterMovieListPage = () => {
     withCredentials: true,
   };
 
-  const openModal = () => {
-    setShowModal(!showModal);
-  };
-
   useEffect(() => {
     async function getCharacterMovieList() {
       try {
@@ -50,9 +42,15 @@ const MbtiCharacterMovieListPage = () => {
     getCharacterMovieList();
   }, [character_id, character_name]);
 
-  const clickHandler = (item) => {
-    setSelectedMovie(item);
-    openModal();
+  const clickHandler = (idx) => {
+    console.log(idx);
+    history.push({
+      pathname: "/MovieInfoModal",
+      state: {
+        idx: idx,
+        movieList: movieList,
+      },
+    });
   };
 
   const logout = () => {
@@ -87,7 +85,7 @@ const MbtiCharacterMovieListPage = () => {
                   className={styles.movie_img}
                   src={items.image_link}
                   alt={items.kor_title + " 포스터"}
-                  onClick={() => clickHandler(items)}
+                  onClick={() => clickHandler(idx)}
                 />
                 <div className={styles.movie_info_container}>
                   <div className={styles.movie_title}>
@@ -111,15 +109,6 @@ const MbtiCharacterMovieListPage = () => {
                       <span>{items.rating}</span>
                     </div>
                   </div>
-                </div>
-                <div>
-                  {showModal && (
-                    <MovieInfoModal
-                      openModal={openModal}
-                      movieList={movieList}
-                      selectedMovie={selectedMovie}
-                    />
-                  )}
                 </div>
               </div>
             );
