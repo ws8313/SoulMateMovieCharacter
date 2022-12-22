@@ -82,53 +82,41 @@ const MbtiCharacterPage = () => {
         <div>영화 캐릭터 테스트</div>
       </div>
 
-      <div>
-        <div className={styles.subtitle}>
-          나와 같은 {userMBTI} 유형의 영화 속 캐릭터
-        </div>
+      <div className={styles.description}>맘에 드는 캐릭터를 클릭해 보세요</div>
+
+      <div className={styles.subtitle}>
+        나와 같은 {userMBTI} 유형의 영화 속 캐릭터
       </div>
 
-      <div>
-        <div className={styles.description}>
-          맘에 드는 캐릭터를 클릭해 보세요
-        </div>
+      <div className={styles.charlist}>
+        {charList &&
+          charList.map((item, idx) => {
+            return (
+              <div key={idx}>
+                <img
+                  className={styles.char_img}
+                  src={item[2]}
+                  alt={item[1] + " 사진"}
+                  onClick={() => clickHandler(idx)}
+                />
+                <div className={styles.char_name}>{item[1]}</div>
+              </div>
+            );
+          })}
       </div>
 
-      <div>
-        <div className={styles.charlist}>
-          {charList &&
-            charList.map((item, idx) => {
-              return (
-                <div key={idx}>
-                  <img
-                    className={styles.char_img}
-                    src={item[2]}
-                    alt={item[1] + " 사진"}
-                    onClick={() => clickHandler(idx)}
-                  />
-                  <div className={styles.char_name}>{item[1]}</div>
-                </div>
-              );
-            })}
-        </div>
-      </div>
+      <button className={styles.btn} onClick={refreshHandler}>
+        같은 유형의 다른 캐릭터 보기
+      </button>
 
-      <div>
-        <button className={styles.btn} onClick={refreshHandler}>
-          같은 유형의 다른 캐릭터 보기
-        </button>
-      </div>
-
-      <div>
-        <button
-          className={styles.btn}
-          onClick={() => {
-            history.goBack();
-          }}
-        >
-          뒤로 가기
-        </button>
-      </div>
+      <button
+        className={styles.btn}
+        onClick={() => {
+          history.goBack();
+        }}
+      >
+        뒤로 가기
+      </button>
     </div>
   );
 };
