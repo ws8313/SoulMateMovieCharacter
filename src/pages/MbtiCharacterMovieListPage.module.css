@@ -45,12 +45,8 @@
 .movie_img {
   cursor: pointer;
   transition: transform 0.2s ease-in-out 0s;
-  margin: 15px 20px 15px 15px;
+  margin: 0 20px 15px 15px;
   float: left;
-}
-
-.movie_info_container {
-  padding-top: 15px;
 }
 
 .movie_title {
