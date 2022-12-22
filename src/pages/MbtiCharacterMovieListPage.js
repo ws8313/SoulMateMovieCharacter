@@ -72,11 +72,11 @@ const MbtiCharacterMovieListPage = () => {
         <div>영화 캐릭터 테스트</div>
       </div>
 
-      <div className={styles.subtitle}>{character_name + " 등장한 영화"}</div>
-
       <div className={styles.description}>
         맘에 드는 영화 포스터를 클릭해 보세요
       </div>
+
+      <div className={styles.subtitle}>{character_name + " 등장한 영화"}</div>
 
       <div className={styles.movie_list_container}>
         {movieList &&
@@ -89,14 +89,14 @@ const MbtiCharacterMovieListPage = () => {
                   alt={items.kor_title + " 포스터"}
                   onClick={() => clickHandler(idx)}
                 />
-                <div className={styles.movie_info_container}>
+                <div>
                   <div className={styles.movie_title}>
                     <div>{items.kor_title}</div>
                   </div>
                   <div className={styles.movie_info}>
                     <div>
                       <span className={styles.movie_info_content}>장르</span>
-                      <span>{items.genres.join(", ")}</span>
+                      <span>{items.genres.join(", ").substring(0, 14)+"..."}</span>
                     </div>
                     <div>
                       <span className={styles.movie_info_content}>개봉</span>
