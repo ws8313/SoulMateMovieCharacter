@@ -45,7 +45,6 @@ const MbtiCharacterMovieListPage = () => {
   }, [character_id, character_name]);
 
   const clickHandler = (idx) => {
-    console.log(idx);
     history.push({
       pathname: "/MovieInfoPage",
       state: {
