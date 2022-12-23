@@ -6,6 +6,7 @@ import TestPage from './pages/TestPage';
 import TestCompletedPage from './pages/TestCompletedPage';
 import MbtiCharacterPage from './pages/MbtiCharacterPage';
 import MbtiCharacterMovieListPage from './pages/MbtiCharacterMovieListPage';
+import MovieInfoPage from './pages/MovieInfoPage';
 import MbtiCompatiblePage from './pages/MbtiCompatiblePage';
 import MbtiCompatibleMovieListPage from './pages/MbtiCompatibleMovieListPage';
 import MbtiTop10Page from './pages/MbtiTop10Page';
@@ -20,6 +21,7 @@ function App() {
         <Route path="/TestCompletedPage" component={ TestCompletedPage } />
         <Route path="/MbtiCharacterPage" component={ MbtiCharacterPage } />
         <Route path="/MbtiCharacterMovieListPage" component={ MbtiCharacterMovieListPage } />
+        <Route path="/MovieInfoPage" component={ MovieInfoPage } />
         <Route path="/MbtiCompatiblePage" component={ MbtiCompatiblePage } />
         <Route path="/MbtiCompatibleMovieListPage" component={ MbtiCompatibleMovieListPage } />
         <Route path="/MbtiTop10Page" component={ MbtiTop10Page } />
