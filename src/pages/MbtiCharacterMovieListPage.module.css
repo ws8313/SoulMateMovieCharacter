@@ -65,6 +65,15 @@
 .movie_info_content {
   color: gray;
   margin-right: 5px;
+  width: 25.75px;
+}
+
+.movie_genre_container {
+  display: flex;
+}
+
+.movie_genre {
+  width: 130px;
 }
 
 .btn {
