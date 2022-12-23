@@ -94,11 +94,11 @@ const MbtiCharacterMovieListPage = () => {
                     <div>{items.kor_title}</div>
                   </div>
                   <div className={styles.movie_info}>
-                    <div>
-                      <span className={styles.movie_info_content}>장르</span>
-                      <span>
-                        {items.genres.join(", ").substring(0, 14) + "..."}
-                      </span>
+                    <div className={styles.movie_genre_container}>
+                      <div className={styles.movie_info_content}>장르</div>
+                      <div className={styles.movie_genre}>
+                        {items.genres.join(", ")}
+                      </div>
                     </div>
                     <div>
                       <span className={styles.movie_info_content}>개봉</span>
