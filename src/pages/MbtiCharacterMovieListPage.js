@@ -47,7 +47,7 @@ const MbtiCharacterMovieListPage = () => {
   const clickHandler = (idx) => {
     console.log(idx);
     history.push({
-      pathname: "/MovieInfoModal",
+      pathname: "/MovieInfoPage",
       state: {
         idx: idx,
         movieList: movieList,
@@ -96,7 +96,9 @@ const MbtiCharacterMovieListPage = () => {
                   <div className={styles.movie_info}>
                     <div>
                       <span className={styles.movie_info_content}>장르</span>
-                      <span>{items.genres.join(", ").substring(0, 14)+"..."}</span>
+                      <span>
+                        {items.genres.join(", ").substring(0, 14) + "..."}
+                      </span>
                     </div>
                     <div>
                       <span className={styles.movie_info_content}>개봉</span>
