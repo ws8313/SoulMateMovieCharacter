@@ -25,7 +25,7 @@
 }
 
 .movie_container {
-  margin: 10px;
+  margin: 10px 10px 20px 10px;
 }
 
 .movie_info_container {
@@ -34,14 +34,45 @@
 }
 
 .movie_img {
-  width: 120px;
-  margin: 15px 20px 15px 15px;
+  width: 130px;
+  margin: 0px 30px 15px 15px;
+}
+
+.movie_title {
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .movie_info {
   display: flex;
   flex-direction: column;
-  margin-left: 10px;
+  justify-content: space-between;
+  height: 130px;
+  padding-top: 10px;
+}
+
+.movie_info_content {
+  color: gray;
+  margin-right: 10px;
+  width: 25.75px;
+}
+
+.movie_genre_container {
+  display: flex;
+}
+
+.movie_genre {
+  width: 130px;
+}
+
+.RatingContainer {
+  display: flex;
+  padding-top: 10px;
+}
+
+.stars {
+  display: flex;
+  margin-right: 5px;
 }
 
 .submit_btn {
@@ -49,84 +80,35 @@
   cursor: pointer;
 }
 
-/* .modal {
-  width: 1000px;
-  height: 100%;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-
-  background-color: #fff;
-  border: 2px solid #000000;
-  box-sizing: border-box;
-  box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-
-  z-index: 100;
+.movie_story_container {
+  margin: 0px 25px;
 }
 
-.modal_button {
-  position: relative;
-  width: 70px;
-  height: 70px;
-
-  left: 900px;
-  top: 10px;
-
-  cursor: pointer;
+.movie_story {
+  margin-top: 10px;
+  line-height: 30px;
+  letter-spacing: -1px;
 }
 
-.modal_img {
-  position: absolute;
-  width: 275px;
-  height: 350px;
-  left: 80px;
-  top: 50px;
-  border: 1px solid #000000;
-  border-radius: 5px;
-  filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.3));
-}
-
-.modal_movie_info_container {
-  position: absolute;
-  width: 500px;
-  height: 320px;
-  left: 400px;
-  top: 50px;
-
-  font-size: 25px;
-  line-height: 50px;
-}
-
-.modal_movie_story_container {
-  position: absolute;
-  width: 800px;
-  height: 1300px;
-  left: 80px;
-  top: 440px;
-
-  font-size: 25px;
-  line-height: 40px;
-}
-
-.RatingContainer {
-  position: absolute;
-  width: 500px;
-  height: 50px;
-
-  left: 400px;
-  top: 355px;
-
+.btn {
+  width: 70%;
+  height: auto;
+  min-height: 54px;
+  padding: 3px 6px;
+  border: none;
+  margin: 0 auto 20px auto;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 28px;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+  font-weight: 500;
+  background: rgb(248, 159, 79);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out 0s;
 }
 
-.modal_rating_send {
-  position: absolute;
-
-  left: 300px;
-  top: 2px;
-
-  cursor: pointer;
-} */
+.btn:hover {
+  transform: translateY(-5px);
+}
