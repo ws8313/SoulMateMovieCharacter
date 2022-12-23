@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useHistory, useLocation } from "react-router-dom";
 import styles from "./MovieInfoPage.module.css";
-import closebtn from "../img/closebtn.png";
 import send from "../img/send.png";
 import { FaStar } from "react-icons/fa";
 
@@ -19,6 +18,7 @@ const MovieInfoModal = () => {
   const [movieId, setMovieId] = useState("");
   const [rating, setRating] = useState("");
 
+  const history = useHistory();
   const location = useLocation();
 
   const idx = location.state.idx;
@@ -29,8 +29,6 @@ const MovieInfoModal = () => {
 
   const accessToken = sessionStorage.getItem("token");
 
-  console.log(selectedMovie);
-
   let axiosConfig = {
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
@@ -40,24 +38,17 @@ const MovieInfoModal = () => {
     withCredentials: true,
   };
 
-  const handleClick = (value) => {
-    // setCurValue(value);
-    // setMovieId(selectedMovie.id);
-    // setRating(value * 2);
-    // let list = [...satisfactionList];
-    // list = [[movieId, rating]];
-    // setSatisfactionList(list);
-    // return satisfactionList;
-  };
+  const handleClick = () => {
+    let list = [movieId, rating];
 
-  // useEffect(() => {
-  //   let list = [...satisfactionList];
-  //   list = [[movieId, rating]];
-  //   setSatisfactionList(list);
-  // }, [movieId, rating, satisfactionList]);
+    setSatisfactionList(list);
+  };
 
   const handleMouseOver = (value) => {
     setHoverValue(value);
+    setCurValue(value);
+    setMovieId(selectedMovie.id);
+    setRating(value * 2);
   };
 
   const handleMouseLeave = () => {
@@ -79,6 +70,17 @@ const MovieInfoModal = () => {
       });
   };
 
+  const logout = () => {
+    axios
+      .get("http://127.0.0.1:5000/user/logout", axiosConfig)
+      .then(() => {
+        history.push("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>
@@ -86,13 +88,6 @@ const MovieInfoModal = () => {
       </div>
 
       <div className={styles.description}>영화의 평점을 남겨보세요</div>
-
-      {/* <img
-        src={closebtn}
-        alt="closebtn"
-        // onClick={}
-        className={styles.modal_button}
-      /> */}
 
       <div className={styles.movie_container}>
         <div className={styles.movie_info_container}>
@@ -102,15 +97,36 @@ const MovieInfoModal = () => {
             alt={selectedMovie.kor_title + " 포스터"}
           />
 
-          <div className={styles.movie_info}>
-            <div className={styles.modal_movie_info_container}>
-              <p>감독 : {selectedMovie.director}</p>
-              <p>장르 : {selectedMovie.genres[0]}</p>
-              <p>제목 : {selectedMovie.kor_title}</p>
-              <p>개봉년도 : {selectedMovie.pub_year}년</p>
-              <p>평점 : {selectedMovie.rating}점</p>
-              <p>러닝타임 : {selectedMovie.run_time}분</p>
+          <div>
+            <div className={styles.movie_title}>
+              <div>{selectedMovie.kor_title}</div>
             </div>
+
+            <div className={styles.movie_info}>
+              <div>
+                <span className={styles.movie_info_content}>감독</span>
+                <span>{selectedMovie.director}</span>
+              </div>
+              <div className={styles.movie_genre_container}>
+                <div className={styles.movie_info_content}>장르</div>
+                <div className={styles.movie_genre}>
+                  {selectedMovie.genres.join(", ")}
+                </div>
+              </div>
+              <div>
+                <span className={styles.movie_info_content}>개봉</span>
+                <span>{selectedMovie.pub_year}년</span>
+              </div>
+              <div>
+                <span className={styles.movie_info_content}>런타임</span>
+                <span>{selectedMovie.run_time}분</span>
+              </div>
+              <div>
+                <span className={styles.movie_info_content}>평점</span>
+                <span>{selectedMovie.rating}</span>
+              </div>
+            </div>
+
             <div className={styles.RatingContainer}>
               <div className={styles.stars}>
                 {stars.map((_, index) => {
@@ -138,16 +154,30 @@ const MovieInfoModal = () => {
                 className={styles.submit_btn}
                 src={send}
                 alt="ratingsend"
-                onClick={sendReview}
+                onClick={() => sendReview()}
               />
             </div>
           </div>
         </div>
-        <div className={styles.modal_movie_story_container}>
-          {/* <p>{selectedMovie.story.substring(0, 500) + "..."}</p> */}
-          <p>{selectedMovie.story}</p>
+
+        <div className={styles.movie_story_container}>
+          <div className={styles.movie_title}>줄거리</div>
+          <div className={styles.movie_story}>{selectedMovie.story}</div>
         </div>
       </div>
+
+      <button
+        className={styles.btn}
+        onClick={() => {
+          history.goBack();
+        }}
+      >
+        뒤로 가기
+      </button>
+
+      <button className={styles.btn} onClick={logout}>
+        테스트 다시 하기
+      </button>
     </div>
   );
 };
