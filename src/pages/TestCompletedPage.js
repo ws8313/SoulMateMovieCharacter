@@ -40,7 +40,6 @@ const TestCompletedPage = () => {
           axiosConfig
         );
         setWordCloud(res.data);
-        console.log(res.data);
       } catch (error) {
         console.log(error);
       }
@@ -97,7 +96,7 @@ const TestCompletedPage = () => {
             history.push("/MbtiTop10Page");
           }}
         >
-          {userMBTI} 유형 관련 인기있는 영화 확인하기
+          같은 {userMBTI} 유형에게 인기있는 영화 확인하기
         </button>
       </div>
 
