@@ -34,15 +34,13 @@ const MainPage = () => {
           />
         </div>
 
-        <div className={styles.btn_container}>
-          <button className={styles.btn} onClick={openLoginModal}>
-            인생캐 알아보기
-          </button>
+        <button className={styles.btn} onClick={openLoginModal}>
+          인생캐 알아보기
+        </button>
 
-          <button className={styles.btn} onClick={openModal}>
-            바로 결과 보기
-          </button>
-        </div>
+        <button className={styles.btn} onClick={openModal}>
+          바로 결과 보기
+        </button>
       </div>
 
       {showLoginModal && <LoginModal openLoginModal={openLoginModal} />}
