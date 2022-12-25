@@ -33,7 +33,6 @@ const Modal = ({ openModal }) => {
           login_pw: password,
         },
         axiosConfig
-        // { withCredentials: true }
       )
       .then(() => {
         openResultLoginModal();
@@ -111,7 +110,7 @@ const Modal = ({ openModal }) => {
               onClick={modalClickHandler}
               className={styles.modal_button}
             />
-            <p className={styles.modal_text}>당신의 유형을 선택해주세요</p>
+            <div className={styles.description}>당신의 유형을 선택해주세요</div>
             <select
               className={styles.modal_selectbox}
               onChange={changeSelectOptionHandler}
@@ -147,6 +146,7 @@ const Modal = ({ openModal }) => {
                   onClick={modalClickHandler}
                   className={styles.modal_button}
                 />
+                <div className={styles.description}>로그인</div>
                 <input
                   value={userId}
                   className={styles.input}
@@ -175,6 +175,7 @@ const Modal = ({ openModal }) => {
                   onClick={modalClickHandler}
                   className={styles.modal_button}
                 />
+                <div className={styles.description}>회원가입</div>
                 <input
                   value={userId}
                   onChange={(e) => setUserId(e.target.value)}
