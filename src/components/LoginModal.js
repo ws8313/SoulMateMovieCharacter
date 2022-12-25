@@ -31,13 +31,12 @@ const LoginModal = ({ openLoginModal }) => {
           login_pw: password,
         },
         axiosConfig
-        // { withCredentials: true }
       )
       .then((res) => {
         if (res.status && res.status === 202) {
           alert("이미 사용 중인 아이디입니다.");
         } else {
-          sessionStorage.setItem("token", res.data.token)
+          sessionStorage.setItem("token", res.data.token);
           history.push("/TestPage");
         }
       })
@@ -57,7 +56,6 @@ const LoginModal = ({ openLoginModal }) => {
           pw2: passwordCheck,
         },
         axiosConfig
-        // { withCredentials: true }
       )
       .then((res) => {
         if (res.status && res.status === 202) {
@@ -91,6 +89,7 @@ const LoginModal = ({ openLoginModal }) => {
               onClick={openLoginModal}
               className={styles.modal_button}
             />
+            <div className={styles.description}>로그인</div>
             <input
               value={userId}
               className={styles.input}
@@ -119,6 +118,7 @@ const LoginModal = ({ openLoginModal }) => {
               onClick={() => clickHandler(openLoginModal)}
               className={styles.modal_button}
             />
+            <div className={styles.description}>회원가입</div>
             <input
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
