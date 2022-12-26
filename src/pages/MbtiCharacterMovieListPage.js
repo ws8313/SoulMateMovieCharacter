@@ -44,12 +44,11 @@ const MbtiCharacterMovieListPage = () => {
     getCharacterMovieList();
   }, [character_id, character_name]);
 
-  const clickHandler = (idx) => {
+  const clickHandler = (items) => {
     history.push({
       pathname: "/MovieInfoPage",
       state: {
-        idx: idx,
-        movieList: movieList,
+        movieInfos: items
       },
     });
   };
@@ -86,7 +85,7 @@ const MbtiCharacterMovieListPage = () => {
                   className={styles.movie_img}
                   src={items.image_link}
                   alt={items.kor_title + " 포스터"}
-                  onClick={() => clickHandler(idx)}
+                  onClick={() => clickHandler(items)}
                 />
                 <div>
                   <div className={styles.movie_title}>
