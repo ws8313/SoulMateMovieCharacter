@@ -1,13 +1,5 @@
-#container {
+.container {
   max-width: 550px;
-  min-height: 550px;
-  z-index: 2;
-  height: 100%;
-  width: 100%;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
   margin: auto;
 }
 
@@ -16,7 +8,6 @@
   font-size: 30px;
   color: rgba(248, 159, 79);
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
@@ -24,11 +15,10 @@
   padding-top: 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin: 0 20px;
+  justify-content: center;
 }
 
-#btnbox {
+.btnbox {
   width: 25px;
   height: 20px;
 }
@@ -40,10 +30,11 @@
 }
 
 .progress_bar_container {
-  width: 400px;
+  width: 350px;
   height: 20px;
   background-color: rgba(0, 0, 0, 0.07);
   border-radius: 99px;
+  margin: 0 20px;
 }
 
 .progress_bar {
@@ -52,9 +43,9 @@
   border-radius: 99px;
 }
 
-#progress {
+.progress {
   display: flex;
-  width: 25px;
+  width: 55px;
   height: 20px;
   font-size: 20px;
   font-weight: bold;
@@ -64,41 +55,34 @@
 }
 
 .img_wrapper {
-  width: 100%;
-  height: 350px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin: 10px 0 10px 0;
+  margin: 20px 0 20px 0;
 }
 
 .content_img {
-  width: 70%;
-  height: 70%;
-  background-size: cover;
-  background-position: center, center;
+  width: 60%;
 }
 
-#testtext {
-  width: 100%;
-  height: 120px;
-  font-size: 20px;
-  line-height: 40px;
+.test_description {
+  width: 450px;
+  height: 130px;
+  font-size: 18px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   color: black;
   white-space: pre-wrap;
+  margin: 0 auto;
 }
 
 .btn_container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: auto;
   padding-top: 20px;
 }
 
-#btn {
+.btn {
   width: 70%;
   height: auto;
   min-height: 54px;
@@ -117,6 +101,49 @@
   transition: transform 0.2s ease-in-out 0s;
 }
 
-#btn:hover {
+.btn:hover {
   transform: translateY(-5px);
+}
+
+@media (max-width: 768px) {
+  .progress_bar_container {
+    width: 250px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.07);
+    border-radius: 99px;
+    margin: 0 20px;
+  }
+
+  .test_description {
+    width: 350px;
+    height: 130px;
+    font-size: 16px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: black;
+    white-space: pre-wrap;
+    margin: 0 10px;
+  }
+
+  .btn {
+    width: 70%;
+    height: auto;
+    min-height: 54px;
+    padding: 3px 6px;
+    border: none;
+    margin: 0 auto 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 28px;
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+    font-weight: 500;
+    background: rgb(248, 159, 79);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out 0s;
+  }
 }
