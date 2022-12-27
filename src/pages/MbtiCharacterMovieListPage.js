@@ -48,7 +48,7 @@ const MbtiCharacterMovieListPage = () => {
     history.push({
       pathname: "/MovieInfoPage",
       state: {
-        movieInfos: items
+        movieInfos: items,
       },
     });
   };
@@ -65,10 +65,8 @@ const MbtiCharacterMovieListPage = () => {
   };
 
   return (
-    <div id={styles.container}>
-      <div className={styles.title}>
-        <div>영화 캐릭터 테스트</div>
-      </div>
+    <div className={styles.container}>
+      <div className={styles.title}>영화 캐릭터 테스트</div>
 
       <div className={styles.description}>
         맘에 드는 영화 포스터를 클릭해 보세요
@@ -88,9 +86,7 @@ const MbtiCharacterMovieListPage = () => {
                   onClick={() => clickHandler(items)}
                 />
                 <div>
-                  <div className={styles.movie_title}>
-                    <div>{items.kor_title}</div>
-                  </div>
+                  <div className={styles.movie_title}>{items.kor_title}</div>
                   <div className={styles.movie_info}>
                     <div className={styles.movie_genre_container}>
                       <div className={styles.movie_info_content}>장르</div>
