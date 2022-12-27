@@ -70,17 +70,14 @@ const MbtiCharacterPage = () => {
       pathname: "/MbtiCharacterMovieListPage",
       state: {
         idx: idx,
-        mbti: userMBTI,
         charList: charList,
       },
     });
   };
 
   return (
-    <div id={styles.container}>
-      <div className={styles.title}>
-        <div>영화 캐릭터 테스트</div>
-      </div>
+    <div className={styles.container}>
+      <div className={styles.title}>영화 캐릭터 테스트</div>
 
       <div className={styles.description}>맘에 드는 캐릭터를 클릭해 보세요</div>
 
@@ -88,18 +85,18 @@ const MbtiCharacterPage = () => {
         나와 같은 {userMBTI} 유형의 영화 속 캐릭터
       </div>
 
-      <div className={styles.charlist}>
+      <div className={styles.character_list}>
         {charList &&
           charList.map((item, idx) => {
             return (
               <div key={idx}>
                 <img
-                  className={styles.char_img}
+                  className={styles.character_img}
                   src={item[2]}
                   alt={item[1] + " 사진"}
                   onClick={() => clickHandler(idx)}
                 />
-                <div className={styles.char_name}>{item[1]}</div>
+                <div className={styles.character_name}>{item[1]}</div>
               </div>
             );
           })}
