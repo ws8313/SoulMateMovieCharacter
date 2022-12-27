@@ -1,13 +1,5 @@
-#container {
+.container {
   max-width: 550px;
-  min-height: 550px;
-  z-index: 2;
-  height: 100%;
-  width: 100%;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
   margin: auto;
 }
 
@@ -16,15 +8,14 @@
   font-size: 30px;
   color: rgba(248, 159, 79);
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
-#subtitle {
+.subtitle {
   padding-top: 10px;
   font-size: 20px;
+  font-weight: bold;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
@@ -43,9 +34,6 @@
 
 .word_cloud {
   width: 70%;
-  height: 70%;
-  background-size: cover;
-  background-position: center, center;
 }
 
 .btn {
