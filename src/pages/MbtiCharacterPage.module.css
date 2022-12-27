@@ -1,13 +1,5 @@
-#container {
+.container {
   max-width: 550px;
-  min-height: 550px;
-  z-index: 2;
-  height: 100%;
-  width: 100%;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
   margin: auto;
 }
 
@@ -16,15 +8,6 @@
   font-size: 30px;
   color: rgba(248, 159, 79);
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.subtitle {
-  padding-top: 10px;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
   justify-content: center;
 }
 
@@ -33,36 +16,26 @@
   font-size: 20px;
   font-weight: bold;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
-.refreshbtn {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  left: 1030px;
-  top: 145px;
-  align-items: center;
-  text-align: center;
-  cursor: pointer;
-  color: #000000;
+.subtitle {
+  padding-top: 10px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
 }
 
-.charlist {
+.character_list {
   display: grid;
   grid-template-columns: repeat(2, 160px);
   padding-top: 20px;
   text-align: center;
-  align-items: center;
-  justify-items: center;
   justify-content: center;
-  align-content: center;
 }
 
-.char_img {
+.character_img {
   width: 100px;
-  height: 100px;
   border: 1px solid #000000;
   border-radius: 10px;
   filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.5));
@@ -70,15 +43,11 @@
   transition: all 0.3s;
 }
 
-.char_name {
+.character_name {
   height: 50px;
   font-size: 15px;
   font-weight: bold;
   color: #000000;
-}
-
-.char_img:hover {
-  transform: translateY(-5px);
 }
 
 .btn {
@@ -100,6 +69,7 @@
   transition: transform 0.2s ease-in-out 0s;
 }
 
-.btn:hover {
+.btn:hover,
+.character_img:hover {
   transform: translateY(-5px);
 }
