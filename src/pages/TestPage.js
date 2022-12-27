@@ -32,7 +32,6 @@ const TestPage = () => {
         const res = await axios.get(
           // `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${index}`,
           `http://127.0.0.1:5000/test/${index}`,
-          // { withCredentials: true }
           axiosConfig
         );
         setQuestion(res.data.question);
@@ -87,14 +86,12 @@ const TestPage = () => {
   const percent = ((index - 1) / 12) * 100;
 
   return (
-    <div id={styles.container}>
-      <div className={styles.title}>
-        <p>영화 캐릭터 테스트</p>
-      </div>
+    <div className={styles.container}>
+      <div className={styles.title}>영화 캐릭터 테스트</div>
 
       {index === QUESTION_EX_INDEX ? (
         <div className={styles.progress_container}>
-          <div id={styles.btnbox} onClick={prevClick}>
+          <div className={styles.btnbox} onClick={prevClick}>
             <img className={styles.prevbtn} src={prevbtn} alt="prevbtn" />
           </div>
           <div className={styles.progress_bar_container}>
@@ -103,13 +100,11 @@ const TestPage = () => {
               style={{ width: "8.333%" }}
             ></div>
           </div>
-          <div id={styles.progress}>
-            <div>1/12</div>
-          </div>
+          <div className={styles.progress}>1 / 12</div>
         </div>
       ) : (
         <div className={styles.progress_container}>
-          <div id={styles.btnbox} onClick={prevClick}>
+          <div className={styles.btnbox} onClick={prevClick}>
             <img className={styles.prevbtn} src={prevbtn} alt="prevbtn" />
           </div>
           <div className={styles.progress_bar_container}>
@@ -118,9 +113,7 @@ const TestPage = () => {
               style={{ width: `${percent}%` }}
             ></div>
           </div>
-          <div id={styles.progress}>
-            <div>{index - 1}/12</div>
-          </div>
+          <div className={styles.progress}>{index - 1} / 12</div>
         </div>
       )}
 
@@ -128,22 +121,20 @@ const TestPage = () => {
         <img className={styles.content_img} src={img} alt="test img" />
       </div>
 
-      <div id={styles.testtext}>
-        <p>{question}</p>
-      </div>
+      <div className={styles.test_description}>{question}</div>
 
       {index === QUESTION_EX_INDEX ? (
         <div className={styles.btn_container}>
-          <button id={styles.btn} onClick={clickHandler}>
+          <button className={styles.btn} onClick={clickHandler}>
             다음
           </button>
         </div>
       ) : (
-        <div>
-          <button id={styles.btn} value="a" onClick={clickHandler}>
+        <div className={styles.btn_container}>
+          <button className={styles.btn} value="a" onClick={clickHandler}>
             {option[0]}
           </button>
-          <button id={styles.btn} value="b" onClick={clickHandler}>
+          <button className={styles.btn} value="b" onClick={clickHandler}>
             {option[1]}
           </button>
         </div>
