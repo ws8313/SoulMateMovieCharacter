@@ -117,7 +117,7 @@ const TestPage = () => {
         </div>
       )}
 
-      <div className={styles.img_wrapper}>
+      <div className={styles.img_container}>
         <img className={styles.content_img} src={img} alt="test img" />
       </div>
 

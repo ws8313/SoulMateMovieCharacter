@@ -54,7 +54,7 @@
   color: black;
 }
 
-.img_wrapper {
+.img_container {
   display: flex;
   justify-content: center;
   margin: 20px 0 20px 0;
