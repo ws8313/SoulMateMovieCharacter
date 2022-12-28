@@ -1,8 +1,5 @@
 .container {
   max-width: 550px;
-  min-height: 550px;
-  height: 100%;
-  width: 100%;
   margin: auto;
 }
 
@@ -11,7 +8,6 @@
   font-size: 30px;
   color: rgba(248, 159, 79);
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
@@ -20,7 +16,6 @@
   font-size: 20px;
   font-weight: bold;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
