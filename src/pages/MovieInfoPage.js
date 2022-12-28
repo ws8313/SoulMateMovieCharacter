@@ -21,9 +21,7 @@ const MovieInfoModal = () => {
   const history = useHistory();
   const location = useLocation();
 
-  const idx = location.state.idx;
-  const movieList = location.state.movieList;
-  const selectedMovie = movieList[idx];
+  const movieInfos = location.state.movieInfos;
 
   const stars = Array(5).fill(0);
 
@@ -47,7 +45,7 @@ const MovieInfoModal = () => {
   const handleMouseOver = (value) => {
     setHoverValue(value);
     setCurValue(value);
-    setMovieId(selectedMovie.id);
+    setMovieId(movieInfos.id);
     setRating(value * 2);
   };
 
@@ -83,9 +81,7 @@ const MovieInfoModal = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>
-        <div>영화 캐릭터 테스트</div>
-      </div>
+      <div className={styles.title}>영화 캐릭터 테스트</div>
 
       <div className={styles.description}>영화의 평점을 남겨보세요</div>
 
@@ -93,37 +89,35 @@ const MovieInfoModal = () => {
         <div className={styles.movie_info_container}>
           <img
             className={styles.movie_img}
-            src={selectedMovie.image_link}
-            alt={selectedMovie.kor_title + " 포스터"}
+            src={movieInfos.image_link}
+            alt={movieInfos.kor_title + " 포스터"}
           />
 
           <div>
-            <div className={styles.movie_title}>
-              <div>{selectedMovie.kor_title}</div>
-            </div>
+            <div className={styles.movie_title}>{movieInfos.kor_title}</div>
 
             <div className={styles.movie_info}>
               <div>
                 <span className={styles.movie_info_content}>감독</span>
-                <span>{selectedMovie.director}</span>
+                <span>{movieInfos.director}</span>
               </div>
               <div className={styles.movie_genre_container}>
                 <div className={styles.movie_info_content}>장르</div>
                 <div className={styles.movie_genre}>
-                  {selectedMovie.genres.join(", ")}
+                  {movieInfos.genres.join(", ")}
                 </div>
               </div>
               <div>
                 <span className={styles.movie_info_content}>개봉</span>
-                <span>{selectedMovie.pub_year}년</span>
+                <span>{movieInfos.pub_year}년</span>
               </div>
               <div>
                 <span className={styles.movie_info_content}>런타임</span>
-                <span>{selectedMovie.run_time}분</span>
+                <span>{movieInfos.run_time}분</span>
               </div>
               <div>
                 <span className={styles.movie_info_content}>평점</span>
-                <span>{selectedMovie.rating}</span>
+                <span>{movieInfos.rating}</span>
               </div>
             </div>
 
@@ -162,7 +156,7 @@ const MovieInfoModal = () => {
 
         <div className={styles.movie_story_container}>
           <div className={styles.movie_title}>줄거리</div>
-          <div className={styles.movie_story}>{selectedMovie.story}</div>
+          <div className={styles.movie_story}>{movieInfos.story}</div>
         </div>
       </div>
 
