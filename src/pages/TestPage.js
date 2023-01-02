@@ -30,8 +30,8 @@ const TestPage = () => {
     async function getQuestion() {
       try {
         const res = await axios.get(
-          // `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${index}`,
-          `http://127.0.0.1:5000/test/${index}`,
+          `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${index}`,
+          // `http://127.0.0.1:5000/test/${index}`,
           axiosConfig
         );
         setQuestion(res.data.question);
@@ -51,8 +51,8 @@ const TestPage = () => {
       setAnsList(ans);
       axios
         .post(
-          // "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
-          "http://127.0.0.1:5000/result/",
+          "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
+          // "http://127.0.0.1:5000/result/",
           {
             answers: [...anslist, e.target.value],
           },
@@ -84,6 +84,8 @@ const TestPage = () => {
   };
 
   const percent = ((index - 1) / 12) * 100;
+
+  console.log(anslist);
 
   return (
     <div className={styles.container}>

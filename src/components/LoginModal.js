@@ -24,8 +24,8 @@ const LoginModal = ({ openLoginModal }) => {
   const onSubmit = () => {
     axios
       .post(
-        // "https://soulmatemoviecharacter-ws8313.koyeb.app/user/login",
-        "http://127.0.0.1:5000/user/login",
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/user/login",
+        // "http://127.0.0.1:5000/user/login",
         {
           login_id: userId,
           login_pw: password,
@@ -48,8 +48,8 @@ const LoginModal = ({ openLoginModal }) => {
   const onSignUp = () => {
     axios
       .post(
-        // "https://soulmatemoviecharacter-ws8313.koyeb.app/user/register",
-        "http://127.0.0.1:5000/user/register",
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/user/register",
+        // "http://127.0.0.1:5000/user/register",
         {
           id: userId,
           pw: password,

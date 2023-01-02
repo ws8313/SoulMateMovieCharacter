@@ -56,7 +56,8 @@ const MovieInfoModal = () => {
   const sendReview = () => {
     axios
       .post(
-        "http://127.0.0.1:5000/character/movie_list",
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/character/movie_list",
+        // "http://127.0.0.1:5000/character/movie_list",
         {
           satisfaction_list: satisfactionList,
         },
@@ -70,7 +71,11 @@ const MovieInfoModal = () => {
 
   const logout = () => {
     axios
-      .get("http://127.0.0.1:5000/user/logout", axiosConfig)
+      .get(
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/user/logout",
+        // "http://127.0.0.1:5000/user/logout",
+        axiosConfig
+      )
       .then(() => {
         history.push("/");
       })

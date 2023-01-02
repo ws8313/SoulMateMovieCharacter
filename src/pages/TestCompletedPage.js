@@ -24,7 +24,8 @@ const TestCompletedPage = () => {
     async function getMBTI() {
       try {
         const res = await axios.get(
-          "http://127.0.0.1:5000/result/",
+          "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
+          // "http://127.0.0.1:5000/result/",
           axiosConfig
         );
         setUserMBTI(res.data.user_mbti);
@@ -36,7 +37,8 @@ const TestCompletedPage = () => {
     async function getWordCloud() {
       try {
         const res = await axios.get(
-          "http://127.0.0.1:5000/result/top10",
+          "https://soulmatemoviecharacter-ws8313.koyeb.app/result/top10",
+          // "http://127.0.0.1:5000/result/top10",
           axiosConfig
         );
         setWordCloud(res.data);
