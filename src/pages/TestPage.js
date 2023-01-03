@@ -85,8 +85,6 @@ const TestPage = () => {
 
   const percent = ((index - 1) / 12) * 100;
 
-  console.log(anslist);
-
   return (
     <div className={styles.container}>
       <div className={styles.title}>영화 캐릭터 테스트</div>
