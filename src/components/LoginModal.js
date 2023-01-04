@@ -16,7 +16,7 @@ const LoginModal = ({ openLoginModal }) => {
   let axiosConfig = {
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      // "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": "*",
     },
     withCredentials: true,
   };
@@ -25,7 +25,6 @@ const LoginModal = ({ openLoginModal }) => {
     axios
       .post(
         "https://soulmatemoviecharacter-ws8313.koyeb.app/user/login",
-        // "http://127.0.0.1:5000/user/login",
         {
           login_id: userId,
           login_pw: password,
@@ -49,7 +48,6 @@ const LoginModal = ({ openLoginModal }) => {
     axios
       .post(
         "https://soulmatemoviecharacter-ws8313.koyeb.app/user/register",
-        // "http://127.0.0.1:5000/user/register",
         {
           id: userId,
           pw: password,

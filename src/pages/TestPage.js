@@ -31,7 +31,6 @@ const TestPage = () => {
       try {
         const res = await axios.get(
           `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${index}`,
-          // `http://127.0.0.1:5000/test/${index}`,
           axiosConfig
         );
         setQuestion(res.data.question);
@@ -52,7 +51,6 @@ const TestPage = () => {
       axios
         .post(
           "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
-          // "http://127.0.0.1:5000/result/",
           {
             answers: [...anslist, e.target.value],
           },

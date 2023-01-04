@@ -25,7 +25,6 @@ const MbtiCharacterPage = () => {
       try {
         const mbti = await axios.get(
           "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
-          // "http://127.0.0.1:5000/result/",
           axiosConfig
         );
         setUserMBTI(mbti.data.user_mbti);
@@ -41,7 +40,6 @@ const MbtiCharacterPage = () => {
       try {
         const res = await axios.get(
           "https://soulmatemoviecharacter-ws8313.koyeb.app/character/0",
-          // "http://127.0.0.1:5000/character/0",
           axiosConfig
         );
         setCharList(res.data.character_info);
@@ -57,7 +55,6 @@ const MbtiCharacterPage = () => {
       try {
         const res = await axios.get(
           "https://soulmatemoviecharacter-ws8313.koyeb.app/character/refresh/0",
-          // "http://127.0.0.1:5000/character/refresh/0",
           axiosConfig
         );
         setCharList(res.data.character_info);

@@ -24,7 +24,6 @@ const MbtiTop10Page = () => {
       try {
         const res = await axios.get(
           "https://soulmatemoviecharacter-ws8313.koyeb.app/result/top10",
-          // "http://localhost:5000/result/top10",
           axiosConfig
         );
         setTop10(res.data);
@@ -61,7 +60,6 @@ const MbtiTop10Page = () => {
     axios
       .get(
         "https://soulmatemoviecharacter-ws8313.koyeb.app/user/logout",
-        // "http://localhost:5000/user/logout",
         axiosConfig
       )
       .then(() => {
