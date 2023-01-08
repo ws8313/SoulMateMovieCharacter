@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import styles from "./Modal.module.css";
-import closebtn from "../img/closebtn.png";
+import closebtn from "../../img/closebtn.png";
 
 const Modal = ({ openModal }) => {
   const [selected, setSelected] = useState("ISTJ");

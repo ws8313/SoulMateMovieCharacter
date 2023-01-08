@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import styles from "./LoginModal.module.css";
-import closebtn from "../img/closebtn.png";
+import closebtn from "../../img/closebtn.png";
 
 const LoginModal = ({ openLoginModal }) => {
   const [userId, setUserId] = useState("");
@@ -24,7 +24,8 @@ const LoginModal = ({ openLoginModal }) => {
   const onSubmit = () => {
     axios
       .post(
-        "https://soulmatemoviecharacter-ws8313.koyeb.app/user/login",
+        `http://localhost:5000/user/login`,
+        // "https://soulmatemoviecharacter-ws8313.koyeb.app/user/login",
         {
           login_id: userId,
           login_pw: password,
