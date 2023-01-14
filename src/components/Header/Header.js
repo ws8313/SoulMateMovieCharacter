@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Header.module.css";
 
-const Header = ({ subtitle }) => {
+const Header = ({ subtitle, description }) => {
   return (
     <div>
       <div className={styles.title}>
@@ -11,6 +11,12 @@ const Header = ({ subtitle }) => {
       {subtitle && (
         <div className={styles.subtitle}>
           <div>{subtitle}</div>
+        </div>
+      )}
+
+      {description && (
+        <div className={styles.description}>
+          <div>{description}</div>
         </div>
       )}
     </div>
