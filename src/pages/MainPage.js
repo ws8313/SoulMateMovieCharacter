@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styles from "./MainPage.module.css";
-import Modal from "../components/Modal";
-import LoginModal from "../components/LoginModal";
+import { Header, Main, Button, Modal, LoginModal } from "../components";
 
 const MainPage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -18,33 +17,16 @@ const MainPage = () => {
   return (
     <div>
       <div className={styles.container}>
-        <div className={styles.title}>
-          <div>영화 캐릭터 테스트</div>
-        </div>
+        <Header subtitle={"당신과 똑같은 성향의 영화 캐릭터는?"} />
 
-        <div className={styles.subtitle}>
-          <div>당신과 똑같은 성향의 영화 캐릭터는?</div>
-        </div>
+        <Main src={"img/for_test/0.png"} alt={"main logo"} />
 
-        <div className={styles.img_container}>
-          <img
-            className={styles.content_img}
-            src="img/for_test/0.png"
-            alt="main logo"
-          />
-        </div>
-
-        <button className={styles.btn} onClick={openLoginModal}>
-          인생캐 알아보기
-        </button>
-
-        <button className={styles.btn} onClick={openModal}>
-          바로 결과 보기
-        </button>
+        <Button content={"인생캐 알아보기"} onClick={openLoginModal} />
+        <Button content={"바로 결과 보기"} onClick={openModal} />
       </div>
 
-      {showLoginModal && <LoginModal openLoginModal={openLoginModal} />}
       {showModal && <Modal openModal={openModal} />}
+      {showLoginModal && <LoginModal openLoginModal={openLoginModal} />}
     </div>
   );
 };
