@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import prevbtn from "../img/prevbtn.png";
 import styles from "./TestPage.module.css";
+import { Header, ProgressBar, Main, Button, Loading } from "../components";
 
 const TestPage = () => {
   const [index, setIndex] = useState(1);
@@ -10,6 +10,8 @@ const TestPage = () => {
   const [question, setQuestion] = useState([]);
   const [img, setImg] = useState([]);
   const [option, setOption] = useState([]);
+  const [questionList, setQuestionList] = useState();
+  const [loading, setLoading] = useState(null);
   const QUESTION_EX_INDEX = 1;
   const QUESTION_LAST_INDEX = 13;
 
@@ -27,21 +29,81 @@ const TestPage = () => {
   };
 
   useEffect(() => {
-    async function getQuestion() {
-      try {
-        const res = await axios.get(
-          `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${index}`,
-          axiosConfig
-        );
-        setQuestion(res.data.question);
-        setImg(res.data.img_url);
-        setOption(res.data.options);
-      } catch (error) {
-        console.log(error);
-      }
+    setLoading(true);
+    getQuestionList();
+    // const dataArr = [];
+    // for (let i = 1; i < 14; i++) {
+    //   axios
+    //     .all([
+    //       axios.get(
+    //         // `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${i}`, axiosConfig
+    //         `http://localhost:5000/test/${i}`,
+    //         axiosConfig
+    //       ),
+    //     ])
+    //     .then(
+    //       axios.spread((res) => {
+    //         const id = res.data.id;
+    //         const img = res.data.img_url;
+    //         const options = res.data.options;
+    //         const question = res.data.question;
+    //         dataArr.push({ id, img, options, question });
+    //         dataArr.sort((a, b) => a.id - b.id);
+    //         setQuestionList(dataArr);
+    //       })
+    //     )
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // }
+  }, []);
+
+  const getQuestionList = async () => {
+    const dataArr = [];
+    for (let i = 1; i < 14; i++) {
+      axios
+        .all([
+          axios.get(
+            // `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${i}`, axiosConfig
+            `http://localhost:5000/test/${i}`,
+            axiosConfig
+          ),
+        ])
+        .then(
+          axios.spread((res) => {
+            const id = res.data.id;
+            const img = res.data.img_url;
+            const options = res.data.options;
+            const question = res.data.question;
+            dataArr.push({ id, img, options, question });
+            dataArr.sort((a, b) => a.id - b.id);
+            setQuestionList(dataArr);
+            setLoading(false);
+          })
+        )
+        .catch((error) => {
+          console.log(error);
+        });
     }
-    getQuestion();
-  }, [index]);
+  };
+
+  // useEffect(() => {
+  //   async function getQuestion() {
+  //     try {
+  //       const res = await axios.get(
+  //         // `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${index}`,
+  //         `http://localhost:3000/test/${index}`,
+  //         axiosConfig
+  //       );
+  //       setQuestion(res.data.question);
+  //       setImg(res.data.img_url);
+  //       setOption(res.data.options);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   getQuestion();
+  // }, [index]);
 
   const clickHandler = (e) => {
     if (index === QUESTION_LAST_INDEX) {
@@ -50,7 +112,8 @@ const TestPage = () => {
       setAnsList(ans);
       axios
         .post(
-          "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
+          "http://localhost:5000/result/",
+          // "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
           {
             answers: [...anslist, e.target.value],
           },
@@ -68,8 +131,8 @@ const TestPage = () => {
       const ans = [...anslist];
       ans.push(e.target.value);
       setAnsList(ans);
+      setIndex(index + 1);
     }
-    setIndex(index + 1);
   };
 
   const prevClick = () => {
@@ -81,62 +144,38 @@ const TestPage = () => {
     }
   };
 
-  const percent = ((index - 1) / 12) * 100;
-
   return (
     <div className={styles.container}>
-      <div className={styles.title}>영화 캐릭터 테스트</div>
+      <Header />
 
-      {index === QUESTION_EX_INDEX ? (
-        <div className={styles.progress_container}>
-          <div className={styles.btnbox} onClick={prevClick}>
-            <img className={styles.prevbtn} src={prevbtn} alt="prevbtn" />
-          </div>
-          <div className={styles.progress_bar_container}>
-            <div
-              className={styles.progress_bar}
-              style={{ width: "8.333%" }}
-            ></div>
-          </div>
-          <div className={styles.progress}>1 / 12</div>
-        </div>
-      ) : (
-        <div className={styles.progress_container}>
-          <div className={styles.btnbox} onClick={prevClick}>
-            <img className={styles.prevbtn} src={prevbtn} alt="prevbtn" />
-          </div>
-          <div className={styles.progress_bar_container}>
-            <div
-              className={styles.progress_bar}
-              style={{ width: `${percent}%` }}
-            ></div>
-          </div>
-          <div className={styles.progress}>{index - 1} / 12</div>
-        </div>
+      <ProgressBar index={index} prevClick={prevClick} />
+
+      {questionList && (
+        <Main
+          src={questionList[index - 1].img}
+          alt={"test image"}
+          description={questionList[index - 1].question}
+        />
       )}
 
-      <div className={styles.img_container}>
-        <img className={styles.content_img} src={img} alt="test img" />
-      </div>
-
-      <div className={styles.test_description}>{question}</div>
-
       {index === QUESTION_EX_INDEX ? (
-        <div className={styles.btn_container}>
-          <button className={styles.btn} onClick={clickHandler}>
-            다음
-          </button>
-        </div>
+        <Button content={"다음"} onClick={clickHandler} />
       ) : (
-        <div className={styles.btn_container}>
-          <button className={styles.btn} value="a" onClick={clickHandler}>
-            {option[0]}
-          </button>
-          <button className={styles.btn} value="b" onClick={clickHandler}>
-            {option[1]}
-          </button>
+        <div>
+          <Button
+            content={questionList[index - 1].options[0]}
+            value={"a"}
+            onClick={clickHandler}
+          />
+
+          <Button
+            content={questionList[index - 1].options[1]}
+            value={"b"}
+            onClick={clickHandler}
+          />
         </div>
       )}
+      {loading && <Loading />}
     </div>
   );
 };
