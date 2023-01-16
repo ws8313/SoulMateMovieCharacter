@@ -7,9 +7,6 @@ import { Header, ProgressBar, Main, Button, Loading } from "../components";
 const TestPage = () => {
   const [index, setIndex] = useState(1);
   const [anslist, setAnsList] = useState([]);
-  const [question, setQuestion] = useState([]);
-  const [img, setImg] = useState([]);
-  const [option, setOption] = useState([]);
   const [questionList, setQuestionList] = useState();
   const [loading, setLoading] = useState(null);
   const QUESTION_EX_INDEX = 1;
@@ -31,31 +28,6 @@ const TestPage = () => {
   useEffect(() => {
     setLoading(true);
     getQuestionList();
-    // const dataArr = [];
-    // for (let i = 1; i < 14; i++) {
-    //   axios
-    //     .all([
-    //       axios.get(
-    //         // `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${i}`, axiosConfig
-    //         `http://localhost:5000/test/${i}`,
-    //         axiosConfig
-    //       ),
-    //     ])
-    //     .then(
-    //       axios.spread((res) => {
-    //         const id = res.data.id;
-    //         const img = res.data.img_url;
-    //         const options = res.data.options;
-    //         const question = res.data.question;
-    //         dataArr.push({ id, img, options, question });
-    //         dataArr.sort((a, b) => a.id - b.id);
-    //         setQuestionList(dataArr);
-    //       })
-    //     )
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // }
   }, []);
 
   const getQuestionList = async () => {
@@ -86,24 +58,6 @@ const TestPage = () => {
         });
     }
   };
-
-  // useEffect(() => {
-  //   async function getQuestion() {
-  //     try {
-  //       const res = await axios.get(
-  //         // `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${index}`,
-  //         `http://localhost:3000/test/${index}`,
-  //         axiosConfig
-  //       );
-  //       setQuestion(res.data.question);
-  //       setImg(res.data.img_url);
-  //       setOption(res.data.options);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   getQuestion();
-  // }, [index]);
 
   const clickHandler = (e) => {
     if (index === QUESTION_LAST_INDEX) {
