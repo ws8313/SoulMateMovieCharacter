@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import styles from "./TestCompletedPage.module.css";
-import { Header, Main, Button } from "../components";
+import { Header, Main, Button, Loading } from "../components";
 
 const TestCompletedPage = () => {
   const [userMBTI, setUserMBTI] = useState("");
-  const [wordCloud, setWordCloud] = useState([]);
+  const [wordCloud, setWordCloud] = useState("");
+  const [loading, setLoading] = useState(null);
 
   const history = useHistory();
 
@@ -22,63 +23,74 @@ const TestCompletedPage = () => {
   };
 
   useEffect(() => {
-    async function getMBTI() {
-      try {
-        const res = await axios.get(
-          "http://localhost:5000/result/",
-          // "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
-          axiosConfig
-        );
-        setUserMBTI(res.data.user_mbti);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    async function getWordCloud() {
-      try {
-        const res = await axios.get(
-          "http://localhost:5000/result/top10",
-          // "https://soulmatemoviecharacter-ws8313.koyeb.app/result/top10",
-          axiosConfig
-        );
-        setWordCloud(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getMBTI();
+    setLoading(true);
     getWordCloud();
-  }, [userMBTI]);
+    getUserMBTI();
+  }, [wordCloud]);
+
+  const getWordCloud = async () => {
+    await axios
+      .get(
+        "http://localhost:5000/result/top10",
+        // "https://soulmatemoviecharacter-ws8313.koyeb.app/result/top10",
+        axiosConfig
+      )
+      .then((res) => {
+        setWordCloud(res.data.word_cloud_src);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getUserMBTI = () => {
+    setUserMBTI(wordCloud.slice(-8, -4));
+    setLoading(false);
+  };
 
   return (
     <div className={styles.container}>
       <Header subtitle={"테스트가 완료되었습니다"} />
 
       <Main
-        src={wordCloud.word_cloud_src}
-        alt={wordCloud.word_cloud_src}
+        src={wordCloud}
+        alt={userMBTI + " 유형의 워드 클라우드"}
         subtitle={userMBTI + " 유형의 워드 클라우드"}
       />
 
       <Button
         content={"나와 같은 유형인 캐릭터 확인하기"}
         onClick={() => {
-          history.push("/MbtiCharacterPage");
+          history.push({
+            pathname: "/MbtiCharacterPage",
+            state: {
+              userMBTI: userMBTI,
+            },
+          });
         }}
       />
 
       <Button
         content={"나와 궁합이 잘 맞는 캐릭터 확인하기"}
         onClick={() => {
-          history.push("/MbtiCompatiblePage");
+          history.push({
+            pathname: "/MbtiCompatiblePage",
+            state: {
+              userMBTI: userMBTI,
+            },
+          });
         }}
       />
 
       <Button
         content={"같은 " + userMBTI + " 유형에게 인기있는 영화 확인하기"}
         onClick={() => {
-          history.push("/MbtiTop10Page");
+          history.push({
+            pathname: "/MbtiTop10Page",
+            state: {
+              userMBTI: userMBTI,
+            },
+          });
         }}
       />
 
@@ -88,6 +100,7 @@ const TestCompletedPage = () => {
           history.push("/");
         }}
       />
+      {loading && <Loading />}
     </div>
   );
 };
