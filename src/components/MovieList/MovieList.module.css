@@ -1,0 +1,48 @@
+.movie_list_container {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.movie_list {
+  padding: 10px;
+}
+
+.movie_img {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out 0s;
+  margin: 0 20px 15px 15px;
+  float: left;
+  width: 110px;
+}
+
+.movie_title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.movie_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 130px;
+  padding-top: 10px;
+}
+
+.movie_info_content {
+  color: gray;
+  margin-right: 5px;
+  width: 25.75px;
+}
+
+.movie_genre_container {
+  display: flex;
+}
+
+.movie_genre {
+  width: 130px;
+}
+
+.movie_img:hover {
+  transform: translateY(-5px);
+}
