@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import styles from "./MbtiCompatiblePage.module.css";
+import { Header, CharacterList, Button } from "../components";
 
 const MbtiCompatiblePage = () => {
   const [userMBTI, setUserMBTI] = useState("");
@@ -79,43 +80,26 @@ const MbtiCompatiblePage = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>영화 캐릭터 테스트</div>
+      <Header
+        subtitle={"맘에 드는 캐릭터를 클릭해 보세요"}
+        description={
+          "나와 잘 맞는 " + compatibleMBTI + " 유형의 영화 속 캐릭터"
+        }
+      />
 
-      <div className={styles.description}>맘에 드는 캐릭터를 클릭해 보세요</div>
+      <CharacterList characterList={charList} />
 
-      <div className={styles.subtitle}>
-        나와 잘 맞는 {compatibleMBTI} 유형의 영화 속 캐릭터
-      </div>
+      <Button
+        content={"나와 잘 맞는 유형의 다른 캐릭터 보기"}
+        onClick={refreshHandler}
+      />
 
-      <div className={styles.character_list}>
-        {charList &&
-          charList.map((item, idx) => {
-            return (
-              <div key={idx}>
-                <img
-                  className={styles.character_img}
-                  src={item[2]}
-                  alt={item[1] + " 사진"}
-                  onClick={() => clickHandler(idx)}
-                />
-                <div className={styles.character_name}>{item[1]}</div>
-              </div>
-            );
-          })}
-      </div>
-
-      <button className={styles.btn} onClick={refreshHandler}>
-        나와 잘 맞는 유형의 다른 캐릭터 보기
-      </button>
-
-      <button
-        className={styles.btn}
+      <Button
+        content={"뒤로 가기"}
         onClick={() => {
           history.goBack();
         }}
-      >
-        뒤로 가기
-      </button>
+      />
     </div>
   );
 };
