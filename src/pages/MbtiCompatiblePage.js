@@ -57,16 +57,6 @@ const MbtiCompatiblePage = () => {
     getMbtiCharacterRefresh();
   };
 
-  const clickHandler = (idx) => {
-    history.push({
-      pathname: "/MbtiCompatibleMovieListPage",
-      state: {
-        idx: idx,
-        charList: charList,
-      },
-    });
-  };
-
   return (
     <div className={styles.container}>
       <Header
