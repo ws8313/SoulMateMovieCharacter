@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import styles from "./MbtiCompatiblePage.module.css";
 import { Header, CharacterList, Button } from "../components";
 
 const MbtiCompatiblePage = () => {
-  const [userMBTI, setUserMBTI] = useState("");
   const [charList, setCharList] = useState([]);
   const [compatibleMBTI, setCompatibleMBTI] = useState("");
 
   const history = useHistory();
+  const location = useLocation();
+
+  const userMBTI = location.state.userMBTI;
 
   const accessToken = sessionStorage.getItem("token");
 
@@ -22,20 +24,7 @@ const MbtiCompatiblePage = () => {
     withCredentials: true,
   };
 
-  useEffect(() => {
-    async function getMbti() {
-      try {
-        const mbti = await axios.get(
-          "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
-          axiosConfig
-        );
-        setUserMBTI(mbti.data.user_mbti);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getMbti();
-  }, [userMBTI]);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     async function getCompatibleCharacter() {
