@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import styles from "./MbtiCompatiblePage.module.css";
-import { Header, CharacterList, Button } from "../components";
+import { Header, CharacterList, Button, Loading } from "../components";
 
 const MbtiCompatiblePage = () => {
   const [charList, setCharList] = useState([]);
   const [compatibleMBTI, setCompatibleMBTI] = useState("");
+  const [loading, setLoading] = useState(null);
 
   const history = useHistory();
 
@@ -22,6 +23,7 @@ const MbtiCompatiblePage = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     getCompatibleCharacter();
   }, []);
 
@@ -35,6 +37,7 @@ const MbtiCompatiblePage = () => {
       .then((res) => {
         setCharList(res.data.character_info);
         setCompatibleMBTI(res.data.characters_mbti);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -50,6 +53,7 @@ const MbtiCompatiblePage = () => {
       )
       .then((res) => {
         setCharList(res.data.character_info);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -57,6 +61,7 @@ const MbtiCompatiblePage = () => {
   };
 
   const refreshHandler = () => {
+    setLoading(true);
     refreshCompatibleCharacter();
   };
 
@@ -82,6 +87,8 @@ const MbtiCompatiblePage = () => {
           history.goBack();
         }}
       />
+
+      {loading && <Loading />}
     </div>
   );
 };
