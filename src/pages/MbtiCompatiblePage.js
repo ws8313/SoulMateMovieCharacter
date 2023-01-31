@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styles from "./MbtiCompatiblePage.module.css";
 import { Header, CharacterList, Button } from "../components";
 
@@ -9,9 +9,6 @@ const MbtiCompatiblePage = () => {
   const [compatibleMBTI, setCompatibleMBTI] = useState("");
 
   const history = useHistory();
-  const location = useLocation();
-
-  const userMBTI = location.state.userMBTI;
 
   const accessToken = sessionStorage.getItem("token");
 
@@ -24,37 +21,43 @@ const MbtiCompatiblePage = () => {
     withCredentials: true,
   };
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
-    async function getCompatibleCharacter() {
-      try {
-        const res = await axios.get(
-          "https://soulmatemoviecharacter-ws8313.koyeb.app/character/1",
-          axiosConfig
-        );
+    getCompatibleCharacter();
+  }, []);
+
+  const getCompatibleCharacter = async () => {
+    await axios
+      .get(
+        // "https://soulmatemoviecharacter-ws8313.koyeb.app/character/1",
+        "http://localhost:5000/character/1",
+        axiosConfig
+      )
+      .then((res) => {
         setCharList(res.data.character_info);
         setCompatibleMBTI(res.data.characters_mbti);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.log(error);
-      }
-    }
-    getCompatibleCharacter();
-  }, [userMBTI]);
+      });
+  };
+
+  const refreshCompatibleCharacter = async () => {
+    await axios
+      .get(
+        // "https://soulmatemoviecharacter-ws8313.koyeb.app/character/refresh/1",
+        "http://localhost:5000/character/refresh/1",
+        axiosConfig
+      )
+      .then((res) => {
+        setCharList(res.data.character_info);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const refreshHandler = () => {
-    async function getMbtiCharacterRefresh() {
-      try {
-        const res = await axios.get(
-          "https://soulmatemoviecharacter-ws8313.koyeb.app/character/refresh/1",
-          axiosConfig
-        );
-        setCharList(res.data.character_info);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getMbtiCharacterRefresh();
+    refreshCompatibleCharacter();
   };
 
   return (
