@@ -2,14 +2,12 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import styles from "./CharacterList.module.css";
 
-const CharacterList = ({ characterList, compatibleMBTI }) => {
+const CharacterList = ({ characterList }) => {
   const history = useHistory();
 
   const clickHandler = (idx) => {
     history.push({
-      pathname: compatibleMBTI
-        ? "/MbtiCompatibleMovieListPage"
-        : "/MbtiCharacterMovieListPage",
+      pathname: "/MbtiCharacterMovieListPage",
       state: {
         idx: idx,
         charList: characterList,
