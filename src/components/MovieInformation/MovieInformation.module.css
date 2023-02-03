@@ -1,0 +1,65 @@
+.movie_container {
+  margin: 10px 10px 20px 10px;
+}
+
+.movie_info_container {
+  display: flex;
+  padding: 10px;
+}
+
+.movie_img {
+  width: 130px;
+  margin: 0px 30px 15px 15px;
+}
+
+.movie_title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.movie_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 130px;
+  padding-top: 10px;
+}
+
+.movie_info_content {
+  color: gray;
+  margin-right: 10px;
+  width: 25.75px;
+}
+
+.movie_genre_container {
+  display: flex;
+}
+
+.movie_genre {
+  width: 130px;
+}
+
+.RatingContainer {
+  display: flex;
+  padding-top: 10px;
+}
+
+.stars {
+  display: flex;
+  margin-right: 5px;
+}
+
+.submit_btn {
+  width: 24px;
+  cursor: pointer;
+}
+
+.movie_story_container {
+  margin: 0px 25px;
+}
+
+.movie_story {
+  margin-top: 10px;
+  line-height: 30px;
+  letter-spacing: -1px;
+}
