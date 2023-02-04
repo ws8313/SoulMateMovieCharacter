@@ -5,5 +5,6 @@ export { default as Loading } from "./Loading/Loading";
 export { default as Main } from "./Main/Main";
 export { default as Modal } from "./Modal/Modal";
 export { default as LoginModal } from "./Modal/LoginModal";
+export { default as MovieInformation } from "./MovieInformation/MovieInformation";
 export { default as MovieList } from "./MovieList/MovieList";
 export { default as ProgressBar } from "./ProgressBar/ProgressBar";
