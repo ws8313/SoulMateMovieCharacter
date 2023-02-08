@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import styles from "./MbtiTop10Page.module.css";
+import { Header, MovieList, Button, Loading } from "../components";
 
 const MbtiTop10Page = () => {
-  const [top10, setTop10] = useState([]);
+  const [naverTop10, setNaverTop10] = useState([]);
+  const [sameMbtiTop10, setSameMbtiTop10] = useState([]);
+  const [loading, setLoading] = useState(null);
 
   const history = useHistory();
 
@@ -20,40 +23,52 @@ const MbtiTop10Page = () => {
   };
 
   useEffect(() => {
-    async function getTop10() {
-      try {
-        const res = await axios.get(
-          "https://soulmatemoviecharacter-ws8313.koyeb.app/result/top10",
-          axiosConfig
-        );
-        setTop10(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    setLoading(true);
     getTop10();
   }, []);
 
-  const clickHandler = (items) => {
-    const movieInfos = {
-      id: items[0],
-      kor_title: items[1],
-      eng_title: items[2],
-      image_link: items[3],
-      pub_year: items[4],
-      director: items[5],
-      rating: items[6],
-      story: items[7],
-      run_time: items[8],
-      genres: items[9],
-    };
+  const getTop10 = async () => {
+    await axios
+      .get(
+        // "https://soulmatemoviecharacter-ws8313.koyeb.app/result/top10",
+        "http://localhost:5000/result/top10",
+        axiosConfig
+      )
+      .then((res) => {
+        const naverTop10List = listToObject(res.data.top10_in_naver);
+        const sameMbtiTop10List = listToObject(
+          res.data.top10_for_same_mbti_users
+        );
 
-    history.push({
-      pathname: "/MovieInfoPage",
-      state: {
-        movieInfos: movieInfos,
-      },
+        setNaverTop10(naverTop10List);
+        setSameMbtiTop10(sameMbtiTop10List);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const listToObject = (list) => {
+    const movieList = [];
+
+    list.forEach((item, index) => {
+      const movieObject = {
+        id: item[0],
+        kor_title: item[1],
+        eng_title: item[2],
+        image_link: item[3],
+        pub_year: item[4],
+        director: item[5],
+        rating: item[6],
+        story: item[7],
+        run_time: item[8],
+        genres: item[9],
+      };
+      movieList.push(movieObject);
     });
+
+    return movieList;
   };
 
   const logout = () => {
@@ -72,108 +87,27 @@ const MbtiTop10Page = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>영화 캐릭터 테스트</div>
+      <Header
+        subtitle={"맘에 드는 영화 포스터를 클릭해 보세요"}
+        description={"네이버 인기있는 영화 TOP 10"}
+      />
 
-      <div className={styles.description}>
-        맘에 드는 영화 포스터를 클릭해 보세요
-      </div>
-
-      <div className={styles.subtitle}>네이버 인기있는 영화 TOP 10</div>
-
-      <div className={styles.movie_list_container}>
-        {top10.top10_in_naver &&
-          top10.top10_in_naver.map((items, idx) => {
-            return (
-              <div className={styles.movie_list} key={idx}>
-                <img
-                  className={styles.movie_img}
-                  src={items[3]}
-                  alt={items[1] + " 포스터"}
-                  onClick={() => clickHandler(items)}
-                />
-
-                <div>
-                  <div className={styles.movie_title}>{items[1]}</div>
-                  <div className={styles.movie_info}>
-                    <div className={styles.movie_genre_container}>
-                      <div className={styles.movie_info_content}>장르</div>
-                      <div className={styles.movie_genre}>
-                        {items[9].join(", ")}
-                      </div>
-                    </div>
-                    <div>
-                      <span className={styles.movie_info_content}>개봉</span>
-                      <span>{items[4]}년</span>
-                    </div>
-                    <div>
-                      <span className={styles.movie_info_content}>런타임</span>
-                      <span>{items[8]}분</span>
-                    </div>
-                    <div>
-                      <span className={styles.movie_info_content}>평점</span>
-                      <span>{items[6]}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-      </div>
+      <MovieList movieList={naverTop10} />
 
       <div className={styles.subtitle}>같은 유형에게 인기있는 영화 TOP 10</div>
 
-      <div className={styles.movie_list_container}>
-        {top10.top10_for_same_mbti_users &&
-          top10.top10_for_same_mbti_users.map((items, idx) => {
-            return (
-              <div className={styles.movie_list} key={idx}>
-                <img
-                  className={styles.movie_img}
-                  src={items[3]}
-                  alt={items[1] + " 포스터"}
-                  onClick={() => clickHandler(items)}
-                />
+      <MovieList movieList={sameMbtiTop10} />
 
-                <div>
-                  <div className={styles.movie_title}>{items[1]}</div>
-                  <div className={styles.movie_info}>
-                    <div className={styles.movie_genre_container}>
-                      <div className={styles.movie_info_content}>장르</div>
-                      <div className={styles.movie_genre}>
-                        {items[9].join(", ")}
-                      </div>
-                    </div>
-                    <div>
-                      <span className={styles.movie_info_content}>개봉</span>
-                      <span>{items[4]}년</span>
-                    </div>
-                    <div>
-                      <span className={styles.movie_info_content}>런타임</span>
-                      <span>{items[8]}분</span>
-                    </div>
-                    <div>
-                      <span className={styles.movie_info_content}>평점</span>
-                      <span>{items[6]}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-      </div>
-
-      <button
-        className={styles.btn}
+      <Button
+        content={"뒤로 가기"}
         onClick={() => {
           history.goBack();
         }}
-      >
-        뒤로 가기
-      </button>
+      />
 
-      <button className={styles.btn} onClick={logout}>
-        테스트 다시 하기
-      </button>
+      <Button content={"테스트 다시 하기"} onClick={logout} />
+
+      {loading && <Loading />}
     </div>
   );
 };
