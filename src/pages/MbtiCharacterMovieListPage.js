@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory, useLocation } from "react-router-dom";
-import styles from "./MbtiCharacterMovieListPage.module.css";
+import styles from "./Styles.module.css";
 import { Header, MovieList, Button, Loading } from "../components";
 
 const MbtiCharacterMovieListPage = () => {

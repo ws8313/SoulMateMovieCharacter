@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import styles from "./TestPage.module.css";
+import styles from "./Styles.module.css";
 import { Header, ProgressBar, Main, Button, Loading } from "../components";
 
 const TestPage = () => {

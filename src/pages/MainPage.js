@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./MainPage.module.css";
+import styles from "./Styles.module.css";
 import { Header, Main, Button, Modal, LoginModal } from "../components";
 
 const MainPage = () => {

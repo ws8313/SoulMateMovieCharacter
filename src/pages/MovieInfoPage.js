@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useHistory, useLocation } from "react-router-dom";
-import styles from "./MovieInfoPage.module.css";
+import styles from "./Styles.module.css";
 import { Header, MovieInformation, Button } from "../components";
 
 const MovieInfoModal = () => {
