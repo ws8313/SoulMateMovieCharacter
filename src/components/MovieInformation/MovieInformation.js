@@ -51,6 +51,7 @@ const MovieInformation = ({ movieInformation }) => {
     axios
       .post(
         "https://soulmatemoviecharacter-ws8313.koyeb.app/character/movie_list",
+        // "http://localhost:5000/character/movie_list",
         {
           satisfaction_list: satisfactionList,
         },

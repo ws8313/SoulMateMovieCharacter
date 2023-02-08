@@ -30,8 +30,8 @@ const MbtiCompatiblePage = () => {
   const getCompatibleCharacter = async () => {
     await axios
       .get(
-        // "https://soulmatemoviecharacter-ws8313.koyeb.app/character/1",
-        "http://localhost:5000/character/1",
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/character/1",
+        // "http://localhost:5000/character/1",
         axiosConfig
       )
       .then((res) => {
@@ -47,8 +47,8 @@ const MbtiCompatiblePage = () => {
   const refreshCompatibleCharacter = async () => {
     await axios
       .get(
-        // "https://soulmatemoviecharacter-ws8313.koyeb.app/character/refresh/1",
-        "http://localhost:5000/character/refresh/1",
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/character/refresh/1",
+        // "http://localhost:5000/character/refresh/1",
         axiosConfig
       )
       .then((res) => {

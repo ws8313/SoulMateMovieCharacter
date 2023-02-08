@@ -32,8 +32,8 @@ const MbtiCharacterPage = () => {
   const getMbtiCharacter = async () => {
     await axios
       .get(
-        "http://localhost:5000/character/0",
-        // "https://soulmatemoviecharacter-ws8313.koyeb.app/character/0",
+        // "http://localhost:5000/character/0",
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/character/0",
         axiosConfig
       )
       .then((res) => {
@@ -48,8 +48,8 @@ const MbtiCharacterPage = () => {
   const refreshMbtiCharacter = async () => {
     await axios
       .get(
-        "http://localhost:5000/character/refresh/0",
-        // "https://soulmatemoviecharacter-ws8313.koyeb.app/character/refresh/0",
+        // "http://localhost:5000/character/refresh/0",
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/character/refresh/0",
         axiosConfig
       )
       .then((res) => {

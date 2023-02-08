@@ -31,8 +31,8 @@ const TestCompletedPage = () => {
   const getWordCloud = async () => {
     await axios
       .get(
-        "http://localhost:5000/result/top10",
-        // "https://soulmatemoviecharacter-ws8313.koyeb.app/result/top10",
+        // "http://localhost:5000/result/top10",
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/result/top10",
         axiosConfig
       )
       .then((res) => {

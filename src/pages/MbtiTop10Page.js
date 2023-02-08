@@ -30,8 +30,8 @@ const MbtiTop10Page = () => {
   const getTop10 = async () => {
     await axios
       .get(
-        // "https://soulmatemoviecharacter-ws8313.koyeb.app/result/top10",
-        "http://localhost:5000/result/top10",
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/result/top10",
+        // "http://localhost:5000/result/top10",
         axiosConfig
       )
       .then((res) => {

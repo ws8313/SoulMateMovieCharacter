@@ -36,9 +36,10 @@ const TestPage = () => {
       axios
         .all([
           axios.get(
-            // `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${i}`, axiosConfig
-            `http://localhost:5000/test/${i}`,
+            `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${i}`,
             axiosConfig
+            // `http://localhost:5000/test/${i}`,
+            // axiosConfig
           ),
         ])
         .then(
@@ -66,8 +67,8 @@ const TestPage = () => {
       setAnsList(ans);
       axios
         .post(
-          "http://localhost:5000/result/",
-          // "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
+          // "http://localhost:5000/result/",
+          "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
           {
             answers: [...anslist, e.target.value],
           },

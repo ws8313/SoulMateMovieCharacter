@@ -36,12 +36,12 @@ const MbtiCharacterMovieListPage = () => {
   const getMovieList = async () => {
     await axios
       .get(
-        `http://localhost:5000/character/character_movie_list?character_id=${character_id}&character_name=${encodeURIComponent(
-          character_name
-        )}`,
-        // `https://soulmatemoviecharacter-ws8313.koyeb.app/character/character_movie_list?character_id=${character_id}&character_name=${encodeURIComponent(
+        // `http://localhost:5000/character/character_movie_list?character_id=${character_id}&character_name=${encodeURIComponent(
         //   character_name
         // )}`,
+        `https://soulmatemoviecharacter-ws8313.koyeb.app/character/character_movie_list?character_id=${character_id}&character_name=${encodeURIComponent(
+          character_name
+        )}`,
         axiosConfig
       )
       .then((res) => {
@@ -56,8 +56,8 @@ const MbtiCharacterMovieListPage = () => {
   const logout = () => {
     axios
       .get(
-        // "https://soulmatemoviecharacter-ws8313.koyeb.app/user/logout",
-        "http://localhost:5000/user/logout",
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/user/logout",
+        // "http://localhost:5000/user/logout",
         axiosConfig
       )
       .then(() => {

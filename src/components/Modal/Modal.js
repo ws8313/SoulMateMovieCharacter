@@ -30,8 +30,8 @@ const Modal = ({ openModal }) => {
   const onSubmit = () => {
     axios
       .post(
-        "http://localhost:5000/user/login",
-        // "https://soulmatemoviecharacter-ws8313.koyeb.app/user/login",
+        // "http://localhost:5000/user/login",
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/user/login",
         {
           login_id: userId,
           login_pw: password,
@@ -54,8 +54,8 @@ const Modal = ({ openModal }) => {
   const onSignUp = () => {
     axios
       .post(
-        "http://localhost:5000/user/register",
-        // "https://soulmatemoviecharacter-ws8313.koyeb.app/user/register",
+        // "http://localhost:5000/user/register",
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/user/register",
         {
           id: userId,
           pw: password,
@@ -90,8 +90,8 @@ const Modal = ({ openModal }) => {
   const clickHandler = () => {
     axios
       .post(
-        // "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
-        "http://localhost:5000/result/",
+        "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
+        // "http://localhost:5000/result/",
         {
           user_mbti: selected,
         },
