@@ -4,7 +4,7 @@ import styles from "./MovieList.module.css";
 
 const MovieList = ({ movieList }) => {
   const history = useHistory();
-  
+
   const clickHandler = (items) => {
     history.push({
       pathname: "/MovieInfoPage",
