@@ -16,10 +16,13 @@ const Modal = ({ openModal }) => {
 
   const history = useHistory();
 
+  const accessToken = sessionStorage.getItem("token");
+
   let axiosConfig = {
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
       "Access-Control-Allow-Origin": "*",
+      Authorization: `Bearer ${accessToken}`,
     },
     withCredentials: true,
   };
@@ -27,15 +30,21 @@ const Modal = ({ openModal }) => {
   const onSubmit = () => {
     axios
       .post(
-        "https://soulmatemoviecharacter-ws8313.koyeb.app/user/login",
+        "http://localhost:5000/user/login",
+        // "https://soulmatemoviecharacter-ws8313.koyeb.app/user/login",
         {
           login_id: userId,
           login_pw: password,
         },
         axiosConfig
       )
-      .then(() => {
-        openResultLoginModal();
+      .then((res) => {
+        if (res.status && res.status === 202) {
+          alert("이미 사용 중인 아이디입니다.");
+        } else {
+          sessionStorage.setItem("token", res.data.token);
+          openResultLoginModal();
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -45,7 +54,8 @@ const Modal = ({ openModal }) => {
   const onSignUp = () => {
     axios
       .post(
-        "https://soulmatemoviecharacter-ws8313.koyeb.app/user/register",
+        "http://localhost:5000/user/register",
+        // "https://soulmatemoviecharacter-ws8313.koyeb.app/user/register",
         {
           id: userId,
           pw: password,
@@ -80,7 +90,8 @@ const Modal = ({ openModal }) => {
   const clickHandler = () => {
     axios
       .post(
-        "/result/",
+        // "https://soulmatemoviecharacter-ws8313.koyeb.app/result/",
+        "http://localhost:5000/result/",
         {
           user_mbti: selected,
         },
