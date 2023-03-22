@@ -99,6 +99,8 @@ const TestPage = () => {
     }
   };
 
+  console.log(questionList);
+
   return (
     <div className={styles.container}>
       <Header />
@@ -107,7 +109,7 @@ const TestPage = () => {
 
       {questionList && (
         <Main
-          src={questionList[index - 1].img}
+          src={`img/for_test/${index}.png`}
           alt={"test image"}
           description={questionList[index - 1].question}
         />
