@@ -99,8 +99,6 @@ const TestPage = () => {
     }
   };
 
-  console.log(questionList);
-
   return (
     <div className={styles.container}>
       <Header />
