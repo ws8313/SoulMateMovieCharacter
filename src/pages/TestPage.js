@@ -6,8 +6,9 @@ import { Header, ProgressBar, Main, Button, Loading } from "../components";
 
 const TestPage = () => {
   const [index, setIndex] = useState(1);
+  const [question, setQuestion] = useState();
+  const [option, setOption] = useState();
   const [anslist, setAnsList] = useState([]);
-  const [questionList, setQuestionList] = useState();
   const [loading, setLoading] = useState(null);
   const QUESTION_EX_INDEX = 1;
   const QUESTION_LAST_INDEX = 13;
@@ -28,35 +29,20 @@ const TestPage = () => {
   useEffect(() => {
     setLoading(true);
     getQuestionList();
-  }, []);
+  }, [index]);
 
   const getQuestionList = async () => {
-    const dataArr = [];
-    for (let i = 1; i < 14; i++) {
-      axios
-        .all([
-          axios.get(
-            `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${i}`,
-            axiosConfig
-            // `http://localhost:5000/test/${i}`,
-            // axiosConfig
-          ),
-        ])
-        .then(
-          axios.spread((res) => {
-            const id = res.data.id;
-            const img = res.data.img_url;
-            const options = res.data.options;
-            const question = res.data.question;
-            dataArr.push({ id, img, options, question });
-            dataArr.sort((a, b) => a.id - b.id);
-            setQuestionList(dataArr);
-            setLoading(false);
-          })
-        )
-        .catch((error) => {
-          console.log(error);
-        });
+    try {
+      const res = await axios.get(
+        `https://soulmatemoviecharacter-ws8313.koyeb.app/test/${index}`,
+        // `http://localhost:5000/test/${index}`,
+        axiosConfig
+      );
+      setQuestion(res.data.question);
+      setOption(res.data.options);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -105,11 +91,11 @@ const TestPage = () => {
 
       <ProgressBar index={index} prevClick={prevClick} />
 
-      {questionList && (
+      {!loading && (
         <Main
           src={`img/for_test/${index}.png`}
           alt={"test image"}
-          description={questionList[index - 1].question}
+          description={question}
         />
       )}
 
@@ -117,17 +103,9 @@ const TestPage = () => {
         <Button content={"다음"} onClick={clickHandler} />
       ) : (
         <div>
-          <Button
-            content={questionList[index - 1].options[0]}
-            value={"a"}
-            onClick={clickHandler}
-          />
+          <Button content={option[0]} value={"a"} onClick={clickHandler} />
 
-          <Button
-            content={questionList[index - 1].options[1]}
-            value={"b"}
-            onClick={clickHandler}
-          />
+          <Button content={option[1]} value={"b"} onClick={clickHandler} />
         </div>
       )}
       {loading && <Loading />}
