@@ -60,7 +60,7 @@ npm start
 ### 1.0 version
 
 - [프로젝트 기획서](https://liberating-result-6b0.notion.site/dc0dad0ff7a548539bba17ec1ae6e21a)
-- [와이어프레임/스토리보드](https://www.figma.com/file/CLv2TAimj8dCt2TMv0V7cX/Untitled?node-id=0%3A1)
+- [와이어프레임/스토리보드](https://www.figma.com/file/CLv2TAimj8dCt2TMv0V7cX/Untitled?node-id=0%3A1) (UI 변경 전)
 
 ## 프로젝트 팀원 역할 분담
 
