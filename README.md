@@ -110,7 +110,7 @@ npm start
 ## 개발환경
 
 - React
-- axios
+- Axios
 - react-router-dom
 - react-icons
 - react-spinners
